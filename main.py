@@ -1,11 +1,136 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, request, session, url_for, abort, flash
+from dotenv import load_dotenv
+import requests
+
+import os
+import secrets
+from urllib.parse import urlencode
+
+from config import CONFIG
+from database import Database
+
+load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
+app.config['OAUTH2_PROVIDERS'] = CONFIG
+
+db = Database()
+
+def auth_required(f):
+    def decorated_function(*args, **kwargs):
+        if 'user' not in session:
+            flash('You need to log in first.')
+            return redirect(url_for('home'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    if 'user' not in session:
+        return render_template("home.html")
+    return redirect(url_for("dashboard"))
 
+
+@app.route('/authorize/<provider>')
+def oauth2_authorize(provider):
+    if 'user' in session:
+        return redirect(url_for('home'))
+
+    provider_data = app.config['OAUTH2_PROVIDERS'].get(provider)
+    if provider_data is None:
+        abort(404)
+
+    session['oauth2_state'] = secrets.token_urlsafe(16)
+
+    qs = urlencode({
+        'client_id': provider_data['client_id'],
+        'redirect_uri': url_for('oauth2_callback', provider=provider,
+                                _external=True),
+        'response_type': 'code',
+        'scope': ' '.join(provider_data['scopes']),
+        'state': session['oauth2_state'],
+    })
+
+    return redirect(provider_data['authorize_url'] + '?' + qs)
+
+
+@app.route('/callback/<provider>')
+def oauth2_callback(provider):
+    if 'user' in session:
+        return redirect(url_for('home'))
+
+    provider_data = app.config['OAUTH2_PROVIDERS'].get(provider)
+    if provider_data is None:
+        abort(404)
+
+    if 'error' in request.args:
+        for k, v in request.args.items():
+            if k.startswith('error'):
+                flash(f'{k}: {v}')
+        return redirect(url_for('index'))
+
+    if request.args['state'] != session.get('oauth2_state'):
+        abort(401)
+
+    if 'code' not in request.args:
+        abort(401)
+
+    response = requests.post(provider_data['token_url'], data={
+        'client_id': provider_data['client_id'],
+        'client_secret': provider_data['client_secret'],
+        'code': request.args['code'],
+        'grant_type': 'authorization_code',
+        'redirect_uri': url_for('oauth2_callback', provider=provider,
+                                _external=True),
+    }, headers={'Accept': 'application/json'})
+    if response.status_code != 200:
+        abort(401)
+    oauth2_token = response.json().get('access_token')
+    if not oauth2_token:
+        abort(401)
+
+    # use the access token to get the user's email address
+    response = requests.get(provider_data['userinfo']['url'], headers={
+        'Authorization': 'Bearer ' + oauth2_token,
+        'Accept': 'application/json',
+    })
+    if response.status_code != 200:
+        abort(401)
+    email = provider_data['userinfo']['email'](response.json())
+
+    if not email:
+        flash('No email address found in the user info response.')
+        return redirect(url_for('home'))
+    
+    user = db.get_user("email", email)
+    if not user:
+        user = db.add_user(email)
+
+    print(user)
+
+    session['user'] = {
+        'id': str(user['_id']),
+        'email': user['email'],
+        'username': user['username']
+    }
+
+    return redirect(url_for('home'))
+
+@app.route("/logout")
+def logout():
+    session.pop("user")
+    return redirect(url_for("home"))
+
+@auth_required
+@app.route("/dashboard")
+def dashboard():
+    user = db.get_user("_id", session['user']['id'])
+    if not user:
+        flash("User not found.")
+        return redirect(url_for("home"))
+    
+    return render_template("dashboard.html", user=user)
 
 if __name__ == "__main__":
     app.run(debug=True)
