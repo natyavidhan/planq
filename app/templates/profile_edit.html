@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile - Planq{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <h1 class="text-2xl font-bold mb-6 text-primary-600 dark:text-primary-400">Edit Your Profile</h1>
+    
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+        <div class="p-6">
+            <form method="POST">
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                    <input type="text" id="name" name="name" 
+                           value="{% if current_user.is_authenticated %}{{ current_user.name }}{% else %}User{% endif %}" 
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm 
+                                  focus:outline-none focus:ring-primary-500 focus:border-primary-500 
+                                  dark:bg-gray-700 dark:text-white">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
+                    <input type="email" id="email" name="email" 
+                           value="{% if current_user.is_authenticated %}{{ current_user.email }}{% else %}user@example.com{% endif %}" 
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm 
+                                  focus:outline-none focus:ring-primary-500 focus:border-primary-500 
+                                  dark:bg-gray-700 dark:text-white">
+                </div>
+                
+                <div class="mb-6">
+                    <label for="bio" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bio</label>
+                    <textarea id="bio" name="bio" rows="3"
+                              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm 
+                                     focus:outline-none focus:ring-primary-500 focus:border-primary-500 
+                                     dark:bg-gray-700 dark:text-white"></textarea>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Preferred Topics</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="topic-1" name="topics[]" value="Geography" 
+                                   class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                            <label for="topic-1" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Geography</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="topic-2" name="topics[]" value="History" 
+                                   class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                            <label for="topic-2" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">History</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="topic-3" name="topics[]" value="Science" 
+                                   class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                            <label for="topic-3" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Science</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="topic-4" name="topics[]" value="Math" 
+                                   class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                            <label for="topic-4" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Math</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between">
+                    <a href="{{ url_for('profile.view') }}" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
