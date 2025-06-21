@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} | Planq</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+            import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyDLiqdGzpyCQw3H3bP6vSWwa9mT9STYB9c",
+                authDomain: "torq-78273.firebaseapp.com",
+                projectId: "torq-78273",
+                storageBucket: "torq-78273.firebasestorage.app",
+                messagingSenderId: "240420000867",
+                appId: "1:240420000867:web:60b518a8303795c7881456",
+                measurementId: "G-MP1GJ6RMTD"
+            };
+            const app = initializeApp(firebaseConfig);
+            const analytics = getAnalytics(app);
+    </script>
+    
+
+    <link rel="icon" href="/static/favicon.ico" type="image/png" />
+
+    <meta name="title" content="Planq" />
+    <meta name="description" content="Entrance exam prep, For Students, By Students" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Planq" />
+    <meta property="og:description" content="Entrance exam prep, For Students, By Students" />
+    <meta property="og:image" content="/static/logo.png" />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Planq" />
+    <meta property="twitter:description" content="Entrance exam prep, For Students, By Students" />
+    <meta property="twitter:image" content="/static/logo.png" />
+
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container mt-5">
+        {% block content %}
+            
+        {% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Reddit+Sans:wght@500&display=swap');
+
+body {
+  font-family: "Reddit Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  background-color: rgb(31, 31, 31);
+  color: white;
+}
