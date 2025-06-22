@@ -388,8 +388,7 @@
                     filterSelect.innerHTML = `<option value="">Error loading ${type}s</option>`;
                 });
         }
-        
-        function updateUrlAndFetch() {
+          function updateUrlAndFetch() {
             // Update URL with current parameters
             const url = new URL(window.location);
             
@@ -402,6 +401,8 @@
             
             url.searchParams.set('page', currentPage);
             window.history.pushState({}, '', url);
+            
+            console.log('Fetching page:', currentPage);
             
             // Fetch results with current parameters
             fetchResults();
@@ -525,55 +526,57 @@
             if (window.MathJax) {
                 MathJax.typesetPromise && MathJax.typesetPromise().catch(err => console.error('MathJax error:', err));
             }
-        }
-        
-        function createPagination(paginationData) {
-            if (!paginationData || paginationData.totalPages <= 1) {
+        }          function createPagination(paginationData) {
+            if (!paginationData || !paginationData.totalPages || paginationData.totalPages <= 1) {
                 paginationContainer.innerHTML = '';
                 return;
             }
             
-            const { currentPage, totalPages, totalResults, limit } = paginationData;
+            // Ensure we have numbers for all these values
+            const currentPageNum = parseInt(paginationData.currentPage) || 1;
+            const totalPages = parseInt(paginationData.totalPages) || 1;
+            const totalResults = parseInt(paginationData.totalResults) || 0;
+            const limit = parseInt(paginationData.limit) || 10;
             
             let paginationHTML = `
                 <div class="pagination-info">
-                    Showing ${Math.min((currentPage - 1) * limit + 1, totalResults)} to ${Math.min(currentPage * limit, totalResults)} 
-                    of ${totalResults} results (Page ${currentPage} of ${totalPages})
+                    Showing ${Math.min((currentPageNum - 1) * limit + 1, totalResults)} to ${Math.min(currentPageNum * limit, totalResults)} 
+                    of ${totalResults} results
                 </div>
                 <ul class="pagination">
             `;
             
             // Previous button
-            if (currentPage > 1) {
+            if (currentPageNum > 1) {
                 paginationHTML += `
-                    <li class="pagination-item prev-page">
+                    <li class="pagination-item prev-page pagination-nav">
                         <i class="fas fa-chevron-left"></i>
                     </li>
                 `;
             }
             
             // Calculate range of pages to show
-            let startPage = Math.max(1, currentPage - 2);
+            let startPage = Math.max(1, currentPageNum - 2);
             let endPage = Math.min(totalPages, startPage + 4);
             
-            // Adjust if we're near the end
-            if (endPage - startPage < 4) {
-                startPage = Math.max(1, endPage - 4);
+            // Adjust if we're near the end to always show 5 pages if possible
+            if (endPage - startPage < 4 && totalPages > 5) {
+                startPage = Math.max(1, totalPages - 4);
             }
             
             // Generate page numbers
             for (let i = startPage; i <= endPage; i++) {
                 paginationHTML += `
-                    <li class="pagination-item ${i === currentPage ? 'active' : ''}" data-page="${i}">
+                    <li class="pagination-item ${i === currentPageNum ? 'active' : ''}" data-page="${i}">
                         ${i}
                     </li>
                 `;
             }
             
             // Next button
-            if (currentPage < totalPages) {
+            if (currentPageNum < totalPages) {
                 paginationHTML += `
-                    <li class="pagination-item next-page">
+                    <li class="pagination-item next-page pagination-nav">
                         <i class="fas fa-chevron-right"></i>
                     </li>
                 `;
@@ -585,14 +588,20 @@
             // Add event listeners to pagination items
             document.querySelectorAll('.pagination-item').forEach(item => {
                 item.addEventListener('click', function() {
+                    let newPage;
+                    
                     if (this.classList.contains('prev-page')) {
-                        currentPage--;
+                        newPage = currentPageNum - 1;
                     } else if (this.classList.contains('next-page')) {
-                        currentPage++;
+                        newPage = currentPageNum + 1;
                     } else {
-                        currentPage = parseInt(this.getAttribute('data-page'));
+                        newPage = parseInt(this.getAttribute('data-page'));
                     }
                     
+                    // Update the global currentPage variable
+                    currentPage = newPage;
+                    
+                    // Update URL and fetch new results
                     updateUrlAndFetch();
                     
                     // Scroll back to top of results

@@ -150,47 +150,63 @@
         border-top-color: var(--accent-primary);
         animation: spin 1s linear infinite;
         margin-bottom: 1rem;
-    }
-    
-    .pagination-container {
+    }    .pagination-container {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         margin-top: 2rem;
+        margin-bottom: 2rem;
     }
     
     .pagination-info {
-        color: var(--text-secondary);
+        color: rgba(255, 255, 255, 0.7);
         margin-bottom: 1rem;
         text-align: center;
+        font-size: 0.85rem;
     }
     
     .pagination {
         display: flex;
         list-style: none;
-        gap: 0.5rem;
+        gap: 0.3rem;
+        padding: 0;
+        margin: 0;
     }
     
     .pagination-item {
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: var(--radius-md);
+        border-radius: 4px;
         cursor: pointer;
         transition: all 0.2s;
         font-size: 0.9rem;
         background-color: var(--bg-secondary);
-        border: 1px solid var(--border-color);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        user-select: none; /* Prevent text selection */
     }
     
     .pagination-item:hover {
-        background-color: var(--bg-tertiary);
+        background-color: rgba(255, 255, 255, 0.1);
     }
     
     .pagination-item.active {
         background-color: var(--accent-primary);
         color: white;
+        border-color: var(--accent-primary);
+    }
+    
+    /* Add a class for next/prev buttons */
+    .pagination-nav {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.8rem;
+    }
+    
+    /* Make sure each page number is centered */
+    .pagination-item {
+        text-align: center;
     }
     
     .empty-state {
