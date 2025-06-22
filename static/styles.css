@@ -1,22 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* Dark Theme Colors */
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #121212;
-  --bg-tertiary: #1a1a1a;
-  --text-primary: #ffffff;
-  --text-secondary: #b0b0b0;
-  --text-tertiary: #808080;
-  --accent-primary: #ff4081;
-  --accent-secondary: #9c27b0;
-  --accent-tertiary: #7b1fa2;
-  --border-color: #2a2a2a;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --danger: #f44336;
-  --warning: #ff9800;
-  --success: #4caf50;
-  --info: #2196f3;
+  /* Dark Theme Colors - Less Contrasting for Eye Comfort */
+  --bg-primary: #121418;
+  --bg-secondary: #1a1d22;
+  --bg-tertiary: #22262d;
+  --text-primary: #e8e8e8;
+  --text-secondary: #a8acb3;
+  --text-tertiary: #787d85;
+  --accent-primary: #6b8afd;
+  --accent-secondary: #5a6acf;
+  --accent-tertiary: #4b5aaf;
+  --border-color: #32363d;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --danger: #e57373;
+  --warning: #ffb74d;
+  --success: #81c784;
+  --info: #64b5f6;
 
   /* Spacing */
   --spacing-xs: 0.25rem;
@@ -65,8 +65,8 @@ body {
   line-height: 1.5;
   min-height: 100vh;
   background-image: 
-    radial-gradient(circle at 20% 20%, rgba(255, 64, 129, 0.03), transparent 25%),
-    radial-gradient(circle at 80% 80%, rgba(156, 39, 176, 0.03), transparent 25%);
+    radial-gradient(circle at 20% 20%, rgba(107, 138, 253, 0.02), transparent 25%),
+    radial-gradient(circle at 80% 80%, rgba(90, 106, 207, 0.02), transparent 25%);
   background-attachment: fixed;
 }
 
@@ -106,10 +106,12 @@ button.btn-primary, .btn-primary {
   background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   border: none;
   color: white;
+  box-shadow: 0 2px 6px rgba(107, 138, 253, 0.2);
 }
 
 button.btn-primary:hover, .btn-primary:hover {
   opacity: 0.9;
+  box-shadow: 0 3px 10px rgba(107, 138, 253, 0.3);
 }
 
 input, textarea, select {
@@ -161,6 +163,43 @@ h6 {
 
 p {
   margin-bottom: 1rem;
+}
+
+/* Additional styles for improved reading comfort */
+p, li, .question-text, .option-text, .explanation-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  color: var(--text-primary);
+  text-rendering: optimizeLegibility;
+}
+
+/* Make code blocks more readable */
+pre, code {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.95em;
+  padding: 0.2em 0.4em;
+}
+
+pre {
+  padding: 1em;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+/* Improve contrast for links while keeping them visually distinct */
+a:not(.btn):not(.nav-link) {
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: color 0.2s ease, border-bottom 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+a:not(.btn):not(.nav-link):hover {
+  color: var(--accent-secondary);
+  border-bottom-color: var(--accent-secondary);
 }
 
 /* Card Design */
@@ -317,7 +356,7 @@ p {
   top: -6px;
   right: -33px;
   font-size: 0.65rem;
-  background-color: var(--accent-primary);
+  background-color: var(--accent-secondary);
   color: white;
   padding: 2px 5px;
   border-radius: 4px;
@@ -401,12 +440,13 @@ p {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: var(--accent-primary);
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1rem;
+  border: 2px solid var(--bg-primary);
 }
 
 .user-dropdown-content {
@@ -773,4 +813,27 @@ p {
 
 .fade-in {
   animation: fadeIn var(--transition-normal);
+}
+
+/* Override any remaining pink/purple gradients */
+.gradient-bg {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)) !important;
+}
+
+/* Make sure progress bars and other accent elements use the new color scheme */
+progress, meter,
+.progress-bar, .meter {
+  background-color: var(--accent-primary);
+}
+
+/* Ensure selection highlight uses the new accent color */
+::selection {
+  background-color: var(--accent-primary);
+  color: white;
+}
+
+/* Update focus styles for better accessibility */
+:focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
 }
