@@ -268,3 +268,20 @@
             grid-template-columns: 1fr;
         }
     }
+    
+    /* Question image styling */
+    .question-image {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 1rem auto;
+        border-radius: var(--radius-md);
+    }
+    
+    .question-title img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 1rem auto;
+        border-radius: var(--radius-md);
+    }

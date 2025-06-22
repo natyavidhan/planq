@@ -468,8 +468,7 @@
             }
             
             let resultsHTML = '';
-            
-            data.results.forEach(question => {                // Determine question level class
+              data.results.forEach(question => {                // Determine question level class
                 let levelClass = '';
                 let levelText = 'Medium';
                 
@@ -486,10 +485,20 @@
                         levelText = 'Medium';
                     }
                 }
-                  resultsHTML += `
+                
+                // Process question text to handle images properly
+                let questionText = question.question;
+                
+                // Check if the question contains image tags
+                if (questionText.includes('<img')) {
+                    // Add a special class to ensure images display properly
+                    questionText = questionText.replace(/<img/g, '<br><img class="question-image"');
+                }
+                  
+                resultsHTML += `
                     <a href="/question/${question._id}" class="question-card-link">
                         <div class="question-card">
-                            <div class="question-title">${question.question}</div>
+                            <div class="question-title">${questionText}</div>
                             <span class="question-level ${levelClass}">${levelText}</span>
                             <div class="question-meta">
                                 ${question.exam_name ? `

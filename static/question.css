@@ -332,6 +332,27 @@
     background-color: rgba(255, 105, 180, 0.1);
 }
 
+/* Image styling */
+.question-image, .option-image, .explanation-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1rem auto;
+    border-radius: var(--radius-md);
+}
+
+/* Add a slight shadow to make images stand out */
+.question-image, .option-image, .explanation-image {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Make sure text before images has proper spacing */
+br + img.question-image,
+br + img.option-image,
+br + img.explanation-image {
+    margin-top: 0.5rem;
+}
+
 @media (max-width: 768px) {
     .question-content {
         padding: 1.5rem;
