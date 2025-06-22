@@ -1,13 +1,56 @@
 {% extends 'base.html' %}
 {% block title %}Planq{% endblock %}
 {% block content %}
-    <div class="text-center">
-        <h1><b>Planq</b></h1>
-        <h3>Entrance Exam Prep. For students, by students.</h3>
-        <div class="mt-5">
-            <h6>Continue With</h4>
-            <a href="/authorize/google"><button class="btn btn-primary">Google</button></a>
-            <a href="/authorize/discord"><button class="btn btn-primary">Discord</button></a>
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title"><span class="gradient-text">Planq</span></h1>
+            <h3 class="hero-subtitle">Entrance Exam Prep. For students, by students.</h3>
+            <div class="hero-cta mt-5">
+                <h6 class="mb-3">Get Started Now</h6>
+                <div class="auth-buttons">
+                    <a href="/authorize/google" class="btn btn-primary login-btn">
+                        <i class="fab fa-google"></i> Continue with Google
+                    </a>
+                    <a href="/authorize/discord" class="btn btn-primary login-btn">
+                        <i class="fab fa-discord"></i> Continue with Discord
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
+    
+    <section id="features" class="content-section">
+        <h2 class="section-heading text-center">Why Choose <span class="gradient-text">Planq</span></h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-search feature-icon"></i>
+                <h3>Access 47k+ Questions</h3>
+                <p>Browse our extensive library of carefully curated questions covering all major entrance exams.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-robot feature-icon"></i>
+                <h3>AI-Powered Learning</h3>
+                <p>PlanqAI helps you understand concepts, solve problems, and clarify doubts instantly.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-clipboard-check feature-icon"></i>
+                <h3>Personalized Tests</h3>
+                <p>Generate custom tests tailored to your specific needs and difficulty preferences.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="about" class="content-section">
+        <h2 class="section-heading text-center">About <span class="gradient-text">Planq</span></h2>
+        <div class="about-content">
+            <p>
+                Planq was founded by students who experienced firsthand the challenges of preparing for competitive entrance exams.
+                We believe that quality education should be accessible to all students regardless of their background or resources.
+            </p>
+            <p>
+                Our platform is built by students, for students, with a focus on providing the most effective study materials
+                and tools to help you succeed in your academic journey.
+            </p>
+        </div>
+    </section>
 {% endblock %}

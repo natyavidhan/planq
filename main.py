@@ -28,7 +28,7 @@ def auth_required(f):
 @app.route("/")
 def home():
     if 'user' not in session:
-        return render_template("home.html")
+        return render_template("home.html", is_authenticated=False)
     return redirect(url_for("dashboard"))
 
 
@@ -130,7 +130,15 @@ def dashboard():
         flash("User not found.")
         return redirect(url_for("home"))
     
-    return render_template("dashboard.html", user=user)
+    return render_template("dashboard.html", user=user, is_authenticated=True)
+
+@app.context_processor
+def inject_user():
+    """Make user available to all templates by default."""
+    if 'user' in session:
+        user = db.get_user("_id", session['user']['id'])
+        return {'user': user, 'is_authenticated': True}
+    return {'user': None, 'is_authenticated': False}
 
 if __name__ == "__main__":
     app.run(debug=True)

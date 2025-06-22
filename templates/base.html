@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script type="module">
             import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
             import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
@@ -23,7 +24,6 @@
             const app = initializeApp(firebaseConfig);
             const analytics = getAnalytics(app);
     </script>
-    
 
     <link rel="icon" href="/static/favicon.ico" type="image/png" />
 
@@ -42,11 +42,92 @@
 
     <link rel="stylesheet" href="/static/styles.css">
 </head>
-<body>
+<body>    <nav class="navbar">
+        <div class="container">
+            <!-- Left Side: Brand & Links -->
+            <div class="navbar-left">
+                <div class="navbar-brand">
+                    <a href="/" class="logo">
+                        <span class="logo-text">Planq</span>
+                        <span class="beta-badge">Beta</span>
+                    </a>
+                </div>
+                
+                {% if is_authenticated %}
+                <div class="navbar-links">
+                    <a href="/dashboard" class="nav-link {% if request.path == '/dashboard' %}active{% endif %}">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                    <a href="/tests" class="nav-link {% if request.path == '/tests' %}active{% endif %}">
+                        <i class="fas fa-clipboard-list"></i> My Tests
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Center: Search -->
+            {% if is_authenticated %}
+            <div class="navbar-center">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search" aria-label="Search">
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Right: User Menu -->
+            <div class="navbar-right">
+                {% if is_authenticated %}
+                <div class="user-dropdown" id="userDropdown">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <span>{{ user.username|truncate(12) }}</span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="user-dropdown-content" id="dropdown-content">
+                        <a href="/profile" class="dropdown-item">
+                            <i class="fas fa-user"></i> Profile
+                        </a>
+                        <a href="/settings" class="dropdown-item">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/logout" class="dropdown-item text-danger">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+                {% else %}
+                <a href="/authorize/google" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    
     <div class="container mt-5">
         {% block content %}
             
         {% endblock %}
-    </div>
+    </div>    <script>
+        // Toggle user dropdown
+        const userDropdown = document.getElementById('userDropdown');
+        const dropdownContent = document.getElementById('dropdown-content');
+        
+        if (userDropdown) {
+            userDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownContent.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!userDropdown.contains(e.target) && dropdownContent.classList.contains('active')) {
+                    dropdownContent.classList.remove('active');
+                }
+            });
+        }
+    </script>
 </body>
 </html>

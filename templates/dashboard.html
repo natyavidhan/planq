@@ -1,5 +1,37 @@
 {% extends 'base.html' %}
-{% block title %}Dashoard{% endblock %}
+{% block title %}Dashboard{% endblock %}
 {% block content %}
-Welcome, {{user}}
+<link rel="stylesheet" href="/static/dashboard.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<div class="home">
+    <div class="title-bar">
+        <h2>Welcome, {{user['username']}} <span class="badge">Pro</span></h2>
+    </div>
+    <div class="activity">
+        <h3 class="section-title"><i class="fas fa-chart-line"></i> Recent Activity</h3>
+        <div class="empty-state">
+            <p>No recent activity to show. Start solving problems to see your progress here!</p>
+        </div>
+    </div>
+    <div class="tests">
+        <h3 class="section-title"><i class="fas fa-tasks"></i> My Tests</h3>
+        <div class="empty-state">
+            <p>You haven't created any tests yet. Generate your first personalized test below!</p>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="action-btn">
+            <i class="fas fa-search"></i>
+            <h5 class="action-title">Search 47k+ Questions</h5>
+        </div>
+        <div class="action-btn">
+            <i class="fas fa-clipboard-list"></i>
+            <h5 class="action-title">Generate Personalized Tests</h5>
+        </div>
+        <div class="action-btn">
+            <i class="fas fa-robot"></i>
+            <h5 class="action-title">Ask Doubts to PlanqAI</h5>
+        </div>
+    </div>
+</div>
 {% endblock %}
