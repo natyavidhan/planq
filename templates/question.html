@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+
+{% block title %}Question Detail{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/question.css">
+
+<div class="question-container">
+    <div class="breadcrumb">
+        <a href="/search" class="breadcrumb-item">
+            <i class="fas fa-search"></i> Search
+        </a>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item active">Question</span>
+    </div>
+
+    <div class="question-content">
+        {% if error %}
+            <div class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>{{ error }}</p>
+                <a href="/search" class="btn btn-primary mt-3">
+                    <i class="fas fa-search"></i> Back to Search
+                </a>
+            </div>
+        {% elif question %}
+            <div class="question-header">
+                <div class="question-meta-info">
+                    {% if question.exam_name %}
+                        <div class="meta-item">
+                            <i class="fas fa-graduation-cap"></i> {{ question.exam_name }}
+                        </div>
+                    {% endif %}
+                    
+                    {% if question.subject_name %}
+                        <div class="meta-item">
+                            <i class="fas fa-book"></i> {{ question.subject_name }}
+                        </div>
+                    {% endif %}
+                    
+                    {% if question.chapter_name %}
+                        <div class="meta-item">
+                            <i class="fas fa-bookmark"></i> {{ question.chapter_name }}
+                        </div>
+                    {% endif %}
+                    
+                    {% if question.paper_name %}
+                        <div class="meta-item">
+                            <i class="fas fa-file-alt"></i> {{ question.paper_name }}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="meta-item">
+                        <i class="fas fa-layer-group"></i> {{ question.type|default('MCQ') }}
+                    </div>
+                    
+                    {% set level_class = 'level-medium' %}
+                    {% set level_text = 'Medium' %}
+                    
+                    {% if question.level == 1 %}
+                        {% set level_class = 'level-easy' %}
+                        {% set level_text = 'Easy' %}
+                    {% elif question.level == 3 %}
+                        {% set level_class = 'level-hard' %}
+                        {% set level_text = 'Hard' %}
+                    {% endif %}
+                    
+                    <div class="meta-item {{ level_class }}">
+                        <i class="fas fa-signal"></i> {{ level_text }}
+                    </div>
+                </div>
+            </div>
+              <div class="question-body">
+                <div class="question-text">{{ question.question|safe }}</div>
+                  <form id="questionForm">
+                    {% if question.type == 'numerical' %}
+                        <div class="numerical-input-container">
+                            <label for="numerical-input">Enter your numerical answer:</label>
+                            <input type="number" id="numerical-input" class="numerical-input" step="any" placeholder="Enter your answer..." required>
+                            <div class="input-help">For example: 42, 3.14, 9.8, etc.</div>
+                        </div>
+                    {% elif question.options and question.options|length > 0 %}
+                        <div class="question-options" id="options-container">
+                            {% for option in question.options %}
+                                <div class="option" data-index="{{ loop.index0 }}">
+                                    <div class="option-marker">{{ "ABCDEFG"[loop.index0] }}</div>
+                                    <div class="option-text">{{ option|safe }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <div id="result-container" class="result-container" style="display: none;">
+                        <div id="result-message"></div>
+                        <div id="explanation-container" class="question-explanation">
+                            <h3>Explanation</h3>
+                            <div id="explanation-content" class="explanation-content"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" id="submit-btn" class="btn btn-primary">
+                            <i class="fas fa-check-circle"></i> Submit Answer
+                        </button>
+                        <button type="button" id="try-again-btn" class="btn btn-outline-primary" style="display: none;">
+                            <i class="fas fa-redo"></i> Try Again
+                        </button>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+            <div class="loading-indicator">
+                <div class="spinner"></div>
+                <p>Loading question...</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Process math equations after content is loaded
+        if (window.MathJax) {
+            MathJax.typesetPromise && MathJax.typesetPromise().catch(err => console.error('MathJax error:', err));
+        }
+        
+        // {% if question %}
+            const questionForm = document.getElementById('questionForm');
+            const optionsContainer = document.getElementById('options-container');
+            const resultContainer = document.getElementById('result-container');
+            const resultMessage = document.getElementById('result-message');
+            const explanationContent = document.getElementById('explanation-content');
+            const submitBtn = document.getElementById('submit-btn');
+            const tryAgainBtn = document.getElementById('try-again-btn');
+            
+            const questionId = '{{ question._id }}';
+            const questionType = '{{ question.type }}';
+            let selectedOptions = [];
+            
+            // Handle clicks on options
+            if (optionsContainer) {
+                const options = optionsContainer.querySelectorAll('.option');
+                
+                options.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        
+                        if (questionType === 'singleCorrect') {
+                            // For single correct, clear all selections and select only this one
+                            options.forEach(opt => opt.classList.remove('selected'));
+                            this.classList.add('selected');
+                            selectedOptions = [index];
+                        } else if (questionType === 'multipleCorrect') {
+                            // For multiple correct, toggle selection
+                            if (this.classList.contains('selected')) {
+                                this.classList.remove('selected');
+                                selectedOptions = selectedOptions.filter(opt => opt !== index);
+                            } else {
+                                this.classList.add('selected');
+                                selectedOptions.push(index);
+                            }
+                        }
+                    });
+                });
+            }
+              // Handle form submission
+            questionForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                let answer;
+                if (questionType === 'numerical') {
+                    const numericalInput = document.getElementById('numerical-input');
+                    if (!numericalInput.value.trim()) {
+                        alert('Please enter your numerical answer');
+                        return;
+                    }
+                    answer = parseFloat(numericalInput.value);
+                    if (isNaN(answer)) {
+                        alert('Please enter a valid numerical value');
+                        return;
+                    }
+                } else if (questionType === 'singleCorrect' || questionType === 'multipleCorrect') {
+                    if (selectedOptions.length === 0) {
+                        alert('Please select an answer');
+                        return;
+                    }
+                    
+                    if (questionType === 'singleCorrect') {
+                        answer = selectedOptions[0]; // Send just the index for single correct
+                    } else {
+                        answer = selectedOptions; // Send array of indices for multiple correct
+                    }
+                }
+                
+                // Disable form while submitting
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
+                
+                // Submit the answer
+                fetch(`/question/attempt/${questionId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ answer: answer }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Show the result
+                    if (data.error) {
+                        resultMessage.innerHTML = `<div class="error-alert"><i class="fas fa-exclamation-circle"></i> ${data.error}</div>`;
+                    } else {                        // Display if answer is correct or not
+                        if (data.is_correct) {
+                            resultMessage.innerHTML = `<div class="success-alert"><i class="fas fa-check-circle"></i> Correct answer!</div>`;
+                        } else {
+                            if (questionType === 'numerical') {
+                                const userAnswer = document.getElementById('numerical-input').value;
+                                resultMessage.innerHTML = `
+                                    <div class="error-alert">
+                                        <i class="fas fa-times-circle"></i> 
+                                        Incorrect answer. You entered: ${userAnswer}<br>
+                                        Correct answer: ${data.correct_answer}
+                                    </div>`;
+                            } else {
+                                resultMessage.innerHTML = `<div class="error-alert"><i class="fas fa-times-circle"></i> Incorrect answer</div>`;
+                                
+                                // Mark the correct options
+                                if (optionsContainer) {
+                                    const options = optionsContainer.querySelectorAll('.option');
+                                    data.correct_answer.forEach(index => {
+                                        options[index].classList.add('correct-option');
+                                        const badge = document.createElement('div');
+                                        badge.className = 'correct-badge';
+                                        badge.innerHTML = '<i class="fas fa-check"></i>';
+                                        options[index].appendChild(badge);
+                                    });
+                                }
+                            }
+                        }
+                        
+                        // Display explanation if available
+                        if (data.explanation) {
+                            explanationContent.innerHTML = data.explanation;
+                            resultContainer.style.display = 'block';
+                        }
+                        
+                        // Update buttons
+                        submitBtn.style.display = 'none';
+                        tryAgainBtn.style.display = 'inline-block';
+                        
+                        // Process any math in the explanation
+                        if (window.MathJax) {
+                            MathJax.typesetPromise && MathJax.typesetPromise().catch(err => console.error('MathJax error:', err));
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    resultMessage.innerHTML = `<div class="error-alert"><i class="fas fa-exclamation-circle"></i> Failed to submit answer</div>`;
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Answer';
+                });
+            });
+              // Try again button
+            tryAgainBtn.addEventListener('click', function() {
+                // Reset UI
+                resultContainer.style.display = 'none';
+                submitBtn.style.display = 'inline-block';
+                tryAgainBtn.style.display = 'none';
+                
+                if (questionType === 'numerical') {
+                    // Reset numerical input
+                    const numericalInput = document.getElementById('numerical-input');
+                    if (numericalInput) {
+                        numericalInput.value = '';
+                        numericalInput.classList.remove('error');
+                    }
+                } else if (optionsContainer) {
+                    // Clear selections for MCQ type questions
+                    const options = optionsContainer.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('selected', 'correct-option');
+                        const badge = option.querySelector('.correct-badge');
+                        if (badge) badge.remove();
+                    });
+                    
+                    selectedOptions = [];
+                }
+            });
+        //{% endif %}
+    });
+</script>
+{% endblock %}

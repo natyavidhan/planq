@@ -486,37 +486,38 @@
                         levelText = 'Medium';
                     }
                 }
-                
-                resultsHTML += `
-                    <div class="question-card">
-                        <div class="question-title">${question.question}</div>
-                        <span class="question-level ${levelClass}">${levelText}</span>
-                        <div class="question-meta">
-                            ${question.exam_name ? `
-                            <div class="meta-item">
-                                <i class="fas fa-graduation-cap"></i> ${question.exam_name}
-                            </div>` : ''}
-                            
-                            ${question.subject_name ? `
-                            <div class="meta-item">
-                                <i class="fas fa-book"></i> ${question.subject_name}
-                            </div>` : ''}
-                            
-                            ${question.chapter_name ? `
-                            <div class="meta-item">
-                                <i class="fas fa-bookmark"></i> ${question.chapter_name}
-                            </div>` : ''}
-                            
-                            ${question.paper_name ? `
-                            <div class="meta-item">
-                                <i class="fas fa-file-alt"></i> ${question.paper_name}
-                            </div>` : ''}
-                            
-                            <div class="meta-item">
-                                <i class="fas fa-layer-group"></i> ${question.type || 'MCQ'}
+                  resultsHTML += `
+                    <a href="/question/${question._id}" class="question-card-link">
+                        <div class="question-card">
+                            <div class="question-title">${question.question}</div>
+                            <span class="question-level ${levelClass}">${levelText}</span>
+                            <div class="question-meta">
+                                ${question.exam_name ? `
+                                <div class="meta-item">
+                                    <i class="fas fa-graduation-cap"></i> ${question.exam_name}
+                                </div>` : ''}
+                                
+                                ${question.subject_name ? `
+                                <div class="meta-item">
+                                    <i class="fas fa-book"></i> ${question.subject_name}
+                                </div>` : ''}
+                                
+                                ${question.chapter_name ? `
+                                <div class="meta-item">
+                                    <i class="fas fa-bookmark"></i> ${question.chapter_name}
+                                </div>` : ''}
+                                
+                                ${question.paper_name ? `
+                                <div class="meta-item">
+                                    <i class="fas fa-file-alt"></i> ${question.paper_name}
+                                </div>` : ''}
+                                
+                                <div class="meta-item">
+                                    <i class="fas fa-layer-group"></i> ${question.type || 'MCQ'}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 `;
             });
             

@@ -9,6 +9,7 @@ from urllib.parse import urlencode
 from config import CONFIG
 from database import Database
 from blueprints.search import init_blueprint as init_search_blueprint
+from blueprints.question import init_blueprint as init_question_blueprint
 
 load_dotenv()
 
@@ -20,6 +21,7 @@ db = Database()
 
 # Register blueprints
 app.register_blueprint(init_search_blueprint(db))
+app.register_blueprint(init_question_blueprint(db))
 
 def auth_required(f):
     def decorated_function(*args, **kwargs):
