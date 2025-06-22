@@ -1,0 +1,249 @@
+.search-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    
+    .search-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .search-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .search-header p {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+    }
+    
+    .search-form {
+        margin-bottom: 1.5rem;
+    }
+    
+    .input-group {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .input-group input {
+        flex-grow: 1;
+        padding: 0.75rem 1rem;
+        font-size: 1.1rem;
+        border-radius: var(--radius-md);
+    }
+    
+    .search-filters {
+        margin-bottom: 2rem;
+        background-color: var(--bg-secondary);
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        border: 1px solid var(--border-color);
+    }
+    
+    .filter-section h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+    
+    .filters-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .filter-group label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+    
+    .form-select {
+        background-color: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        color: var(--text-primary);
+        padding: 0.5rem 0.75rem;
+        width: 100%;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 12px;
+    }
+    
+    .form-select:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .search-results {
+        margin-top: 2rem;
+        min-height: 300px;
+    }
+    
+    .question-card {
+        background-color: var(--bg-secondary);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-color);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .question-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-lg);
+    }
+      .question-title {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+        padding-right: 60px;
+    }
+    
+    .question-meta {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .question-meta .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+    }
+    
+    .loading-indicator {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 0;
+        color: var(--text-secondary);
+    }
+    
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        border-top-color: var(--accent-primary);
+        animation: spin 1s linear infinite;
+        margin-bottom: 1rem;
+    }
+    
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+    
+    .pagination-info {
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    
+    .pagination {
+        display: flex;
+        list-style: none;
+        gap: 0.5rem;
+    }
+    
+    .pagination-item {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.9rem;
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+    }
+    
+    .pagination-item:hover {
+        background-color: var(--bg-tertiary);
+    }
+    
+    .pagination-item.active {
+        background-color: var(--accent-primary);
+        color: white;
+    }
+    
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 0;
+        color: var(--text-secondary);
+        text-align: center;
+    }
+    
+    .empty-state i {
+        margin-bottom: 1rem;
+        opacity: 0.4;
+    }
+    
+    .no-results {
+        text-align: center;
+        padding: 3rem 0;
+        color: var(--text-secondary);
+    }
+    
+    .question-level {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+    }
+    
+    .level-easy {
+        background-color: rgba(76, 175, 80, 0.2);
+        color: #4CAF50;
+    }
+    
+    .level-medium {
+        background-color: rgba(255, 152, 0, 0.2);
+        color: #FF9800;
+    }
+    
+    .level-hard {
+        background-color: rgba(244, 67, 54, 0.2);
+        color: #F44336;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+        .filters-container {
+            grid-template-columns: 1fr;
+        }
+    }

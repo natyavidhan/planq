@@ -8,6 +8,7 @@ from urllib.parse import urlencode
 
 from config import CONFIG
 from database import Database
+from blueprints.search import init_blueprint as init_search_blueprint
 
 load_dotenv()
 
@@ -16,6 +17,9 @@ app.secret_key = os.getenv("SECRET_KEY")
 app.config['OAUTH2_PROVIDERS'] = CONFIG
 
 db = Database()
+
+# Register blueprints
+app.register_blueprint(init_search_blueprint(db))
 
 def auth_required(f):
     def decorated_function(*args, **kwargs):
@@ -28,7 +32,7 @@ def auth_required(f):
 @app.route("/")
 def home():
     if 'user' not in session:
-        return render_template("home.html", is_authenticated=False)
+        return render_template("home.html")
     return redirect(url_for("dashboard"))
 
 
@@ -130,7 +134,7 @@ def dashboard():
         flash("User not found.")
         return redirect(url_for("home"))
     
-    return render_template("dashboard.html", user=user, is_authenticated=True)
+    return render_template("dashboard.html")
 
 @app.context_processor
 def inject_user():
@@ -139,6 +143,9 @@ def inject_user():
         user = db.get_user("_id", session['user']['id'])
         return {'user': user, 'is_authenticated': True}
     return {'user': None, 'is_authenticated': False}
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

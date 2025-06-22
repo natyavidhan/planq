@@ -70,6 +70,10 @@ body {
   background-attachment: fixed;
 }
 
+mjx-container {
+    display: inline !important;
+}
+
 a {
   color: var(--accent-primary);
   text-decoration: none;
