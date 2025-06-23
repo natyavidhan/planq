@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}Generate Test{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/generate.css">
+<!-- exam selection -->
+ <div class="generate-test">
+    <h2 class="section-title">Generate Personalized Test</h2>
+    <form id="test-form" method="POST" action="/tests/generate">
+        <div class="form-group">
+            <label for="exam">Select Exam:</label>
+            <select id="exam" name="exam" required>
+                <option value="" disabled selected>Select an exam</option>
+                {% for exam in exams %}
+                    <option value="{{ exam['_id'] }}">{{ exam['name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <!-- for each subject in that exam, create drop downs to select chapters to include in the test, fetch the sujects + chapters from the backend on selection of subject in the above dropdown -->
+        <div class="form-group">
+            <label for="subject">Select Subject:</label>
+            <select id="subject" name="subject" required>
+                <option value="" disabled selected>Select a subject</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="chapters">Select Chapters:</label>
+            <select id="chapters" name="chapters" required>
+                <option value="" disabled selected>Select chapters</option>
+                <!-- Chapters will be populated dynamically based on selected subject -->
+            </select>
+        </div>
+    </form>
+</div>
+<script>
+    let full_data = {};
+    document.getElementById('exam').addEventListener('change', function() {
+        const examId = this.value;
+        fetch(`/api/exams/${examId}/subjects?full=true`)
+            .then(response => response.json())
+            .then(data => {
+                full_data = data;
+                const subjectSelect = document.getElementById('subject');
+                subjectSelect.innerHTML = '<option value="" disabled selected>Select a subject</option>';
+                data.subjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject._id;
+                    option.textContent = subject.name;
+                    subjectSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching subjects:', error));
+    });
+
+    document.getElementById('subject').addEventListener('change', function() {
+        const subjectId = this.value;
+        const chaptersSelect = document.getElementById('chapters');
+        chaptersSelect.innerHTML = '<option value="" disabled selected>Select chapters</option>';
+        full_data.subjects.forEach(subject => {
+            if (subject._id === subjectId) {
+                subject.chapters.forEach(chapter => {
+                    const option = document.createElement('option');
+                    option.value = chapter[0];
+                    option.textContent = chapter[1];
+                    chaptersSelect.appendChild(option);
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

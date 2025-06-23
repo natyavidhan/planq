@@ -31,3 +31,11 @@ class Database:
 
     def delete_user(self, _id):
         self.users['users'].delete_one({"_id": _id})
+
+    def get_exams(self):
+        return list(self.pyqs['exams'].find({}, {'_id': 1, 'name': 1}))
+    
+    def get_subjects_by_exam(self, exam_id, full=False):
+        if full:
+            return list(self.pyqs['subjects'].find({'exam': exam_id}))
+        return list(self.pyqs['subjects'].find({'exam': exam_id}, {'_id': 1, 'name': 1}))
