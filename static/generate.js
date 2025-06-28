@@ -289,7 +289,7 @@ document.getElementById('chapters-group').addEventListener('click', function (ev
                 selectedChaptersDiv.appendChild(badge);
             }
         }
-        hiddenInput.value = allValues.join(',');
+        hiddenInput.value = "all"; // Indicate all chapters are selected
     }
     if (event.target.classList.contains('remove-all-btn')) {
         const subjectId = event.target.getAttribute('data-subject-id');
@@ -354,13 +354,84 @@ document.getElementById('chapters-group').addEventListener('change', function (e
 document.getElementById('ratio-slider').addEventListener('input', function () {
     const mcqPercentage = this.value;
     const numericalPercentage = 100 - mcqPercentage;
-
+    
     // Update percentage displays
     document.getElementById('mcq-percentage').textContent = mcqPercentage + '%';
     document.getElementById('numerical-percentage').textContent = numericalPercentage + '%';
-
+    
     // Update slider fill
     document.querySelector('.slider-fill').style.width = mcqPercentage + '%';
+    
+    // Update question count breakdown
+    updateQuestionCountBreakdown();
+});
+
+// Initialize question count breakdown on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Set initial slider fill width to match default value
+    const initialMcqPercentage = 80; // Default to 80%
+    document.querySelector('.slider-fill').style.width = initialMcqPercentage + '%';
+    
+    // Initialize the question breakdown after a short delay to ensure elements are ready
+    setTimeout(updateQuestionCountBreakdown, 100);
+});
+
+// Function to update the question count breakdown based on ratio and total
+function updateQuestionCountBreakdown() {
+    const totalQuestions = parseInt(document.getElementById('question-count').value) || 75; // Default to 75
+    const mcqPercentage = parseInt(document.getElementById('ratio-slider').value) || 80; // Default to 80%
+    
+    // Calculate counts
+    const mcqCount = Math.round(totalQuestions * (mcqPercentage / 100));
+    const numericalCount = totalQuestions - mcqCount;
+    
+    // Update the display if elements exist
+    const mcqBox = document.querySelector('.mcq-box');
+    const numericalBox = document.querySelector('.numerical-box');
+    
+    if (mcqBox) {
+        // Check if count display exists, create if not
+        let mcqCountDisplay = mcqBox.querySelector('.question-count');
+        if (!mcqCountDisplay) {
+            mcqCountDisplay = document.createElement('div');
+            mcqCountDisplay.className = 'question-count';
+            mcqBox.appendChild(mcqCountDisplay);
+        }
+        mcqCountDisplay.textContent = `${mcqCount} questions`;
+    }
+    
+    if (numericalBox) {
+        // Check if count display exists, create if not
+        let numericalCountDisplay = numericalBox.querySelector('.question-count');
+        if (!numericalCountDisplay) {
+            numericalCountDisplay = document.createElement('div');
+            numericalCountDisplay.className = 'question-count';
+            numericalBox.appendChild(numericalCountDisplay);
+        }
+        numericalCountDisplay.textContent = `${numericalCount} questions`;
+    }
+}
+
+// Question count increment/decrement buttons
+document.getElementById('increase-count').addEventListener('click', function() {
+    const countInput = document.getElementById('question-count');
+    const currentValue = parseInt(countInput.value) || 30;
+    countInput.value = Math.min(currentValue + 5, 100); // Increment by 5, max 100
+    updateQuestionCountBreakdown();
+});
+
+document.getElementById('decrease-count').addEventListener('click', function() {
+    const countInput = document.getElementById('question-count');
+    const currentValue = parseInt(countInput.value) || 30;
+    countInput.value = Math.max(currentValue - 5, 5); // Decrement by 5, min 5
+    updateQuestionCountBreakdown();
+});
+
+// Update question count breakdown when count changes directly
+document.getElementById('question-count').addEventListener('change', function() {
+    const value = parseInt(this.value) || 30;
+    this.value = Math.max(5, Math.min(100, value)); // Clamp between 5 and 100
+    updateQuestionCountBreakdown();
 });
 
 // Duration increment/decrement buttons

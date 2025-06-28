@@ -19,8 +19,17 @@ def init_blueprint(database):
 @auth_required
 def generate_test():
     if request.method == 'POST':
-        # Handle test generation logic here
-        data = request.json
-        # Validate and process the data
+        data = request.form
+        print(data)
+        exam_id = data.get('exam')
+        subjects_ = [subject.replace('subject-', '') for subject in data.keys() if subject.startswith('subject-')]
+        subjects = {subject: data.get(f'subject-{subject}').split(",") for subject in subjects_}
+        test = db.generate_test(
+            exam_id=exam_id,
+            subjects=subjects,
+            num=int(data.get('question_count')),
+            ratio=int(data.get('mcq_ratio')) / 100
+        )
+        print(json.dumps(test, indent=2))
         return jsonify({"message": "Test generated successfully!"}), 201
     return render_template("generate_test.html", exams=db.get_exams())

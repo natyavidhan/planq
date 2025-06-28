@@ -42,3 +42,69 @@ class Database:
     
     def get_pyqs_by_exam(self, exam_id):
         return list(self.pyqs['papers'].find({'exam': exam_id}))
+    
+    def generate_test(self, exam_id, subjects, num, ratio):
+        test = {}
+
+        
+        subjects = {k: v for k, v in subjects.items() if v != ['']}
+
+        ques_per_subject = num // len(subjects.keys()) 
+
+        if num % len(subjects.keys()) != 0:
+            ques_per_subject += 1
+
+        for subject in subjects:
+            chapters = subjects[subject]
+            if len(chapters) == 1 and chapters[0] == 'all':
+                chapters = [i[0] for i in self.pyqs['subjects'].find_one({'_id': subject})['chapters']]
+            test[subject] = []
+
+            mcqs = list(self.pyqs['questions'].aggregate([
+                {
+                    '$match': {
+                        'exam': exam_id,
+                        'subject': subject,
+                        'chapter': {'$in': chapters},
+                        'type': 'singleCorrect'
+                    }
+                },
+                {
+                    '$project': {
+                        '_id': 1
+                    }
+                },
+                {
+                    '$sample': {'size': int(ques_per_subject * ratio)}
+                }
+            ]))
+
+            print(len(mcqs))
+
+            test[subject].extend([i['_id'] for i in mcqs])
+
+            numericals = list(self.pyqs['questions'].aggregate([
+                {
+                    '$match': {
+                        'exam': exam_id,
+                        'subject': subject,
+                        'chapter': {'$in': chapters},
+                        'type': 'numerical'
+                    }
+                },
+                {
+                    '$project': {
+                        '_id': 1
+                    }
+                },
+                {
+                    '$sample': {'size': ques_per_subject - len(mcqs)}
+                }
+            ]))
+
+            test[subject].extend([i['_id'] for i in numericals])
+            print(len(numericals))
+
+
+        return test
+    

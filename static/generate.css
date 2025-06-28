@@ -383,6 +383,13 @@
     margin-bottom: 0.25rem;
 }
 
+.question-count {
+    font-size: 0.9rem;
+    font-weight: normal;
+    margin-top: 0.5rem;
+    color: var(--text-secondary);
+}
+
 .mcq-box {
     background-color: rgba(107, 138, 253, 0.1);
     color: var(--accent-primary);
@@ -732,6 +739,45 @@
     flex: 1;
     min-width: 0;
     width: auto; /* Allow select to size naturally */
+}
+
+/* Count Input Styling (similar to duration input) */
+.count-input {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.count-input input {
+    flex: 1;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.count-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.count-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+}
+
+.count-btn:hover {
+    background-color: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
 }
 
 /* Responsive adjustments */
