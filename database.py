@@ -3,12 +3,14 @@ from pymongo import MongoClient
 import random
 import os
 import uuid
+from datetime import datetime
 
 class Database:
     def __init__(self):
-        self.client = MongoClient(os.getenv("MONGO_URI"))
+        self.client = MongoClient(os.getenv("MONGO_URI"), maxPoolSize=20, minPoolSize=5, connectTimeoutMS=3000)
         self.users = self.client['userdata']
         self.pyqs = self.client['pyqs']
+        self.tests = self.client['tests']
 
     def get_user(self, key, value):
         return self.users['users'].find_one({key: value})
@@ -79,8 +81,6 @@ class Database:
                 }
             ]))
 
-            print(len(mcqs))
-
             test[subject].extend([i['_id'] for i in mcqs])
 
             numericals = list(self.pyqs['questions'].aggregate([
@@ -103,8 +103,59 @@ class Database:
             ]))
 
             test[subject].extend([i['_id'] for i in numericals])
-            print(len(numericals))
 
 
         return test
     
+
+    def add_test(self, user_id, metadata, questions):
+        test_id = str(uuid.uuid4())
+
+        test_data = {
+            "_id": test_id,
+            "created_by": user_id,
+            "created_at": datetime.now(),
+            "title": metadata['title'],
+            "description": metadata['description'],
+            "exam": metadata['exam'],
+            "duration": metadata['duration'],
+            "mode": metadata['mode'],
+            "subjects": metadata['subjects'],
+            "questions": questions,
+            "attempts": []
+        }
+
+        self.tests['tests'].insert_one(test_data)
+
+        self.users['users'].update_one({"_id": user_id}, {
+            "$push": {
+                "testIds": test_id,
+            }
+        })
+
+        return test_id
+    
+    def add_pyq_test(self, user_id, metadata, paper_id):
+        test_id = str(uuid.uuid4())
+
+        test_data = {
+            "_id": test_id,
+            "created_by": user_id,
+            "created_at": datetime.now(),
+            "title": metadata['title'],
+            "exam": metadata['exam'],
+            "duration": metadata['duration'],
+            "mode": metadata['mode'],
+            "paper_id": paper_id,
+            "attempts": []
+        }
+
+        self.tests['tests'].insert_one(test_data)
+
+        self.users['users'].update_one({"_id": user_id}, {
+            "$push": {
+                "testIds": test_id,
+            }
+        })
+
+        return test_id

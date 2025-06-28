@@ -44,92 +44,11 @@
                 </label>
             </div>
         </div>
-        <div class="form-group" id="chapters-group">
-            <!-- <label for="chapters">Select Chapters:</label>
-            <select id="chapters" name="chapters" required>
-                <option value="" disabled selected>Select chapters</option>
-            </select> -->
-        </div>
+        <!-- Dynamic content will be inserted here -->
+        <div class="form-group" id="chapters-group"></div>
         
-        <!-- Question Type Ratio Selection - initially hidden -->
-        <div class="form-group" id="ratio-group" style="display:none;">
-            <div class="ratio-selector-container">
-                <h3 class="ratio-title">Question Type Ratio</h3>
-                <div class="ratio-labels">
-                    <span>Multiple Choice</span>
-                    <span>Numerical</span>
-                </div>
-                <div class="slider-container">
-                    <div class="slider-track">
-                        <div class="slider-fill"></div>
-                    </div>
-                    <input type="range" id="ratio-slider" name="mcq_ratio" min="0" max="100" value="80" class="ratio-slider">
-                    <div class="slider-markers">
-                        <span>0%</span>
-                        <span>25%</span>
-                        <span>50%</span>
-                        <span>75%</span>
-                        <span>100%</span>
-                    </div>
-                </div>
-                <div class="ratio-display">
-                    <div class="ratio-box mcq-box">
-                        <i class="fas fa-list-ul"></i>
-                        <span id="mcq-percentage">80%</span>
-                        <span>MCQ</span>
-                    </div>
-                    <div class="ratio-box numerical-box">
-                        <i class="fas fa-calculator"></i>
-                        <span id="numerical-percentage">20%</span>
-                        <span>Numerical</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Test Configuration Section -->
-            <div class="test-config-container">
-                <h3 class="config-title">Test Configuration</h3>
-                
-                <div class="config-group">
-                    <label for="question-count">Number of Questions:</label>
-                    <div class="count-input">
-                        <input type="number" id="question-count" name="question_count" min="5" max="100" value="75">
-                        <div class="count-controls">
-                            <button type="button" class="count-btn" id="decrease-count"><i class="fas fa-minus"></i></button>
-                            <button type="button" class="count-btn" id="increase-count"><i class="fas fa-plus"></i></button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="config-group">
-                    <label for="test-duration">Duration (minutes):</label>
-                    <div class="duration-input">
-                        <input type="number" id="test-duration" name="duration" min="10" max="360" value="180">
-                        <div class="duration-controls">
-                            <button type="button" class="duration-btn" id="decrease-duration"><i class="fas fa-minus"></i></button>
-                            <button type="button" class="duration-btn" id="increase-duration"><i class="fas fa-plus"></i></button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="config-group">
-                    <label for="test-name">Test Name:</label>
-                    <input type="text" id="test-name" name="test_name" placeholder="e.g., Physics Mechanics Practice" required>
-                </div>
-                
-                <div class="config-group">
-                    <label for="test-description">Description (optional):</label>
-                    <textarea id="test-description" name="description" rows="3" placeholder="Add notes about the focus of this test"></textarea>
-                </div>
-            </div>
-            
-            <!-- Submit Button -->
-            <div class="submit-container">
-                <button type="submit" id="generate-btn" class="btn btn-primary">
-                    <i class="fas fa-magic me-2"></i> Generate Test
-                </button>
-            </div>
-        </div>
+        <!-- Dynamic ratio and configuration section -->
+        <div class="form-group" id="ratio-group" style="display:none;"></div>
     </form>
 </div>
 <script src="/static/generate.js"></script>
