@@ -24,3 +24,8 @@ def get_exam_subjects(exam_id):
     full = request.args.get('full', 'false').lower() == 'true'
     subjects = db.get_subjects_by_exam(exam_id, full=full)
     return jsonify({"subjects": subjects}), 200
+
+@api_bp.route('/exams/<exam_id>/pyqs', methods=['GET'])
+def get_exam_pyqs(exam_id):
+    pyqs = db.get_pyqs_by_exam(exam_id)
+    return jsonify({"pyqs": pyqs}), 200

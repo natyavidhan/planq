@@ -39,3 +39,6 @@ class Database:
         if full:
             return list(self.pyqs['subjects'].find({'exam': exam_id}))
         return list(self.pyqs['subjects'].find({'exam': exam_id}, {'_id': 1, 'name': 1}))
+    
+    def get_pyqs_by_exam(self, exam_id):
+        return list(self.pyqs['papers'].find({'exam': exam_id}))

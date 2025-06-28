@@ -1,0 +1,770 @@
+/* Generate Test Page Styles */
+.generate-test {
+    max-width: 1000px; /* Set a consistent max-width for the entire form */
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.form-group select,
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px rgba(107, 138, 253, 0.2);
+}
+
+/* Exam Selection Card */
+.exam-selection-card {
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin: 0 auto 2rem;
+    width: 100%;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+}
+
+.exam-selection-card select {
+    max-width: 100%; /* Allow the select to be narrower than the card */
+}
+
+/* Subject Cards Styling */
+.subject-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin: 0 auto;
+    width: 100%; /* Full width container */
+}
+
+.subject-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    width: calc(33.333% - 0.85rem); /* Restore original sizing with gap factored in */
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.subject-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Remove flexbox on subject cards that was causing shrinking */
+.subject-card {
+    display: block; /* Override flex display */
+    flex: unset; /* Remove flex properties */
+    min-width: unset; /* Remove min-width constraint */
+}
+
+.subject-card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.chapters-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.chapters-select {
+    flex: 1;
+    min-width: 0;
+    width: auto; /* Allow select to size naturally */
+}
+
+.add-all-btn,
+.remove-all-btn {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+    min-width: 70px;
+    white-space: nowrap;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-all-btn {
+    color: var(--success);
+}
+
+.remove-all-btn {
+    color: var(--danger);
+}
+
+.add-all-btn:hover,
+.remove-all-btn:hover {
+    background-color: var(--bg-primary);
+}
+
+.selected-chapters {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* Badge Styles */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--accent-primary);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-pill);
+    margin: 0.25rem 0.25rem 0.25rem 0;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.badge-cross {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    margin-left: 8px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.badge-cross:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Mode Selection Cards */
+.mode-cards {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin: 1.5rem auto; /* Center with consistent margins */
+    max-width: 800px; /* Match other containers */
+}
+
+.mode-card {
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    width: calc(50% - 0.75rem);
+    max-width: 300px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+}
+
+.mode-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(107, 138, 253, 0.3);
+}
+
+.mode-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+
+.mode-card input[type="radio"]:checked + .card-content {
+    color: var(--accent-primary);
+}
+
+.mode-card input[type="radio"]:checked + .card-content .card-icon {
+    background-color: var(--accent-primary);
+    color: white;
+}
+
+.mode-card input[type="radio"]:checked + .card-content h3 {
+    color: var(--accent-primary);
+}
+
+.card-content {
+    text-align: center;
+}
+
+.card-content h3 {
+    margin: 1rem 0 0.5rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.card-content p {
+    color: var(--text-secondary);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.card-icon {
+    background-color: rgba(107, 138, 253, 0.1);
+    color: var(--accent-primary);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+/* Ratio Selector Styles */
+.ratio-selector-container {
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin: 2rem auto; /* Center with consistent margins */
+    width: 100%;
+    max-width: 800px; /* Consistent max-width */
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+}
+
+.ratio-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.ratio-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.slider-container {
+    position: relative;
+    margin: 1.5rem 0 2.5rem;
+}
+
+.slider-track {
+    position: absolute;
+    width: 100%;
+    height: 8px;
+    background-color: var(--bg-tertiary);
+    border-radius: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.slider-fill {
+    position: absolute;
+    height: 100%;
+    width: 70%;
+    background-color: var(--accent-primary);
+    border-radius: 4px;
+    transition: width 0.2s ease;
+}
+
+.ratio-slider {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    appearance: none;
+    background: transparent;
+    outline: none;
+    margin: 0;
+    z-index: 2;
+}
+
+.ratio-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: var(--bg-primary);
+    border: 2px solid var(--accent-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.ratio-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 2px 8px rgba(107, 138, 253, 0.4);
+}
+
+.ratio-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    background: var(--bg-primary);
+    border: 2px solid var(--accent-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.ratio-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 2px 8px rgba(107, 138, 253, 0.4);
+}
+
+.slider-markers {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    color: var(--text-tertiary);
+    font-size: 0.85rem;
+}
+
+.ratio-display {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+}
+
+.ratio-box {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.ratio-box i {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.ratio-box span:first-of-type {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.mcq-box {
+    background-color: rgba(107, 138, 253, 0.1);
+    color: var(--accent-primary);
+}
+
+.numerical-box {
+    background-color: rgba(108, 117, 125, 0.1);
+    color: var(--text-secondary);
+}
+
+.submit-container {
+    text-align: center;
+    margin-top: 2rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#generate-btn {
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border-radius: 50px;
+    background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+    border: none;
+    color: white;
+    box-shadow: 0 4px 15px rgba(107, 138, 253, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+#generate-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(107, 138, 253, 0.4);
+}
+
+#generate-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(107, 138, 253, 0.3);
+}
+
+/* Info message */
+.info-message {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin: 1rem 0;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+/* Test Configuration Styles */
+.test-config-container {
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin: 2rem auto; /* Center with consistent margins */
+    width: 100%;
+    max-width: 800px; /* Consistent max-width */
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+}
+
+.config-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.config-group {
+    margin-bottom: 1.5rem;
+}
+
+.config-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.duration-input {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.duration-input input {
+    flex: 1;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.duration-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.duration-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+}
+
+.duration-btn:hover {
+    background-color: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+}
+
+#test-name, #test-description {
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+#test-name:focus, #test-description:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px rgba(107, 138, 253, 0.2);
+}
+
+#test-description {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Previous Year Papers Selection Styles */
+.pyqs-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pyqs-heading {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* PYQ Search Bar Styles */
+.pyq-search-container {
+    margin-bottom: 1.5rem;
+}
+
+.pyq-search-bar {
+    position: relative;
+    margin-bottom: 0.75rem;
+}
+
+.pyq-search-bar input {
+    width: 100%;
+    padding-left: 2.75rem;
+    padding-right: 2.75rem;
+    height: 48px;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.pyq-search-bar input:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px rgba(107, 138, 253, 0.2);
+}
+
+.pyq-search-bar i.fa-search {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.clear-search-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.clear-search-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.pyq-search-stats {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    padding: 0 0.5rem;
+}
+
+.papers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 0;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.no-results i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.no-results p {
+    font-size: 1rem;
+}
+
+.paper-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.paper-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    border-color: rgba(107, 138, 253, 0.3);
+}
+
+.paper-card.selected {
+    background-color: rgba(107, 138, 253, 0.05);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 1px var(--accent-primary);
+}
+
+.paper-info {
+    flex: 1;
+}
+
+.paper-info h4 {
+    margin: 0 0 0.25rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.paper-date {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.paper-action {
+    margin-left: 1rem;
+}
+
+.select-paper-btn {
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--accent-primary);
+    background-color: transparent;
+    color: var(--accent-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.select-paper-btn:hover {
+    background-color: var(--accent-primary);
+    color: white;
+}
+
+.paper-card.selected .select-paper-btn {
+    background-color: var(--accent-primary);
+    color: white;
+}
+
+.selected-paper-config {
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    margin-top: 2rem;
+}
+
+.error-message {
+    color: var(--danger);
+}
+
+/* Make all main containers have the same width */
+.exam-selection-card,
+.mode-cards,
+.subject-cards-container,
+.ratio-selector-container,
+.test-config-container,
+.pyqs-container,
+.selected-paper-config {
+    max-width: 100%; /* Let them take full container width */
+    width: 100%;
+}
+
+/* Override specific widths to maintain internal content layout */
+.chapters-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.chapters-select {
+    flex: 1;
+    min-width: 0;
+    width: auto; /* Allow select to size naturally */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .mode-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .mode-card {
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .subject-card {
+        width: calc(50% - 0.625rem); /* Two cards per row on medium screens */
+    }
+    
+    /* Remove the inconsistent margin right rules */
+    .subject-card:nth-child(3n) {
+        margin-right: 0;
+    }
+
+    /* ...existing code... */
+}
+
+@media (max-width: 576px) {
+    .subject-card {
+        width: 100%; /* Full width on small screens */
+    }
+    
+    /* ...existing code... */
+}

@@ -3,6 +3,8 @@
 
 {% block content %}
 <link rel="stylesheet" href="/static/generate.css">
+<!-- Add Font Awesome CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <!-- exam selection -->
  <div class="generate-test">
     <h2 class="section-title">Generate Personalized Test</h2>
@@ -16,56 +18,108 @@
                 {% endfor %}
             </select>
         </div>
-        <!-- for each subject in that exam, create drop downs to select chapters to include in the test, fetch the sujects + chapters from the backend on selection of subject in the above dropdown -->
-        <div class="form-group">
-            <label for="subject">Select Subject:</label>
-            <select id="subject" name="subject" required>
-                <option value="" disabled selected>Select a subject</option>
-            </select>
+        <!-- Mode selection prompt, hidden by default -->
+        <div class="form-group" id="mode-group" style="display:none;">
+            <label>Please choose a test option:</label>
+            <div class="mode-cards">
+                <label for="mode-previous" class="mode-card">
+                    <input type="radio" id="mode-previous" name="mode" value="previous" required>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <i class="fas fa-history fa-2x"></i>
+                        </div>
+                        <h3>Previous Year Paper</h3>
+                        <p>Attempt a complete exam from past years</p>
+                    </div>
+                </label>
+                <label for="mode-generate" class="mode-card">
+                    <input type="radio" id="mode-generate" name="mode" value="generate" required>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <i class="fas fa-magic fa-2x"></i>
+                        </div>
+                        <h3>Custom Paper</h3>
+                        <p>Generate a new test based on selected topics</p>
+                    </div>
+                </label>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="chapters">Select Chapters:</label>
+        <div class="form-group" id="chapters-group">
+            <!-- <label for="chapters">Select Chapters:</label>
             <select id="chapters" name="chapters" required>
                 <option value="" disabled selected>Select chapters</option>
-                <!-- Chapters will be populated dynamically based on selected subject -->
-            </select>
+            </select> -->
+        </div>
+        
+        <!-- Question Type Ratio Selection - initially hidden -->
+        <div class="form-group" id="ratio-group" style="display:none;">
+            <div class="ratio-selector-container">
+                <h3 class="ratio-title">Question Type Ratio</h3>
+                <div class="ratio-labels">
+                    <span>Multiple Choice</span>
+                    <span>Numerical</span>
+                </div>
+                <div class="slider-container">
+                    <div class="slider-track">
+                        <div class="slider-fill"></div>
+                    </div>
+                    <input type="range" id="ratio-slider" name="mcq_ratio" min="0" max="100" value="70" class="ratio-slider">
+                    <div class="slider-markers">
+                        <span>0%</span>
+                        <span>25%</span>
+                        <span>50%</span>
+                        <span>75%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+                <div class="ratio-display">
+                    <div class="ratio-box mcq-box">
+                        <i class="fas fa-list-ul"></i>
+                        <span id="mcq-percentage">70%</span>
+                        <span>MCQ</span>
+                    </div>
+                    <div class="ratio-box numerical-box">
+                        <i class="fas fa-calculator"></i>
+                        <span id="numerical-percentage">30%</span>
+                        <span>Numerical</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Test Configuration Section -->
+            <div class="test-config-container">
+                <h3 class="config-title">Test Configuration</h3>
+                
+                <div class="config-group">
+                    <label for="test-duration">Duration (minutes):</label>
+                    <div class="duration-input">
+                        <input type="number" id="test-duration" name="duration" min="10" max="360" value="180">
+                        <div class="duration-controls">
+                            <button type="button" class="duration-btn" id="decrease-duration"><i class="fas fa-minus"></i></button>
+                            <button type="button" class="duration-btn" id="increase-duration"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="config-group">
+                    <label for="test-name">Test Name:</label>
+                    <input type="text" id="test-name" name="test_name" placeholder="e.g., Physics Mechanics Practice" required>
+                </div>
+                
+                <div class="config-group">
+                    <label for="test-description">Description (optional):</label>
+                    <textarea id="test-description" name="description" rows="3" placeholder="Add notes about the focus of this test"></textarea>
+                </div>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="submit-container">
+                <button type="submit" id="generate-btn" class="btn btn-primary">
+                    <i class="fas fa-magic me-2"></i> Generate Test
+                </button>
+            </div>
         </div>
     </form>
 </div>
-<script>
-    let full_data = {};
-    document.getElementById('exam').addEventListener('change', function() {
-        const examId = this.value;
-        fetch(`/api/exams/${examId}/subjects?full=true`)
-            .then(response => response.json())
-            .then(data => {
-                full_data = data;
-                const subjectSelect = document.getElementById('subject');
-                subjectSelect.innerHTML = '<option value="" disabled selected>Select a subject</option>';
-                data.subjects.forEach(subject => {
-                    const option = document.createElement('option');
-                    option.value = subject._id;
-                    option.textContent = subject.name;
-                    subjectSelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error fetching subjects:', error));
-    });
-
-    document.getElementById('subject').addEventListener('change', function() {
-        const subjectId = this.value;
-        const chaptersSelect = document.getElementById('chapters');
-        chaptersSelect.innerHTML = '<option value="" disabled selected>Select chapters</option>';
-        full_data.subjects.forEach(subject => {
-            if (subject._id === subjectId) {
-                subject.chapters.forEach(chapter => {
-                    const option = document.createElement('option');
-                    option.value = chapter[0];
-                    option.textContent = chapter[1];
-                    chaptersSelect.appendChild(option);
-                });
-            }
-        });
-    });
-</script>
+<script src="/static/generate.js"></script>
 {% endblock %}
