@@ -1,0 +1,148 @@
+{
+  "b3b5a8d8-f409-4e01-8fd4-043d3055db5e": {
+    "defaults": {
+      "questions": 75,
+      "ratio": 0.8,
+      "per_subject": {
+        "7bc04a29-039c-430d-980d-a066b16efc86": 25,
+        "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7": 25,
+        "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9": 25
+      },
+      "duration": 180
+    },
+    "marking_scheme": {
+      "correct": 4,
+      "incorrect": -1,
+      "negative_marking": true
+    }
+  },
+  "6d34f7cd-c80e-4a42-8c35-2b167f459c06": {
+    "defaults": {
+      "questions": 60,
+      "ratio": 0.5,
+      "per_subject": {
+        "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020": 20,
+        "17d9f684-251f-4f52-8092-1b54b33b1ed5": 20,
+        "96b44962-2c79-4a42-87ce-f8b87c9e174a": 20
+      },
+      "duration": 360
+    },
+    "marking_scheme": {
+      "correct": "varies",
+      "incorrect": "varies",
+      "negative_marking": true
+    }
+  },
+  "4625ad6f-33db-4c22-96e0-6c23830482de": {
+    "defaults": {
+      "questions": 180,
+      "ratio": 1.0,
+      "per_subject": {
+        "4b89e781-8987-47aa-84b6-d95025d590b0": 45,
+        "45966dd6-eaed-452f-bfcc-e9632c72da0f": 45,
+        "634d1a76-ecfd-4d2b-bdb9-5d6658948236": 90
+      },
+      "duration": 200
+    },
+    "marking_scheme": {
+      "correct": 4,
+      "incorrect": -1,
+      "negative_marking": true
+    }
+  },
+  "f3e78517-c050-4fea-822b-e43c4d2d3523": {
+    "defaults": {
+      "questions": 155,
+      "ratio": 1.0,
+      "per_subject": {
+        "c41e01c9-86c8-41ff-8b48-e585020ec8c9": 40,
+        "2d96a490-384b-4984-9356-086b3baf166b": 40,
+        "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72": 75
+      },
+      "duration": 240
+    },
+    "marking_scheme": {
+      "correct": {
+        "category_1": 1,
+        "category_2": 2
+      },
+      "incorrect": {
+        "category_1": 0,
+        "category_2": 0.5
+      },
+      "negative_marking": true
+    }
+  },
+  "2871e14c-fbcf-4047-9955-e210b0fb742b": {
+    "defaults": {
+      "questions": 270,
+      "ratio": 1.0,
+      "per_subject": {
+        "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f": 120
+      },
+      "duration": 300
+    },
+    "marking_scheme": {
+      "correct": {
+        "math": 2.5,
+        "gat": 4
+      },
+      "incorrect": {
+        "math": -0.83,
+        "gat": -1.33
+      },
+      "negative_marking": true
+    }
+  },
+  "1aa38a2b-dee5-453e-a394-29c033c16789": {
+    "defaults": {
+      "questions": 150,
+      "ratio": 1.0,
+      "per_subject": {
+        "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0": 50,
+        "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8": 50,
+        "2d820cff-7252-4a17-9f44-10b92970705e": 50
+      },
+      "duration": 180
+    },
+    "marking_scheme": {
+      "correct": 1,
+      "incorrect": 0,
+      "negative_marking": false
+    }
+  },
+  "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c": {
+    "defaults": {
+      "questions": 125,
+      "ratio": 1.0,
+      "per_subject": {
+        "fdd0de52-3277-408a-aed9-12c735635134": 35,
+        "2a6d5d09-a157-43a4-aa81-022f2e70f596": 35,
+        "c476840a-2596-4510-878c-d641b83469dc": 40
+      },
+      "duration": 150
+    },
+    "marking_scheme": {
+      "correct": 1,
+      "incorrect": 0,
+      "negative_marking": false
+    }
+  },
+  "bb792041-50de-4cfe-83f3-f899a79c0930": {
+    "defaults": {
+      "questions": 180,
+      "ratio": 1.0,
+      "per_subject": {
+        "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac": 60,
+        "6ec16a3d-177a-44f3-b342-4c51cf2b1045": 60,
+        "3d7d5653-4382-4275-be29-58b0eea9f510": 60
+      },
+      "duration": 180
+    },
+    "marking_scheme": {
+      "correct": 1,
+      "incorrect": 0,
+      "negative_marking": false
+    }
+  }
+}

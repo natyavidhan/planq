@@ -389,10 +389,18 @@ function openSubmitModal() {
 
 // Submit test
 function submitTest() {
-    // Gather all answers
+    // Transform answers to the required format
+    const formattedAnswers = {};
+    testState.questions.forEach((question, index) => {
+        if (testState.answers[index] !== null) {
+            formattedAnswers[question._id] = testState.answers[index];
+        }
+    });
+    
+    // Gather submission data
     const submissionData = {
         testId: testData._id,
-        answers: testState.answers,
+        answers: formattedAnswers,  // Using formatted answers
         timeSpent: testData.duration * 60 * 1000 - testState.timer.timeLeft
     };
     
@@ -409,7 +417,6 @@ function submitTest() {
     })
     .then(response => response.json())
     .then(result => {
-        // Redirect to results page
         window.location.href = `/test/${testData._id}/result/${result.attemptId}`;
     })
     .catch(error => {

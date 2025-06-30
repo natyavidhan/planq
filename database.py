@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import json
 
 import random
 import os
@@ -329,3 +330,93 @@ class Database:
         })
         
         return test_data
+
+    # result = db.process_test_submission(test_id, session['user']['id'], answers, time_spent)
+    def process_test_submission(self, test_id, user_id, answers, time_spent):
+        test = self.get_test(test_id)
+        if not test:
+            return {"error": "Test not found"}
+
+        # Load marking scheme from configuration
+        with open('conf.json', 'r') as f:
+            config = json.loads(f.read())
+        
+        exam_config = config.get(test['exam'])
+        if not exam_config:
+            return {"error": "Invalid exam configuration"}
+        
+        marking_scheme = exam_config['marking_scheme']
+
+        # Validate answers
+        if not isinstance(answers, dict):
+            return {"error": "Invalid answers format"}
+
+        # Get all questions with their correct answers
+        full_questions = {i["_id"]: i for i in self.get_questions_by_ids(list(answers.keys()))}
+
+        # Calculate score and feedback
+        score = 0
+        feedback = []
+
+        for q_id, user_answer in answers.items():
+            question = full_questions.get(str(q_id))
+            if not question:
+                continue
+
+            if question.get('type') == 'numerical':
+                correct_answer = question.get('correct_value')
+            else:
+                correct_answer = question.get('correct_option')[0]
+            is_correct = user_answer == correct_answer
+            
+            # Calculate marks based on marking scheme
+            if marking_scheme['negative_marking']:
+                if isinstance(marking_scheme['correct'], dict):
+                    # Complex marking scheme (e.g., CAT where different sections have different marks)
+                    if is_correct:
+                        marks = marking_scheme['correct'].get(question.get('category', 'category_1'), 1)
+                    else:
+                        marks = marking_scheme['incorrect'].get(question.get('category', 'category_1'), 0)
+                else:
+                    # Simple marking scheme with fixed marks
+                    marks = marking_scheme['correct'] if is_correct else marking_scheme['incorrect']
+            else:
+                # No negative marking
+                marks = marking_scheme['correct'] if is_correct else 0
+
+            score += marks
+            feedback.append({
+                "question_id": q_id,
+                "correct": is_correct,
+                "user_answer": user_answer,
+                "correct_answer": correct_answer,
+                "marks": marks
+            })
+
+        # Save attempt
+        attempt_data = {
+            "_id": str(uuid.uuid4()),
+            "user_id": user_id,
+            "test_id": test_id,
+            "score": score,
+            "total_questions": len(test['questions']),
+            "time_spent": time_spent,
+            "feedback": feedback,
+            "submitted_at": datetime.now()
+        }
+        
+        self.tests['attempts'].insert_one(attempt_data)
+
+        # Update user's test attempts
+        self.tests['tests'].update_one({"_id": test_id}, {
+            "$push": {
+                "attempts": attempt_data["_id"]
+            }
+        })
+
+        return {
+            "attempt_id": attempt_data["_id"],
+            "score": score,
+            "total_questions": len(test['questions']),
+            "feedback": feedback
+        }
