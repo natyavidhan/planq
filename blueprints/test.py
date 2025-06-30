@@ -1,11 +1,11 @@
-from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, request, session, jsonify, abort
 from database import Database
 from utils import auth_required
 import json
+from datetime import datetime
 
 test_bp = Blueprint('test', __name__, url_prefix='/test')
 
-# Database instance will be stored here when registered
 db:Database = None
 
 def init_blueprint(database):
@@ -14,64 +14,107 @@ def init_blueprint(database):
     db = database
     return test_bp
 
-
 @test_bp.route('/generate', methods=['GET', 'POST'])
 @auth_required
 def generate_test():
     if request.method == 'POST':
-        data = request.form
+        exam_id = request.form.get('exam')
+        mode = request.form.get('mode')
         
-        exam_id = data.get('exam')
-        if data.get('mode') == "generate":
-            subjects_ = [subject.replace('subject-', '') for subject in data.keys() if subject.startswith('subject-')]
-            subjects = {subject: data.get(f'subject-{subject}').split(",") for subject in subjects_}
-            test = db.generate_test(
-                exam_id=exam_id,
-                subjects=subjects,
-                num=int(data.get('question_count')),
-                ratio=int(data.get('mcq_ratio')) / 100
-            )
+        if mode == 'generate':
+            # Custom test generation
+            subjects = {}
+            for key, value in request.form.items():
+                if key.startswith('subject-'):
+                    subject_id = key.replace('subject-', '')
+                    chapters = value.split(',') if value != 'all' else ['all']
+                    subjects[subject_id] = chapters
             
-            if not test:
-                return jsonify({"error": "Failed to generate test. Please check your inputs."}), 400
+            mcq_ratio = float(request.form.get('mcq_ratio', '70')) / 100
+            question_count = int(request.form.get('question_count', '30'))
             
-            test_id = db.add_test(
-                user_id=session['user']['id'],
-                metadata={
-                    "title": data.get('test_name'),
-                    "description": data.get('description'),
-                    "exam": exam_id,
-                    "duration": int(data.get('duration')),
-                    "mode": data.get('mode'),
-                    "subjects": subjects,
-                },
-                questions=test
-            )
-        else:
-            test_id =  db.add_pyq_test(
-                user_id=session['user']['id'],
-                metadata={
-                    "title": data.get('test_name'),
-                    "exam": exam_id,
-                    "duration": int(data.get('duration')),
-                    "mode": data.get('mode'),
-                },
-                paper_id=data.get('paper_id')
-            )
-        return redirect(url_for('test.attempt_test', test_id=test_id))
-    return render_template("generate_test.html", exams=db.get_exams())
+            # Generate test questions
+            questions = db.generate_test(exam_id, subjects, question_count, mcq_ratio)
+            
+            # Create test metadata
+            metadata = {
+                'title': request.form.get('test_name'),
+                'description': request.form.get('description', ''),
+                'exam': exam_id,
+                'duration': int(request.form.get('duration', 180)),
+                'mode': mode,
+                'subjects': subjects
+            }
+            
+            # Save test to database
+            test_id = db.add_test(session['user']['id'], metadata, questions)
+            
+            # Add activity
+            db.add_activity(session['user']['id'], "test_created", {
+                "test_id": test_id,
+                "title": metadata['title'],
+                "exam": exam_id
+            })
+            
+            return redirect(url_for('test.attempt_test', test_id=test_id))
+            
+        elif mode == 'previous':
+            # Previous year paper
+            paper_id = request.form.get('paper_id')
+            
+            metadata = {
+                'title': request.form.get('test_name'),
+                'exam': exam_id,
+                'duration': int(request.form.get('duration', 180)),
+                'mode': mode
+            }
+            
+            # Create test from previous year paper
+            test_id = db.add_pyq_test(session['user']['id'], metadata, paper_id)
+            
+            return redirect(url_for('test.attempt_test', test_id=test_id))
+    
+    exams = db.get_exams()
+    return render_template('generate_test.html', exams=exams)
 
-
-@test_bp.route('/<test_id>', methods=['GET', 'POST'])
+@test_bp.route('/<test_id>', methods=['GET'])
 @auth_required
 def attempt_test(test_id):
+    test = db.get_test_optimized(test_id)
+    if not test:
+        abort(404)
+    
+    
+    return render_template('attempt_test.html', test=test)
+
+@test_bp.route('/submit', methods=['POST'])
+@auth_required
+def submit_test():
+    data = request.json
+    test_id = data.get('testId')
+    answers = data.get('answers')
+    time_spent = data.get('timeSpent')
+    
+    if not test_id or not answers:
+        return jsonify({'error': 'Missing required data'}), 400
+    
+    # Get test from database
     test = db.get_test(test_id)
     if not test:
-        return jsonify({"error": "Test not found"}), 404
+        return jsonify({'error': 'Test not found'}), 404
     
-    if request.method == 'POST':
-        answers = request.json.get('answers', {})
-        result = db.submit_test(test_id, session['user']['id'], answers)
-        return jsonify(result), 200
+    # Check if user owns this test
+    if test.get('created_by') != session['user']['id']:
+        return jsonify({'error': 'Unauthorized'}), 403
     
-    return render_template("attempt_test.html", test=test)
+    # Process answers and calculate score
+    result = db.process_test_submission(test_id, session['user']['id'], answers, time_spent)
+    
+    # Add activity for completing test
+    db.add_activity(session['user']['id'], "test_completed", {
+        "test_id": test_id,
+        "title": test['title'],
+        "score": result['score']
+    })
+    
+    return jsonify({'attemptId': result['attempt_id']}), 200

@@ -187,3 +187,145 @@ class Database:
     
     def get_tests_by_user(self, user_id):
         return list(self.tests['tests'].find({"created_by": user_id}, {"_id": 1, "title": 1, "exam": 1, "created_at": 1}))
+    
+    def get_test(self, test_id):
+        return self.tests['tests'].find_one({"_id": test_id})
+    
+    def get_subject(self, subject_id):
+        return self.pyqs['subjects'].find_one({"_id": subject_id}, {"_id": 1, "name": 1, "exam": 1, "chapters": 1})
+    
+    def get_questions_by_ids(self, question_ids):
+        return list(self.pyqs['questions'].find({"_id": {"$in": question_ids}}))
+    
+    def get_test_optimized(self, test_id):
+        """
+        Get a test with optimized data loading for the attempt page.
+        Only loads necessary data for the test interface.
+        """
+        test = self.tests['tests'].find_one({"_id": test_id})
+        print(test)
+        if not test:
+            return None
+            
+        # Prepare test data for the template
+        test_data = {
+            '_id': test['_id'],
+            'title': test['title'],
+            'duration': test['duration'],
+            'subjects': []
+        }
+        
+        if test.get('mode') == 'generate':
+            # Get all required subject IDs
+            subject_ids = list(test.get('subjects', {}).keys())
+            
+            # One bulk query for all subjects
+            subjects_data = {}
+            if subject_ids:
+                bulk_subjects = list(self.pyqs['subjects'].find(
+                    {'_id': {'$in': subject_ids}}, 
+                    {'_id': 1, 'name': 1}
+                ))
+                for subject in bulk_subjects:
+                    subjects_data[subject['_id']] = subject
+            
+            # Get all question IDs
+            question_ids = []
+            for subject_id, question_list in test.get('questions', {}).items():
+                question_ids.extend(question_list)
+                
+            # One bulk query for all questions - only fetch required fields
+            questions_data = {}
+            if question_ids:
+                bulk_questions = list(self.pyqs['questions'].find(
+                    {'_id': {'$in': question_ids}}, 
+                    {
+                        '_id': 1, 
+                        'question': 1, 
+                        'type': 1, 
+                        'options': 1, 
+                        'subject': 1
+                    }
+                ))
+                for question in bulk_questions:
+                    questions_data[question['_id']] = question
+            
+            # Organize questions by subject
+            for subject_id, question_ids in test.get('questions', {}).items():
+                if subject_id not in subjects_data:
+                    continue
+                    
+                subject_questions = []
+                for qid in question_ids:
+                    if qid in questions_data:
+                        subject_questions.append(questions_data[qid])
+                
+                test_data['subjects'].append({
+                    'id': subject_id,
+                    'name': subjects_data[subject_id]['name'],
+                    'questions': subject_questions
+                })
+                
+        elif test.get('mode') == 'previous':
+            # Get paper data
+            paper = self.pyqs['papers'].find_one({'_id': test.get('paper_id')})
+            if not paper:
+                return test_data
+                
+            # Get all question IDs from the paper
+            question_ids = paper.get('questions', [])
+            
+            # One bulk query for all questions - only fetch required fields
+            questions = []
+            if question_ids:
+                questions = list(self.pyqs['questions'].find(
+                    {'_id': {'$in': question_ids}}, 
+                    {
+                        '_id': 1, 
+                        'question': 1, 
+                        'type': 1, 
+                        'options': 1, 
+                        'subject': 1
+                    }
+                ))
+            
+            # Group questions by subject
+            subject_questions = {}
+            subject_ids = set()
+            
+            for q in questions:
+                subject_id = q.get('subject')
+                if not subject_id:
+                    continue
+                    
+                subject_ids.add(subject_id)
+                if subject_id not in subject_questions:
+                    subject_questions[subject_id] = []
+                    
+                subject_questions[subject_id].append(q)
+            
+            # Get subject names in bulk
+            subject_names = {}
+            if subject_ids:
+                bulk_subjects = list(self.pyqs['subjects'].find(
+                    {'_id': {'$in': list(subject_ids)}}, 
+                    {'_id': 1, 'name': 1}
+                ))
+                for subject in bulk_subjects:
+                    subject_names[subject['_id']] = subject['name']
+            
+            # Add subjects to test data
+            for subject_id, questions in subject_questions.items():
+                test_data['subjects'].append({
+                    'id': subject_id,
+                    'name': subject_names.get(subject_id, 'Unknown'),
+                    'questions': questions
+                })
+        
+        # Add activity for starting test
+        self.add_activity(test['created_by'], "test_started", {
+            "test_id": test_id,
+            "title": test['title']
+        })
+        
+        return test_data

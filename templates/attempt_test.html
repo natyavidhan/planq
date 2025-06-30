@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block title %}{{ test.title }}{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/attempt_test.css">
+<div class="test-container">
+    <!-- Test header with title and timer -->
+    <div class="test-header">
+        <div class="test-info">
+            <h2 class="test-title">{{ test.title }}</h2>
+        </div>
+        <div class="test-timer" id="test-timer">
+            <i class="far fa-clock"></i> <span id="timer-display">00:00:00</span>
+        </div>
+    </div>
+
+    <!-- Subject tabs -->
+    <div class="subject-tabs">
+        <div class="tabs-scroll-container">
+            <button class="scroll-btn left" id="scroll-left"><i class="fas fa-chevron-left"></i></button>
+            <div class="tabs-wrapper" id="tabs-wrapper">
+                {% for subject in test.subjects %}
+                <button class="subject-tab {% if loop.first %}active{% endif %}" data-subject="{{ subject.id }}">
+                    {{ subject.name }}
+                </button>
+                {% endfor %}
+            </div>
+            <button class="scroll-btn right" id="scroll-right"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Main test content -->
+    <div class="test-content">
+        <!-- Main question area - now on the left -->
+        <div class="question-area">
+            <div class="question-container" id="question-container">
+                <!-- Question content will be dynamically loaded here -->
+            </div>
+            
+            <!-- Question navigation controls -->
+            <div class="question-actions">
+                <div class="action-buttons">
+                    <button class="action-btn" id="mark-btn">
+                        <i class="fas fa-flag"></i> Mark for Review
+                    </button>
+                    <button class="action-btn" id="clear-btn">
+                        <i class="fas fa-eraser"></i> Clear Response
+                    </button>
+                </div>
+                <div class="navigation-buttons">
+                    <button class="nav-btn" id="prev-btn">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <button class="nav-btn primary" id="save-next-btn">
+                        Save & Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Question palette on the right -->
+        <div class="question-palette">
+            <div class="palette-header">
+                <h4>Question Palette</h4>
+            </div>
+            
+            <div class="palette-legend">
+                <div class="legend-item">
+                    <span class="question-status answered"></span>
+                    <span>Answered</span>
+                </div>
+                <div class="legend-item">
+                    <span class="question-status not-answered"></span>
+                    <span>Not Answered</span>
+                </div>
+                <div class="legend-item">
+                    <span class="question-status marked"></span>
+                    <span>Marked for Review</span>
+                </div>
+                <div class="legend-item">
+                    <span class="question-status answered-and-marked"></span>
+                    <span>Answered & Marked</span>
+                </div>
+                <div class="legend-item">
+                    <span class="question-status not-visited"></span>
+                    <span>Not Visited</span>
+                </div>
+            </div>
+            
+            <div class="palette-content">
+                <div class="palette-body" id="question-palette-body">
+                    <!-- Question numbers will be dynamically added here -->
+                </div>
+                
+                <div class="submit-container">
+                    <button class="submit-test-btn" id="submit-test-btn">
+                        <i class="fas fa-paper-plane"></i> Submit Test
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation modal for submitting test -->
+    <div class="modal" id="submit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Submit Test</h3>
+                <span class="modal-close" id="close-submit-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="submit-summary" id="submit-summary">
+                    <!-- Summary will be dynamically generated -->
+                </div>
+                <div class="submit-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Are you sure you want to submit your test? This action cannot be undone.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="cancel-btn" id="cancel-submit">Cancel</button>
+                <button class="confirm-btn" id="confirm-submit">Yes, Submit Test</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Store test data for JavaScript access
+const testData = {{ test|tojson|safe }};
+</script>
+<script src="/static/attempt_test.js"></script>
+{% endblock %}
