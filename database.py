@@ -158,4 +158,32 @@ class Database:
             }
         })
 
+        self.add_activity(user_id, "test_created", {
+            "test_id": test_id,
+            "title": metadata['title'],
+            "exam": metadata['exam']
+        })
+
         return test_id
+    
+    def add_activity(self, user_id, action, details):
+        activity_data = {
+            "action": action,
+            "details": details,
+            "timestamp": datetime.now()
+        }
+        self.users['activities'].update_one(
+            {"_id": user_id},
+            {"$push": {"activities": activity_data}},
+            upsert=True
+        )
+
+    def get_activities(self, user_id):
+        user = self.users['activities'].find_one({"_id": user_id})
+        if user:
+            activities = user.get('activities', [])
+            return sorted(activities, key=lambda x: x.get('timestamp'), reverse=True)
+        return []
+    
+    def get_tests_by_user(self, user_id):
+        return list(self.tests['tests'].find({"created_by": user_id}, {"_id": 1, "title": 1, "exam": 1, "created_at": 1}))

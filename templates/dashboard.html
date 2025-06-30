@@ -2,36 +2,338 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="/static/dashboard.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <div class="home">
     <div class="title-bar">
         <h2>Welcome, {{user['username']}} <span class="badge">Pro</span></h2>
     </div>
     <div class="activity">
         <h3 class="section-title"><i class="fas fa-chart-line"></i> Recent Activity</h3>
-        <div class="empty-state">
-            <p>No recent activity to show. Start solving problems to see your progress here!</p>
-        </div>
+        {% if activity and activity|length > 0 %}
+            <div class="activity-list">
+                {% for item in activity[:4] %}
+                    <div class="activity-item">
+                        {% if item.action == "test_created" %}
+                            <div class="activity-icon"><i class="fas fa-plus-circle"></i></div>
+                        {% elif item.action == "test_completed" %}
+                            <div class="activity-icon"><i class="fas fa-check-circle"></i></div>
+                        {% elif item.action == "test_started" %}
+                            <div class="activity-icon"><i class="fas fa-play-circle"></i></div>
+                        {% elif item.action == "attempt_question" %}
+                            <div class="activity-icon {% if item.details.is_correct %}correct{% else %}incorrect{% endif %}">
+                                {% if item.details.is_correct %}
+                                <i class="fas fa-check"></i>
+                                {% else %}
+                                <i class="fas fa-times"></i>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="activity-icon"><i class="fas fa-bell"></i></div>
+                        {% endif %}
+                        <div class="activity-content">
+                            <div class="activity-header">
+                                {% if item.action == "test_created" %}
+                                    Created a new test: <strong>{{ item.details.title }}</strong>
+                                {% elif item.action == "test_completed" %}
+                                    Completed test: <strong>{{ item.details.title }}</strong>
+                                    <div class="activity-score">
+                                        <i class="fas fa-star"></i> {{ item.details.score }}%
+                                    </div>
+                                {% elif item.action == "test_started" %}
+                                    Started test: <strong>{{ item.details.title }}</strong>
+                                {% elif item.action == "attempt_question" %}
+                                    Attempted a question 
+                                    <div class="{% if item.details.is_correct %}answer-correct{% else %}answer-incorrect{% endif %}">
+                                        {% if item.details.is_correct %}
+                                            <i class="fas fa-check-circle"></i> Correct
+                                        {% else %}
+                                            <i class="fas fa-times-circle"></i> Incorrect
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                    {{ item.action }}
+                                {% endif %}
+                            </div>
+                            <div class="activity-time">
+                                <i class="far fa-clock"></i> {{ item.timestamp|formatdatetime }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if activity|length > 4 %}
+            <div class="view-all-container">
+                <button id="view-all-activity" class="view-all-btn">
+                    <i class="fas fa-history"></i> View All Activities
+                </button>
+            </div>
+            {% endif %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-history"></i></div>
+                <p>No recent activity to show. Start solving problems to see your progress here!</p>
+            </div>
+        {% endif %}
     </div>
+    
     <div class="tests">
         <h3 class="section-title"><i class="fas fa-tasks"></i> My Tests</h3>
-        <div class="empty-state">
-            <p>You haven't created any tests yet. Generate your first personalized test below!</p>
-        </div>
+        {% if tests and tests|length > 0 %}
+            <div class="tests-list">
+                {% for test in tests[:2] %}
+                    <div class="test-item">
+                        <div class="test-item-header">
+                            <h4 class="test-title">{{ test.title }}</h4>
+                            {% if test.mode == "generate" %}
+                                <div class="test-badge custom">
+                                    <i class="fas fa-magic"></i> Custom
+                                </div>
+                            {% elif test.mode == "previous" %}
+                                <div class="test-badge previous">
+                                    <i class="fas fa-history"></i> PYQ
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="test-item-body">
+                            <div class="test-meta">
+                                <div class="test-date"><i class="far fa-calendar-alt"></i> {{ test.created_at|formatdate }}</div>
+                                <div class="test-duration"><i class="far fa-clock"></i> {{ test.duration }} min</div>
+                            </div>
+                            {% if test.attempts and test.attempts|length > 0 %}
+                                <div class="test-attempts">
+                                    <div class="attempt-count">
+                                        <i class="fas fa-check-double"></i> {{ test.attempts|length }} attempt{{ 's' if test.attempts|length > 1 else '' }}
+                                    </div>
+                                    <div class="score-pill {{ 'high-score' if test.attempts[-1].score >= 70 else 'mid-score' if test.attempts[-1].score >= 40 else 'low-score' }}">
+                                        {{ test.attempts[-1].score }}%
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="test-item-footer">
+                            <a href="/test/{{ test._id }}" class="test-action-btn">
+                                {% if test.attempts and test.attempts|length > 0 %}
+                                    <i class="fas fa-redo"></i> Retry
+                                {% else %}
+                                    <i class="fas fa-play"></i> Start
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if tests|length > 2 %}
+            <div class="view-all-container">
+                <button id="view-all-tests" class="view-all-btn">
+                    <i class="fas fa-clipboard-list"></i> View All Tests
+                </button>
+            </div>
+            {% endif %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-clipboard-list"></i></div>
+                <p>You haven't created any tests yet. Generate your first personalized test below!</p>
+            </div>
+        {% endif %}
     </div>
+    
     <div class="actions">
-        <div class="action-btn" onclick="window.location.href='/search'">
+        <a href="/search" class="action-btn">
             <i class="fas fa-search"></i>
             <h5 class="action-title">Search 47k+ Questions</h5>
-        </div>
-        <div class="action-btn"  onclick="window.location.href='/test/generate'">
+        </a>
+        <a href="/test/generate" class="action-btn">
             <i class="fas fa-clipboard-list"></i>
             <h5 class="action-title">Generate Personalized Tests</h5>
-        </div>
-        <div class="action-btn"  onclick="window.location.href='/ai'">
+        </a>
+        <a href="/ai" class="action-btn">
             <i class="fas fa-robot"></i>
             <h5 class="action-title">Ask Doubts to PlanqAI</h5>
+        </a>
+    </div>
+</div>
+
+<!-- Activity Modal -->
+<div id="activity-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-chart-line"></i> All Activities</h3>
+            <span class="modal-close">&times;</span>
+        </div>
+        <div class="modal-body">
+            {% if activity and activity|length > 0 %}
+                <div class="activity-list-full">
+                    {% for item in activity %}
+                        <div class="activity-item">
+                            {% if item.action == "test_created" %}
+                                <div class="activity-icon"><i class="fas fa-plus-circle"></i></div>
+                            {% elif item.action == "test_completed" %}
+                                <div class="activity-icon"><i class="fas fa-check-circle"></i></div>
+                            {% elif item.action == "test_started" %}
+                                <div class="activity-icon"><i class="fas fa-play-circle"></i></div>
+                            {% elif item.action == "attempt_question" %}
+                                <div class="activity-icon {% if item.details.is_correct %}correct{% else %}incorrect{% endif %}">
+                                    {% if item.details.is_correct %}
+                                    <i class="fas fa-check"></i>
+                                    {% else %}
+                                    <i class="fas fa-times"></i>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="activity-icon"><i class="fas fa-bell"></i></div>
+                            {% endif %}
+                            <div class="activity-content">
+                                <div class="activity-header">
+                                    {% if item.action == "test_created" %}
+                                        Created a new test: <strong>{{ item.details.title }}</strong>
+                                    {% elif item.action == "test_completed" %}
+                                        Completed test: <strong>{{ item.details.title }}</strong>
+                                        <div class="activity-score">
+                                            <i class="fas fa-star"></i> {{ item.details.score }}%
+                                        </div>
+                                    {% elif item.action == "test_started" %}
+                                        Started test: <strong>{{ item.details.title }}</strong>
+                                    {% elif item.action == "attempt_question" %}
+                                        Attempted a question 
+                                        <div class="{% if item.details.is_correct %}answer-correct{% else %}answer-incorrect{% endif %}">
+                                            {% if item.details.is_correct %}
+                                                <i class="fas fa-check-circle"></i> Correct
+                                            {% else %}
+                                                <i class="fas fa-times-circle"></i> Incorrect
+                                            {% endif %}
+                                        </div>
+                                    {% else %}
+                                        {{ item.action }}
+                                    {% endif %}
+                                </div>
+                                <div class="activity-time">
+                                    <i class="far fa-clock"></i> {{ item.timestamp|formatdatetime }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No activity to show.</p>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
+
+<!-- Tests Modal -->
+<div id="tests-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-tasks"></i> All Tests</h3>
+            <span class="modal-close">&times;</span>
+        </div>
+        <div class="modal-body">
+            {% if tests and tests|length > 0 %}
+                <div class="tests-grid-full">
+                    {% for test in tests %}
+                        <div class="test-card">
+                            <div class="test-card-header">
+                                <h4 class="test-title">{{ test.title }}</h4>
+                                <div class="test-date">{{ test.created_at|formatdate }}</div>
+                            </div>
+                            <div class="test-card-body">
+                                <div class="test-info">
+                                    {% if test.mode == "generate" %}
+                                        <div class="test-badge custom">
+                                            <i class="fas fa-magic"></i> Custom Test
+                                        </div>
+                                    {% elif test.mode == "previous" %}
+                                        <div class="test-badge previous">
+                                            <i class="fas fa-history"></i> Previous Year
+                                        </div>
+                                    {% endif %}
+                                    <div class="test-duration">
+                                        <i class="fas fa-clock"></i> {{ test.duration }} min
+                                    </div>
+                                </div>
+                                {% if test.attempts and test.attempts|length > 0 %}
+                                    <div class="test-attempts">
+                                        <div class="attempt-header">
+                                            <i class="fas fa-check-double"></i> {{ test.attempts|length }} attempt{{ 's' if test.attempts|length > 1 else '' }}
+                                        </div>
+                                        <div class="latest-score">
+                                            <div class="score-label">Latest score:</div>
+                                            <div class="score-value {{ 'high-score' if test.attempts[-1].score >= 70 else 'mid-score' if test.attempts[-1].score >= 40 else 'low-score' }}">
+                                                {{ test.attempts[-1].score }}%
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="test-no-attempts">
+                                        <i class="far fa-hourglass"></i> Not attempted yet
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="test-card-footer">
+                                <a href="/test/{{ test._id }}" class="btn btn-primary">
+                                    {% if test.attempts and test.attempts|length > 0 %}
+                                        <i class="fas fa-redo"></i> Retry Test
+                                    {% else %}
+                                        <i class="fas fa-play"></i> Start Test
+                                    {% endif %}
+                                </a>
+                                <a href="/test/{{ test._id }}/analysis" class="btn btn-secondary {{ 'disabled' if not test.attempts or test.attempts|length == 0 }}">
+                                    <i class="fas fa-chart-bar"></i> Analysis
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>You haven't created any tests yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Modal functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const activityModal = document.getElementById('activity-modal');
+        const testsModal = document.getElementById('tests-modal');
+        
+        // Activity modal
+        const viewAllActivityBtn = document.getElementById('view-all-activity');
+        if (viewAllActivityBtn) {
+            viewAllActivityBtn.addEventListener('click', function() {
+                activityModal.style.display = 'block';
+            });
+        }
+        
+        // Tests modal
+        const viewAllTestsBtn = document.getElementById('view-all-tests');
+        if (viewAllTestsBtn) {
+            viewAllTestsBtn.addEventListener('click', function() {
+                testsModal.style.display = 'block';
+            });
+        }
+        
+        // Close buttons
+        const closeButtons = document.querySelectorAll('.modal-close');
+        closeButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                activityModal.style.display = 'none';
+                testsModal.style.display = 'none';
+            });
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === activityModal) {
+                activityModal.style.display = 'none';
+            }
+            if (event.target === testsModal) {
+                testsModal.style.display = 'none';
+            }
+        });
+    });
+</script>
 {% endblock %}

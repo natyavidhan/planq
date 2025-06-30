@@ -62,3 +62,16 @@ def generate_test():
     return render_template("generate_test.html", exams=db.get_exams())
 
 
+@test_bp.route('/<test_id>', methods=['GET', 'POST'])
+@auth_required
+def attempt_test(test_id):
+    test = db.get_test(test_id)
+    if not test:
+        return jsonify({"error": "Test not found"}), 404
+    
+    if request.method == 'POST':
+        answers = request.json.get('answers', {})
+        result = db.submit_test(test_id, session['user']['id'], answers)
+        return jsonify(result), 200
+    
+    return render_template("attempt_test.html", test=test)

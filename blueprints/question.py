@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, session
 from database import Database
 import json
 
@@ -135,6 +135,17 @@ def attempt_question(question_id):
             response['correct_answer'] = question.get('correct_option', [])
         elif question_type == 'numerical':
             response['correct_answer'] = question.get('correct_value', '')
+
+        db.add_activity(
+            user_id=session['user']['id'],
+            action='attempt_question',
+            details={
+                'question_id': question_id,
+                'is_correct': is_correct,
+                'user_answer': user_answer,
+                'correct_answer': response['correct_answer']
+            }
+        )
             
         return jsonify(response)
         

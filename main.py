@@ -5,6 +5,7 @@ import requests
 import os
 import secrets
 from urllib.parse import urlencode
+from datetime import datetime
 
 from config import CONFIG
 from database import Database
@@ -27,6 +28,19 @@ app.register_blueprint(init_search_blueprint(db))
 app.register_blueprint(init_question_blueprint(db))
 app.register_blueprint(init_test_blueprint(db))
 app.register_blueprint(init_api_blueprint(db))
+
+# Custom filters for templates
+@app.template_filter('formatdate')
+def format_date(value):
+    if isinstance(value, datetime):
+        return value.strftime('%b %d, %Y')
+    return value
+
+@app.template_filter('formatdatetime')
+def format_datetime(value):
+    if isinstance(value, datetime):
+        return value.strftime('%b %d, %Y at %I:%M %p')
+    return value
 
 @app.route("/")
 def home():
@@ -110,8 +124,6 @@ def oauth2_callback(provider):
     if not user:
         user = db.add_user(email)
 
-    print(user)
-
     session['user'] = {
         'id': str(user['_id']),
         'email': user['email'],
@@ -133,7 +145,9 @@ def dashboard():
         flash("User not found.")
         return redirect(url_for("home"))
     
-    return render_template("dashboard.html")
+    tests = db.get_tests_by_user(session['user']['id'])
+    activity = db.get_activities(session['user']['id'])
+    return render_template("dashboard.html", tests=tests, activity=activity)
 
 @app.context_processor
 def inject_user():
