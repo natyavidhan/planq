@@ -8,6 +8,8 @@ test_bp = Blueprint('test', __name__, url_prefix='/test')
 
 db:Database = None
 
+conf = json.load(open('conf.json'))
+
 def init_blueprint(database):
     """Initialize the blueprint with the database instance"""
     global db
@@ -118,3 +120,73 @@ def submit_test():
     })
     
     return jsonify({'attemptId': result['attempt_id']}), 200
+
+@test_bp.route('/<test_id>/analysis')
+@auth_required
+def test_analysis(test_id):
+    """Show analysis of all attempts for a test"""
+    test = db.get_test(test_id)
+    if not test:
+        abort(404)
+        
+    # Check if user owns this test
+    if test['created_by'] != session['user']['id']:
+        abort(403)
+    
+    # Get attempts and calculate stats for each attempt
+    raw_attempts = db.get_test_attempts(test_id)
+    attempts = []
+    
+    for attempt in raw_attempts:
+        # Calculate statistics from feedback data
+        total_questions = sum(len(questions) for questions in test['questions'].values())
+        attempted = len(attempt['feedback'])
+        correct = sum(1 for item in attempt['feedback'] if item['correct'])
+        incorrect = attempted - correct
+        
+        # Add statistics to the attempt object
+        attempt['stats'] = {
+            'attempted': attempted,
+            'correct': correct,
+            'incorrect': incorrect,
+            'accuracy': correct / attempted if attempted > 0 else 0,
+            'unanswered': total_questions - attempted
+        }
+        attempts.append(attempt)
+
+    # Get subject information and store in a format that can be used in the template
+    subjects = {}
+    for sub_id in test['subjects']:
+        subject_info = db.get_subject(sub_id)
+        if subject_info:
+            subjects[sub_id] = subject_info
+
+    # Get marking scheme from configuration
+    marking_scheme = conf[test['exam']]['marking_scheme']
+
+    # Get all questions with chapter information
+    questions = {}
+    all_question_ids = [q_id for subject_questions in test['questions'].values() 
+                         for q_id in subject_questions]
+    for q in db.get_questions_by_ids(all_question_ids):
+        questions[q['_id']] = q
+
+    # Calculate max marks
+    if isinstance(marking_scheme['correct'], dict):
+        # For complex marking schemes, use the first value as default
+        first_value = next(iter(marking_scheme['correct'].values()))
+        max_marks = total_questions * first_value
+    else:
+        max_marks = total_questions * marking_scheme['correct']
+    
+    test['max_marks'] = max_marks
+    test['questions'] = len(all_question_ids)  # Store the total question count
+    test['subjects'] = subjects  # Replace subject IDs with full subject objects
+
+
+    attempts.sort(key=lambda x: x['submitted_at'].timestamp(), reverse=False)
+
+    return render_template('test_analysis.html', 
+                          test=test, 
+                          attempts=attempts, 
+                          questions=questions)

@@ -151,7 +151,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    max-height: 400px;
 }
 
 .activity-item {
@@ -195,18 +194,25 @@
 
 .activity-content {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    font-size: 0.95rem;
+    text-align: left;
 }
 
 .activity-header {
-    color: var(--text-primary);
-    font-weight: 400;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.activity-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.activity-score {
+    margin-left: 1rem;
+    white-space: nowrap;
 }
 
 .answer-correct {
@@ -406,6 +412,22 @@
     opacity: 0.9;
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(107, 138, 253, 0.3);
+}
+
+.test-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.test-action-btn.analysis {
+    background-color: rgba(107, 138, 253, 0.1);
+    color: var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+
+.test-action-btn.analysis:hover {
+    background-color: var(--accent-primary);
+    color: white;
 }
 
 /* View All Button */

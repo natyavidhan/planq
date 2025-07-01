@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}Test Analysis{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/test_analysis.css">
+
+<div class="analysis-container">
+    <!-- Header Section -->
+    <div class="analysis-header">
+        <h1 class="test-title">{{ test.title }}</h1>
+        <p class="subtitle">Performance Analysis</p>
+        
+        <div class="test-meta">
+            <div class="meta-item">
+                <span class="meta-value">{{ test.duration }} mins</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-value">{{ test.questions }} Questions</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-value">{{ attempts|length }} Attempts</span>
+            </div>
+        </div>
+        
+        <!-- Attempt Selector -->
+        <div class="attempt-selector">
+            <label for="attempt-select">Select Attempt for Analysis:</label>
+            <select id="attempt-select" class="form-select">
+                {% for attempt in attempts %}
+                    <option value="{{ attempt._id }}" {% if loop.index == attempts|length %}selected{% endif %}>
+                        Attempt {{ loop.index }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    
+    <!-- Performance Metrics -->
+    <div class="performance-metrics" id="performance-container">
+        {% if attempts|length > 0 %}
+            {% set latest_attempt = attempts[-1] %}
+            <div class="score-circle">
+                <div class="circle-progress" id="score-progress">
+                    <span class="score-fraction">
+                        <span class="current-score">{{ latest_attempt.score|int }}</span>
+                        <span class="total-score">/{{ test.max_marks }}</span>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">{{ latest_attempt.stats.attempted }}</div>
+                    <div class="metric-label">Attempted</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">{{ latest_attempt.stats.correct }}</div>
+                    <div class="metric-label">Correct</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">{{ latest_attempt.stats.incorrect }}</div>
+                    <div class="metric-label">Incorrect</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">{{ (latest_attempt.stats.accuracy * 100)|round }}%</div>
+                    <div class="metric-label">Accuracy</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">{{ latest_attempt.stats.unanswered }}</div>
+                    <div class="metric-label">Unanswered</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">{{ (latest_attempt.time_spent / 60)|round }} min</div>
+                    <div class="metric-label">Time Spent</div>
+                </div>
+            </div>
+        {% else %}
+            <div class="no-attempts">
+                <p>No attempts found for this test.</p>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Subject-wise Analysis -->
+    <div class="subject-analysis" id="subject-analysis-container">
+        <h3 class="analysis-section-title">Subject-wise Performance - Selected Attempt</h3>
+        <div class="table-responsive">
+            <table class="analysis-table">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Total Questions</th>
+                        <th>Attempted</th>
+                        <th>Correct</th>
+                        <th>Incorrect</th>
+                        <th>Accuracy</th>
+                    </tr>
+                </thead>
+                <tbody id="subject-analysis-body">
+                    <!-- Will be populated via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Topic/Chapter-wise Analysis -->
+    <div class="topic-analysis" id="topic-analysis-container">
+        <h3 class="analysis-section-title">Topic-wise Breakdown - Selected Attempt</h3>
+        <div class="table-responsive">
+            <table class="analysis-table">
+                <thead>
+                    <tr>
+                        <th>Topic</th>
+                        <th>Subject</th>
+                        <th>Attempted</th>
+                        <th>Correct</th>
+                        <th>Accuracy</th>
+                    </tr>
+                </thead>
+                <tbody id="topic-analysis-body">
+                    <!-- Will be populated via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Difficulty Analysis Chart -->
+    <div class="difficulty-analysis" id="difficulty-analysis-container">
+        <h3 class="analysis-section-title">Difficulty Analysis - Selected Attempt</h3>
+        <div class="chart-container">
+            <canvas id="difficultyChart"></canvas>
+        </div>
+    </div>
+    
+    <!-- Question-wise Analysis (if needed) -->
+    <div class="question-analysis" id="question-analysis-container">
+        <!-- Will be populated via JavaScript -->
+    </div>
+</div>
+
+<!-- Include Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Pass test and attempts data to JavaScript
+    const testData = {{ test|tojson }};
+    const attemptsData = {{ attempts|tojson }};
+    const questionsData = {{ questions|tojson }};
+</script>
+<script src="/static/test_analysis.js"></script>
+{% endblock %}

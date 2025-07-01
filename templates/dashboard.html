@@ -32,14 +32,16 @@
                         <div class="activity-content">
                             <div class="activity-header">
                                 {% if item.action == "test_created" %}
-                                    Created a new test: <strong>{{ item.details.title }}</strong>
+                                    <span>Created a new test: <strong>{{ item.details.title }}</strong></span>
                                 {% elif item.action == "test_completed" %}
-                                    Completed test: <strong>{{ item.details.title }}</strong>
-                                    <div class="activity-score">
-                                        <i class="fas fa-star"></i> {{ item.details.score }}%
+                                    <div class="activity-header-content">
+                                        <span>Completed test: <strong>{{ item.details.title }}</strong></span>
+                                        <div class="activity-score">
+                                            <i class="fas fa-star"></i> {{ item.details.score }}
+                                        </div>
                                     </div>
                                 {% elif item.action == "test_started" %}
-                                    Started test: <strong>{{ item.details.title }}</strong>
+                                    <span>Started test: <strong>{{ item.details.title }}</strong></span>
                                 {% elif item.action == "attempt_question" %}
                                     Attempted a question 
                                     <div class="{% if item.details.is_correct %}answer-correct{% else %}answer-incorrect{% endif %}">
@@ -103,20 +105,29 @@
                                     <div class="attempt-count">
                                         <i class="fas fa-check-double"></i> {{ test.attempts|length }} attempt{{ 's' if test.attempts|length > 1 else '' }}
                                     </div>
-                                    <div class="score-pill {{ 'high-score' if test.attempts[-1].score >= 70 else 'mid-score' if test.attempts[-1].score >= 40 else 'low-score' }}">
-                                        {{ test.attempts[-1].score }}%
+                                    <div class="score-pill {{ 'high-score' if (test.attempts[-1].score / test.max_marks * 100) >= 70 
+                                                            else 'mid-score' if (test.attempts[-1].score / test.max_marks * 100) >= 40 
+                                                            else 'low-score' }}">
+                                        {{ test.attempts[-1].score }}
                                     </div>
                                 </div>
                             {% endif %}
                         </div>
                         <div class="test-item-footer">
-                            <a href="/test/{{ test._id }}" class="test-action-btn">
+                            <div class="test-actions">
+                                <a href="/test/{{ test._id }}" class="test-action-btn">
+                                    {% if test.attempts and test.attempts|length > 0 %}
+                                        <i class="fas fa-redo"></i> Retry
+                                    {% else %}
+                                        <i class="fas fa-play"></i> Start
+                                    {% endif %}
+                                </a>
                                 {% if test.attempts and test.attempts|length > 0 %}
-                                    <i class="fas fa-redo"></i> Retry
-                                {% else %}
-                                    <i class="fas fa-play"></i> Start
+                                <a href="/test/{{ test._id }}/analysis" class="test-action-btn analysis">
+                                    <i class="fas fa-chart-bar"></i> Analysis
+                                </a>
                                 {% endif %}
-                            </a>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
@@ -188,7 +199,7 @@
                                     {% elif item.action == "test_completed" %}
                                         Completed test: <strong>{{ item.details.title }}</strong>
                                         <div class="activity-score">
-                                            <i class="fas fa-star"></i> {{ item.details.score }}%
+                                            <i class="fas fa-star"></i> {{ item.details.score }}
                                         </div>
                                     {% elif item.action == "test_started" %}
                                         Started test: <strong>{{ item.details.title }}</strong>
@@ -259,8 +270,10 @@
                                         </div>
                                         <div class="latest-score">
                                             <div class="score-label">Latest score:</div>
-                                            <div class="score-value {{ 'high-score' if test.attempts[-1].score >= 70 else 'mid-score' if test.attempts[-1].score >= 40 else 'low-score' }}">
-                                                {{ test.attempts[-1].score }}%
+                                            <div class="score-value {{ 'high-score' if (test.attempts[-1].score / test.max_marks * 100) >= 70 
+                                                                    else 'mid-score' if (test.attempts[-1].score / test.max_marks * 100) >= 40 
+                                                                    else 'low-score' }}">
+                                                {{ "%.1f"|format(test.attempts[-1].score / test.max_marks * 100) }}%
                                             </div>
                                         </div>
                                     </div>

@@ -187,8 +187,51 @@ class Database:
         return []
     
     def get_tests_by_user(self, user_id):
-        return list(self.tests['tests'].find({"created_by": user_id}, {"_id": 1, "title": 1, "exam": 1, "created_at": 1}))
+        tests = list(self.tests['tests'].find({"created_by": user_id}, {"_id": 1, "title": 1, "exam": 1, "created_at": 1, "attempts": 1, "mode": 1, "questions": 1}))
+        
+        # Load marking scheme configuration
+        with open('conf.json', 'r') as f:
+            config = json.loads(f.read())
+        
+        for test in tests:
+            # Get attempts
+            attempts = [i for i in self.tests['attempts'].find({"_id": {"$in": test.get('attempts', [])}}, {"_id": 1, "score": 1, "submitted_at": 1})]
+            attempts.sort(key=lambda x: x.get('submitted_at', ''), reverse=True)
+            test['attempts'] = attempts
+
+            # Calculate max marks based on marking scheme
+            exam_config = config.get(test['exam'], {})
+            marking_scheme = exam_config.get('marking_scheme', {})
+            
+            max_marks = 0
+            if test['mode'] == 'generate':
+                # For custom generated tests
+                total_questions = sum(len(questions) for questions in test['questions'].values())
+                
+                # Handle complex marking schemes (like CAT)
+                if isinstance(marking_scheme.get('correct'), dict):
+                    # Use category 1 as default if categories not specified
+                    max_marks = total_questions * marking_scheme['correct'].get('category_1', 1)
+                else:
+                    max_marks = total_questions * marking_scheme.get('correct', 1)
+            
+            elif test['mode'] == 'previous':
+                # For previous year papers
+                paper = self.pyqs['papers'].find_one({'_id': test.get('paper_id')})
+                if paper:
+                    total_questions = len(paper.get('questions', []))
+                    if isinstance(marking_scheme.get('correct'), dict):
+                        max_marks = total_questions * marking_scheme['correct'].get('category_1', 1)
+                    else:
+                        max_marks = total_questions * marking_scheme.get('correct', 1)
+            
+            test['max_marks'] = max_marks
+            
+        return tests
     
+    def get_test_attempts(self, test_id):
+        return list(self.tests['attempts'].find({"test_id": test_id}))
+
     def get_test(self, test_id):
         return self.tests['tests'].find_one({"_id": test_id})
     
@@ -417,6 +460,6 @@ class Database:
         return {
             "attempt_id": attempt_data["_id"],
             "score": score,
-            "total_questions": len(test['questions']),
+            "total_questions": sum([len(i) for i in test['questions']]),
             "feedback": feedback
         }
