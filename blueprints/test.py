@@ -166,10 +166,18 @@ def test_analysis(test_id):
 
     # Get all questions with chapter information
     questions = {}
+    q_temp = {}
     all_question_ids = [q_id for subject_questions in test['questions'].values() 
                          for q_id in subject_questions]
     for q in db.get_questions_by_ids(all_question_ids):
-        questions[q['_id']] = q
+        q_temp[q['_id']] = q
+
+    q_no = 1
+    for sub, ques in test['questions'].items():
+        for q_id in ques:
+            questions[q_id] = q_temp[q_id]
+            questions[q_id]['question_number'] = q_no
+            q_no += 1
 
     # Calculate max marks
     if isinstance(marking_scheme['correct'], dict):

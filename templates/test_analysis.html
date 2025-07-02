@@ -133,9 +133,112 @@
         </div>
     </div>
     
-    <!-- Question-wise Analysis (if needed) -->
+    <!-- Question-wise Analysis -->
     <div class="question-analysis" id="question-analysis-container">
-        <!-- Will be populated via JavaScript -->
+        <h3 class="analysis-section-title">Question-wise Performance - Selected Attempt</h3>
+        <div class="table-responsive">
+            <table class="analysis-table question-table">
+                <thead>
+                    <tr>
+                        <th>Q</th>
+                        <th>Subject</th>
+                        <th>Topic</th>
+                        <th>Difficulty</th>
+                        <th>Your Ans</th>
+                        <th>Correct Ans</th>
+                        <th>Marks</th>
+                        <th>Time</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody id="question-analysis-body">
+                    <!-- Will be populated via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Overall Analytics - All Attempts -->
+    <div class="overall-analytics" id="overall-analytics-container">
+        <h2 class="section-heading">Overall Analytics - All Attempts</h2>
+        
+        <!-- Analytics Summary Cards -->
+        <div class="analytics-cards">
+            <div class="analytics-card">
+                <div class="card-value" id="total-attempts">{{ attempts|length }}</div>
+                <div class="card-label">TOTAL ATTEMPTS</div>
+            </div>
+            <div class="analytics-card">
+                <div class="card-value" id="avg-score">0</div>
+                <div class="card-label">AVERAGE SCORE</div>
+            </div>
+            <div class="analytics-card">
+                <div class="card-value" id="best-score">0</div>
+                <div class="card-label">BEST SCORE</div>
+            </div>
+            <div class="analytics-card">
+                <div class="card-value" id="worst-score">0</div>
+                <div class="card-label">WORST SCORE</div>
+            </div>
+            <div class="analytics-card">
+                <div class="card-value" id="avg-time">00:00</div>
+                <div class="card-label">AVG. TIME</div>
+            </div>
+            <div class="analytics-card">
+                <div class="card-value improvement" id="improvement">+0</div>
+                <div class="card-label">IMPROVEMENT</div>
+            </div>
+        </div>
+        
+        <!-- Subject Performance -->
+        <div class="subject-performance">
+            <h3 class="analysis-section-title">Overall Subject Performance</h3>
+            <div class="table-responsive">
+                <table class="analysis-table">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Total Attempted</th>
+                            <th>Total Correct</th>
+                            <th>Overall Accuracy</th>
+                        </tr>
+                    </thead>
+                    <tbody id="overall-subject-body">
+                        <!-- Will be populated via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Progress Tracking Chart -->
+        <div class="progress-tracking">
+            <h3 class="analysis-section-title">Attempt History & Progress Tracking</h3>
+            <div class="chart-container">
+                <canvas id="progressChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Attempts History Table -->
+        <div class="attempts-history">
+            <h3 class="analysis-section-title">Attempts Details</h3>
+            <div class="table-responsive">
+                <table class="analysis-table">
+                    <thead>
+                        <tr>
+                            <th>Attempt</th>
+                            <th>Date</th>
+                            <th>Score</th>
+                            <th>Accuracy</th>
+                            <th>Time Spent</th>
+                            <th>Questions Attempted</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attempts-history-body">
+                        <!-- Will be populated via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 

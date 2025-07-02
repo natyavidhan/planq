@@ -207,12 +207,60 @@
 /* Question Analysis Styles */
 .question-analysis {
     margin-top: 2rem;
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
 }
 
-.no-attempts {
-    padding: 2rem;
-    text-align: center;
-    color: var(--text-secondary);
+.question-table th, 
+.question-table td {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+}
+
+.question-table .difficulty-easy {
+    color: #81c784;
+    padding: 0.25rem 0.75rem;
+    background-color: rgba(129, 199, 132, 0.1);
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.question-table .difficulty-medium {
+    color: #ffb74d;
+    padding: 0.25rem 0.75rem;
+    background-color: rgba(255, 183, 77, 0.1);
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.question-table .difficulty-hard {
+    color: #e57373;
+    padding: 0.25rem 0.75rem;
+    background-color: rgba(229, 115, 115, 0.1);
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.question-table .positive-marks {
+    color: #81c784;
+    font-weight: 500;
+}
+
+.question-table .negative-marks {
+    color: #e57373;
+    font-weight: 500;
+}
+
+.question-table .correct-result {
+    color: #81c784;
+    font-size: 1.2rem;
+}
+
+.question-table .incorrect-result {
+    color: #e57373;
+    font-size: 1.2rem;
 }
 
 /* Topic Analysis Styles */
@@ -239,6 +287,114 @@
     height: 400px;
     margin-top: 1rem;
     position: relative;
+}
+
+/* Overall Analytics Styles */
+.overall-analytics {
+    margin-top: 2rem;
+}
+
+.section-heading {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.analytics-cards {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.analytics-card {
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.card-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.card-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.improvement {
+    color: var(--success);
+}
+
+.subject-performance, .progress-tracking, .attempts-history {
+    margin-top: 2rem;
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+/* Accuracy Progress Bar in Subject Performance */
+.accuracy-progress-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.accuracy-bar-large {
+    height: 8px;
+    flex-grow: 1;
+    background-color: var(--bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+/* Subject colors */
+.subject-physics .accuracy-fill {
+    background-color: #9c27b0; /* Purple */
+}
+
+.subject-chemistry .accuracy-fill {
+    background-color: #673ab7; /* Deep Purple */
+}
+
+.subject-mathematics .accuracy-fill {
+    background-color: #3f51b5; /* Indigo */
+}
+
+/* Add a default color for the accuracy-fill */
+.accuracy-fill {
+    height: 100%;
+    background-color: var(--accent-primary); /* Default color if subject-specific isn't applied */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .analytics-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .analytics-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .analytics-cards {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 768px) {

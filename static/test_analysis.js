@@ -18,6 +18,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     updateAnalysisForAttempt(attemptSelect ? attemptSelect.value : attemptsData[0]._id);
+    
+    // Initialize overall analytics if there are attempts
+    if (attemptsData.length > 0) {
+        generateOverallAnalytics();
+        generateSubjectPerformance();
+        generateAttemptsHistory();
+        generateProgressChart();
+    }
 });
 
 function updateScoreCircle() {
@@ -64,10 +72,11 @@ function updateAnalysisForAttempt(attemptId) {
         metricValues[5].textContent = `${timeSpentMinutes} min`;
     }
     
-    // Update subject analysis, topic analysis, and difficulty chart
+    // Update subject analysis, topic analysis, difficulty chart, and question analysis
     generateSubjectAnalysis(selectedAttempt);
     generateTopicAnalysis(selectedAttempt);
     generateDifficultyChart(selectedAttempt);
+    generateQuestionAnalysis(selectedAttempt);
 }
 
 // Function to generate subject-wise analysis
@@ -362,5 +371,356 @@ function generateDifficultyChart(attempt) {
 
 // Function to generate question-wise analysis
 function generateQuestionAnalysis(attempt) {
-    // Implementation for question analysis if needed
+    const tableBody = document.getElementById('question-analysis-body');
+    if (!tableBody) return;
+    
+    // Clear existing content
+    tableBody.innerHTML = '';
+    
+    // Sort feedback by question index if available, or just use as is
+    const feedbackItems = [...attempt.feedback];
+    
+    let finalData = [];
+
+    // Process each question
+    feedbackItems.forEach((feedback, index) => {
+        const question = questionsData[feedback.question_id];
+        if (!question) return;
+        
+        // Get subject name
+        const subjectId = question.subject;
+        const subject = testData.subjects[subjectId] ? testData.subjects[subjectId].name : 'Unknown';
+        
+        // Get topic/chapter name
+        let topicName = 'Unknown';
+        if (question.chapter) {
+            for (let [subId, subjectData] of Object.entries(testData.subjects)) {
+                if (subId === subjectId && subjectData.chapters) {
+                    for (const chapter of subjectData.chapters) {
+                        if (chapter[0] === question.chapter) {
+                            topicName = chapter[1];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Determine difficulty level
+        let difficultyClass = 'difficulty-medium';
+        let difficultyText = 'MED';
+        if (question.level === 1) {
+            difficultyClass = 'difficulty-easy';
+            difficultyText = 'EASY';
+        } else if (question.level === 3) {
+            difficultyClass = 'difficulty-hard';
+            difficultyText = 'HARD';
+        }
+        
+        // Format your answer and correct answer
+        const userAnswer = feedback.user_answer;
+        const correctAnswer = feedback.correct_answer;
+        
+        // Format marks (positive or negative)
+        const marks = feedback.marks;
+        const marksClass = marks >= 0 ? 'positive-marks' : 'negative-marks';
+        
+        // Format result (correct or incorrect)
+        const resultIcon = feedback.correct ? '✓' : '✗';
+        const resultClass = feedback.correct ? 'correct-result' : 'incorrect-result';
+
+        finalData.push({
+            questionNumber: question.question_number,
+            subject: subject,
+            topicName: topicName,
+            difficultyClass: difficultyClass,
+            difficultyText: difficultyText,
+            userAnswer: userAnswer,
+            correctAnswer: correctAnswer,
+            marks: marks,
+            resultIcon: resultIcon,
+            resultClass: resultClass,
+            time: question.time || '-'
+        });
+
+    });
+
+    // Sort finalData by question number
+    finalData.sort((a, b) => a.questionNumber - b.questionNumber);
+
+    for (const q of finalData) {
+        console.log(q);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>Q${q.questionNumber}</td>
+            <td>${q.subject}</td>
+            <td>${q.topicName}</td>
+            <td><span class="${q.difficultyClass}">${q.difficultyText}</span></td>
+            <td>${q.userAnswer}</td>
+            <td>${q.correctAnswer}</td>
+            <td class="${q.marksClass}">${q.marks >= 0 ? '+' + q.marks : q.marks}</td>
+            <td>${q.time}</td>
+            <td class="${q.resultClass}">${q.resultIcon}</td>
+        `;
+        tableBody.appendChild(tr);
+    }
+}
+
+// Function to generate overall analytics
+function generateOverallAnalytics() {
+    // Calculate analytics
+    const totalAttempts = attemptsData.length;
+    
+    // Calculate average score
+    const totalScore = attemptsData.reduce((sum, attempt) => sum + attempt.score, 0);
+    const avgScore = totalScore / totalAttempts;
+    
+    // Find best and worst scores
+    const scores = attemptsData.map(attempt => attempt.score);
+    const bestScore = Math.max(...scores);
+    const worstScore = Math.min(...scores);
+    
+    // Calculate average time spent (in minutes)
+    const totalTimeSpent = attemptsData.reduce((sum, attempt) => sum + attempt.time_spent, 0);
+    const avgTimeSpent = totalTimeSpent / totalAttempts;
+    const avgMinutes = Math.floor(avgTimeSpent / 1000 / 60);
+    const avgSeconds = Math.floor(avgTimeSpent / 1000 % 60);
+
+    // Calculate improvement (difference between first and last attempt)
+    let improvement = 0;
+    if (totalAttempts >= 2) {
+        improvement = attemptsData[attemptsData.length - 1].score - attemptsData[0].score;
+    }
+    
+    // Update the DOM
+    document.getElementById('total-attempts').textContent = totalAttempts;
+    document.getElementById('avg-score').textContent = avgScore.toFixed(1);
+    document.getElementById('best-score').textContent = bestScore;
+    document.getElementById('worst-score').textContent = worstScore;
+    document.getElementById('avg-time').textContent = `${avgMinutes}:${avgSeconds.toString().padStart(2, '0')}`;
+    document.getElementById('improvement').textContent = improvement > 0 ? `+${improvement}` : improvement;
+    
+    // Set color for improvement
+    const improvementElement = document.getElementById('improvement');
+    if (improvement > 0) {
+        improvementElement.style.color = 'var(--success)';
+    } else if (improvement < 0) {
+        improvementElement.style.color = 'var(--danger)';
+    } else {
+        improvementElement.style.color = 'var(--text-secondary)';
+    }
+}
+
+// Function to generate subject performance data
+function generateSubjectPerformance() {
+    const subjectAnalysisBody = document.getElementById('overall-subject-body');
+    if (!subjectAnalysisBody) return;
+    
+    subjectAnalysisBody.innerHTML = '';
+    
+    // Get all subjects from test data
+    const subjectData = {};
+    
+    // Initialize subject data
+    for (const [subjectId, subject] of Object.entries(testData.subjects)) {
+        // Create a CSS-safe class name from the subject name
+        const cssClass = subject.name ? subject.name.toLowerCase().replace(/[^a-z0-9]/g, '-') : '';
+        
+        subjectData[subjectId] = {
+            name: subject.name,
+            totalAttempted: 0,
+            totalCorrect: 0,
+            accuracy: 0,
+            cssClass: cssClass
+        };
+    }
+    
+    // Process all attempts to gather subject performance data
+    attemptsData.forEach(attempt => {
+        attempt.feedback.forEach(item => {
+            const question = questionsData[item.question_id];
+            if (!question) return;
+            
+            const subjectId = question.subject;
+            if (!subjectData[subjectId]) return;
+            
+            subjectData[subjectId].totalAttempted++;
+            if (item.correct) {
+                subjectData[subjectId].totalCorrect++;
+            }
+        });
+    });
+    
+    // Calculate accuracy for each subject
+    for (const subject of Object.values(subjectData)) {
+        if (subject.totalAttempted > 0) {
+            subject.accuracy = (subject.totalCorrect / subject.totalAttempted) * 100;
+        }
+    }
+    
+    // Create table rows for each subject
+    for (const subject of Object.values(subjectData)) {
+        const tr = document.createElement('tr');
+        
+        tr.innerHTML = `
+            <td><span class="subject-name">${subject.name}</span></td>
+            <td>${subject.totalAttempted}</td>
+            <td>${subject.totalCorrect}</td>
+            <td>
+                <div class="accuracy-progress-container">
+                    <div class="accuracy-bar-large">
+                        <div class="accuracy-fill" style="width: ${subject.accuracy}%;"></div>
+                    </div>
+                    <span class="accuracy-value">${subject.accuracy.toFixed(1)}%</span>
+                </div>
+            </td>
+        `;
+        
+        subjectAnalysisBody.appendChild(tr);
+    }
+}
+
+// Function to generate attempts history table
+function generateAttemptsHistory() {
+    const attemptsHistoryBody = document.getElementById('attempts-history-body');
+    if (!attemptsHistoryBody) return;
+    
+    attemptsHistoryBody.innerHTML = '';
+    
+    // Process each attempt and create table rows
+    attemptsData.forEach((attempt, index) => {
+        const attemptNumber = index + 1;
+        const date = new Date(attempt.submitted_at);
+        const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}, ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')} ${date.getHours() >= 12 ? 'pm' : 'am'}`;
+        const accuracy = attempt.stats.accuracy * 100;
+        const timeSpent = attempt.time_spent;
+        const minutes = Math.floor(timeSpent / 1000 / 60);
+        const seconds = Math.floor(timeSpent / 1000 % 60);
+        const formattedTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        const tr = document.createElement('tr');
+        
+        tr.innerHTML = `
+            <td>${attemptNumber}</td>
+            <td>${formattedDate}</td>
+            <td>${attempt.score}</td>
+            <td>${accuracy.toFixed(1)}%</td>
+            <td>${formattedTime}</td>
+            <td>${attempt.stats.attempted}</td>
+        `;
+        
+        attemptsHistoryBody.appendChild(tr);
+    });
+}
+
+// Function to generate progress chart
+function generateProgressChart() {
+    const canvas = document.getElementById('progressChart');
+    if (!canvas) return;
+    
+    // Prepare data for chart
+    const labels = attemptsData.map((_, index) => `Attempt ${index + 1}`);
+    const scores = attemptsData.map(attempt => attempt.score);
+    const accuracy = attemptsData.map(attempt => attempt.stats.accuracy * 100);
+    
+    // Create chart
+    if (window.progressChart) {
+        try {
+            window.progressChart.destroy();
+        } catch (error) {
+            console.error('Error destroying previous chart:', error);
+        }
+    }
+    
+    window.progressChart = new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Score',
+                    data: scores,
+                    borderColor: 'rgba(99, 132, 255, 1)',
+                    backgroundColor: 'rgba(99, 132, 255, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Accuracy (%)',
+                    data: accuracy,
+                    borderColor: 'rgba(75, 192, 128, 1)',
+                    backgroundColor: 'rgba(75, 192, 128, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.7)'
+                    }
+                },
+                y: {
+                    position: 'left',
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Score',
+                        color: 'rgba(255, 255, 255, 0.7)'
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.7)'
+                    }
+                },
+                y1: {
+                    position: 'right',
+                    beginAtZero: true,
+                    max: 100,
+                    title: {
+                        display: true,
+                        text: 'Accuracy (%)',
+                        color: 'rgba(255, 255, 255, 0.7)'
+                    },
+                    grid: {
+                        drawOnChartArea: false,
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    ticks: {
+                        color: 'rgba(255, 255, 255, 0.7)'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'rgba(255, 255, 255, 0.7)'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    titleColor: 'rgba(255, 255, 255, 0.9)',
+                    bodyColor: 'rgba(255, 255, 255, 0.9)',
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.dataset.label || '';
+                            const value = context.parsed.y;
+                            return `${label}: ${value.toFixed(1)}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
 }
