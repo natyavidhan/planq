@@ -96,6 +96,7 @@ def submit_test():
     test_id = data.get('testId')
     answers = data.get('answers')
     time_spent = data.get('timeSpent')
+    question_timings = data.get('questionTimings', {})  # Get question timings
     
     if not test_id or not answers:
         return jsonify({'error': 'Missing required data'}), 400
@@ -109,14 +110,15 @@ def submit_test():
     if test.get('created_by') != session['user']['id']:
         return jsonify({'error': 'Unauthorized'}), 403
     
-    # Process answers and calculate score
-    result = db.process_test_submission(test_id, session['user']['id'], answers, time_spent)
+    # Process answers and calculate score, passing question timings
+    result = db.process_test_submission(test_id, session['user']['id'], answers, time_spent, question_timings)
     
     # Add activity for completing test
     db.add_activity(session['user']['id'], "test_completed", {
         "test_id": test_id,
         "title": test['title'],
-        "score": result['score']
+        "score": result['score'],
+        "attempt_id": result['attempt_id']
     })
     
     return jsonify({'attemptId': result['attempt_id']}), 200

@@ -429,6 +429,10 @@ function generateQuestionAnalysis(attempt) {
         const resultIcon = feedback.correct ? '✓' : '✗';
         const resultClass = feedback.correct ? 'correct-result' : 'incorrect-result';
 
+        // Format time taken - convert milliseconds to seconds and format
+        const timeTaken = feedback.time_taken ? Math.round(feedback.time_taken / 1000) : '-';
+        const formattedTime = timeTaken !== '-' ? `${timeTaken}s` : '-';
+
         finalData.push({
             questionNumber: question.question_number,
             subject: subject,
@@ -440,9 +444,8 @@ function generateQuestionAnalysis(attempt) {
             marks: marks,
             resultIcon: resultIcon,
             resultClass: resultClass,
-            time: question.time || '-'
+            time: formattedTime  // Use the formatted time from feedback
         });
-
     });
 
     // Sort finalData by question number

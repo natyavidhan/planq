@@ -375,7 +375,8 @@ class Database:
         return test_data
 
     # result = db.process_test_submission(test_id, session['user']['id'], answers, time_spent)
-    def process_test_submission(self, test_id, user_id, answers, time_spent):
+    def process_test_submission(self, test_id, user_id, answers, time_spent, question_timings=None):
+        """Process test submission with question timing data"""
         test = self.get_test(test_id)
         if not test:
             return {"error": "Test not found"}
@@ -436,7 +437,14 @@ class Database:
                 "marks": marks
             })
 
-        # Save attempt
+            # Add question timing to feedback if available
+            timing_data = None
+            if question_timings and q_id in question_timings:
+                timing_data = int(question_timings[q_id]) # Convert to int in case it's a float or string
+
+            feedback[-1]["time_taken"] = timing_data  # Store timing data
+
+        # Save attempt with timing data
         attempt_data = {
             "_id": str(uuid.uuid4()),
             "user_id": user_id,
@@ -445,6 +453,7 @@ class Database:
             "total_questions": len(test['questions']),
             "time_spent": time_spent,
             "feedback": feedback,
+            "question_timings": question_timings,  # Store all question timings
             "submitted_at": datetime.now()
         }
         

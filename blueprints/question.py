@@ -77,6 +77,7 @@ def attempt_question(question_id):
             return jsonify({"error": "No answer provided"}), 400
             
         user_answer = data['answer']
+        time_taken = data.get('time_taken', 0)  # Get time taken in seconds
         
         # Fetch the question with correct answer and explanation
         question = db.pyqs['questions'].find_one({'_id': question_id})
@@ -102,22 +103,18 @@ def attempt_question(question_id):
             if correct_value is None:
                 return jsonify({"error": "Question has no defined correct answer"}), 400
                 
-            # Try to convert inputs to proper numerical values
+            
             try:
                 user_num = float(user_answer)
                 correct_num = float(correct_value)
                 
-                # Determine appropriate tolerance based on the magnitude of the correct answer
-                # For very small numbers, use absolute tolerance; for larger numbers, use relative tolerance
-                if abs(correct_num) < 1e-10:  # For answers very close to zero
+                if abs(correct_num) < 1e-10:
                     tolerance = 1e-10
                     is_correct = abs(user_num - correct_num) <= tolerance
                 else:
-                    # Use relative tolerance for normal-sized numbers
-                    relative_tolerance = 0.0001  # 0.01% tolerance
-                    absolute_tolerance = 0.001   # Fixed minimal tolerance
-                    
-                    # Check if within either relative or absolute tolerance
+                    relative_tolerance = 0.0001
+                    absolute_tolerance = 0.001
+
                     relative_diff = abs((user_num - correct_num) / correct_num)
                     absolute_diff = abs(user_num - correct_num)
                     is_correct = (relative_diff <= relative_tolerance) or (absolute_diff <= absolute_tolerance)
@@ -143,7 +140,8 @@ def attempt_question(question_id):
                 'question_id': question_id,
                 'is_correct': is_correct,
                 'user_answer': user_answer,
-                'correct_answer': response['correct_answer']
+                'correct_answer': response['correct_answer'],
+                'time_taken': time_taken
             }
         )
             

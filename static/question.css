@@ -353,6 +353,30 @@ br + img.explanation-image {
     margin-top: 0.5rem;
 }
 
+/* Timer Styles */
+.question-timer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--bg-tertiary);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
+    width: fit-content;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.question-timer i {
+    color: var(--accent-primary);
+}
+
+#question-timer-display {
+    font-family: monospace;
+}
+
 @media (max-width: 768px) {
     .question-content {
         padding: 1.5rem;

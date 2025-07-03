@@ -105,10 +105,10 @@
                                     <div class="attempt-count">
                                         <i class="fas fa-check-double"></i> {{ test.attempts|length }} attempt{{ 's' if test.attempts|length > 1 else '' }}
                                     </div>
-                                    <div class="score-pill {{ 'high-score' if (test.attempts[-1].score / test.max_marks * 100) >= 70 
-                                                            else 'mid-score' if (test.attempts[-1].score / test.max_marks * 100) >= 40 
+                                    <div class="score-pill {{ 'high-score' if (test.attempts[0].score / test.max_marks * 100) >= 70 
+                                                            else 'mid-score' if (test.attempts[0].score / test.max_marks * 100) >= 40 
                                                             else 'low-score' }}">
-                                        {{ test.attempts[-1].score }}
+                                        {{ test.attempts[0].score }}
                                     </div>
                                 </div>
                             {% endif %}

@@ -70,6 +70,12 @@
                     </div>
                 </div>
             </div>            <div class="question-body">
+                <!-- Add timer display at the top of question body -->
+                <div class="question-timer">
+                    <i class="fas fa-clock"></i>
+                    <span id="question-timer-display">00:00</span>
+                </div>
+                
                 <div class="question-text">
                     {% set question_text = question.question %}
                     {% if '<img' in question_text %}
@@ -143,10 +149,23 @@
             const explanationContent = document.getElementById('explanation-content');
             const submitBtn = document.getElementById('submit-btn');
             const tryAgainBtn = document.getElementById('try-again-btn');
+            const timerDisplay = document.getElementById('question-timer-display');
             
             const questionId = '{{ question._id }}';
             const questionType = '{{ question.type }}';
             let selectedOptions = [];
+            
+            // Timer implementation
+            let startTime = Date.now();
+            let timerSeconds = 0;
+            let timerInterval = setInterval(updateTimer, 1000);
+            
+            function updateTimer() {
+                timerSeconds++;
+                const minutes = Math.floor(timerSeconds / 60);
+                const seconds = timerSeconds % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
             
             // Handle clicks on options
             if (optionsContainer) {
@@ -178,6 +197,12 @@
             questionForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
+                // Calculate time taken in seconds
+                const timeTaken = Math.round((Date.now() - startTime) / 1000);
+                
+                // Stop the timer when submitting
+                clearInterval(timerInterval);
+                
                 let answer;
                 if (questionType === 'numerical') {
                     const numericalInput = document.getElementById('numerical-input');
@@ -207,13 +232,16 @@
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
                 
-                // Submit the answer
+                // Submit the answer with timing data
                 fetch(`/question/attempt/${questionId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ answer: answer }),
+                    body: JSON.stringify({ 
+                        answer: answer,
+                        time_taken: timeTaken 
+                    }),
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -303,6 +331,13 @@
                     
                     selectedOptions = [];
                 }
+                
+                // Reset timer
+                clearInterval(timerInterval);
+                timerSeconds = 0;
+                startTime = Date.now();
+                timerInterval = setInterval(updateTimer, 1000);
+                timerDisplay.textContent = '00:00';
             });
         //{% endif %}
     });
