@@ -68,6 +68,11 @@
                     <div class="meta-item {{ level_class }}">
                         <i class="fas fa-signal"></i> {{ level_text }}
                     </div>
+                    
+                    <!-- Add Bookmark Button -->
+                    <div class="meta-item bookmark-btn" id="bookmark-btn">
+                        <i class="far fa-bookmark"></i> Bookmark
+                    </div>
                 </div>
             </div>            <div class="question-body">
                 <!-- Add timer display at the top of question body -->
@@ -131,6 +136,57 @@
                 <p>Loading question...</p>
             </div>
         {% endif %}
+    </div>
+</div>
+
+<!-- Bookmark Modal -->
+<div class="modal" id="bookmark-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-bookmark"></i> Bookmark Question</h3>
+            <span class="modal-close" id="close-bookmark-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="bookmark-option">
+                <input type="radio" id="default-bucket" name="bucket-option" value="default" checked>
+                <label for="default-bucket">Add to Default Bucket</label>
+            </div>
+            
+            <div class="bookmark-option">
+                <input type="radio" id="custom-bucket" name="bucket-option" value="custom">
+                <label for="custom-bucket">Add to Custom Bucket</label>
+                
+                <div class="custom-bucket-options" id="custom-bucket-options">
+                    <div class="bucket-select-container">
+                        <select id="bucket-select" class="form-select" disabled>
+                            <option value="">-- Select Bucket --</option>
+                            {% for bucket in bookmarks %}
+                            <option value="{{ bucket.id }}">{{ bucket.name }}</option>
+                            {% endfor %}
+                        </select>
+                        
+                        <button id="create-bucket-btn" class="add-bucket-btn" disabled>
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="new-bucket-form" class="new-bucket-form">
+                        <input type="text" id="new-bucket-name" placeholder="Enter bucket name" class="form-control">
+                        <button id="cancel-new-bucket" class="btn-sm btn-outline">Cancel</button>
+                        <button id="save-new-bucket" class="btn-sm btn-primary">Create</button>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bookmark-message" id="bookmark-message"></div>
+        </div>
+        <div class="modal-footer">
+            <button id="cancel-bookmark" class="btn btn-outline-primary">Cancel</button>
+            <button id="save-bookmark" class="btn btn-primary">
+                <i class="fas fa-bookmark"></i> Save Bookmark
+            </button>
+        </div>
     </div>
 </div>
 
@@ -339,6 +395,163 @@
                 timerInterval = setInterval(updateTimer, 1000);
                 timerDisplay.textContent = '00:00';
             });
+            
+            // Bookmark functionality
+            const bookmarkBtn = document.getElementById('bookmark-btn');
+            const bookmarkModal = document.getElementById('bookmark-modal');
+            const closeBookmarkModal = document.getElementById('close-bookmark-modal');
+            const cancelBookmark = document.getElementById('cancel-bookmark');
+            const saveBookmark = document.getElementById('save-bookmark');
+            
+            // Bucket selection controls
+            const defaultBucketRadio = document.getElementById('default-bucket');
+            const customBucketRadio = document.getElementById('custom-bucket');
+            const bucketSelect = document.getElementById('bucket-select');
+            const createBucketBtn = document.getElementById('create-bucket-btn');
+            const newBucketForm = document.getElementById('new-bucket-form');
+            const newBucketName = document.getElementById('new-bucket-name');
+            const saveNewBucket = document.getElementById('save-new-bucket');
+            const cancelNewBucket = document.getElementById('cancel-new-bucket');
+            const bookmarkMessage = document.getElementById('bookmark-message');
+            
+            // Toggle modal
+            bookmarkBtn.addEventListener('click', function() {
+                bookmarkModal.style.display = 'block';
+            });
+            
+            closeBookmarkModal.addEventListener('click', function() {
+                bookmarkModal.style.display = 'none';
+            });
+            
+            cancelBookmark.addEventListener('click', function() {
+                bookmarkModal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === bookmarkModal) {
+                    bookmarkModal.style.display = 'none';
+                }
+            });
+            
+            // Toggle custom bucket options
+            defaultBucketRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    bucketSelect.disabled = true;
+                    createBucketBtn.disabled = true;
+                }
+            });
+            
+            customBucketRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    bucketSelect.disabled = false;
+                    createBucketBtn.disabled = false;
+                }
+            });
+            
+            // Show new bucket form
+            createBucketBtn.addEventListener('click', function() {
+                newBucketForm.style.display = 'grid';
+            });
+            
+            // Hide new bucket form
+            cancelNewBucket.addEventListener('click', function() {
+                newBucketForm.style.display = 'none';
+                newBucketName.value = '';
+            });
+            
+            // Create new bucket
+            saveNewBucket.addEventListener('click', function() {
+                const bucketName = newBucketName.value.trim();
+                if (!bucketName) {
+                    alert('Please enter a bucket name');
+                    return;
+                }
+                
+                fetch('/bookmarks/bucket/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name: bucketName })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        // Add new option to select
+                        const option = document.createElement('option');
+                        option.value = data.bucket_id;
+                        option.textContent = bucketName;
+                        bucketSelect.appendChild(option);
+                        bucketSelect.value = data.bucket_id;
+                        
+                        // Hide form
+                        newBucketForm.style.display = 'none';
+                        newBucketName.value = '';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error creating bucket:', error);
+                    alert('Failed to create bucket');
+                });
+            });
+            
+            // Save bookmark
+            saveBookmark.addEventListener('click', function() {
+                let bucketId = 'default';
+                
+                if (customBucketRadio.checked) {
+                    bucketId = bucketSelect.value;
+                    if (!bucketId) {
+                        alert('Please select a bucket');
+                        return;
+                    }
+                }
+                
+                // Send bookmark request
+                fetch(`/bookmarks/add/${questionId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ bucket: bucketId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        bookmarkMessage.innerHTML = `<div class="error-alert"><i class="fas fa-exclamation-circle"></i> ${data.error}</div>`;
+                    } else {
+                        bookmarkMessage.innerHTML = `<div class="success-alert"><i class="fas fa-check-circle"></i> Question bookmarked successfully!</div>`;
+                        
+                        // Update bookmark button to filled
+                        bookmarkBtn.innerHTML = '<i class="fas fa-bookmark"></i> Bookmarked';
+                        bookmarkBtn.classList.add('bookmarked');
+                        
+                        // Close modal after a short delay
+                        setTimeout(() => {
+                            bookmarkModal.style.display = 'none';
+                            bookmarkMessage.innerHTML = '';
+                        }, 1500);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error bookmarking question:', error);
+                    bookmarkMessage.innerHTML = `<div class="error-alert"><i class="fas fa-exclamation-circle"></i> Failed to bookmark question</div>`;
+                });
+            });
+            
+            // Check if question is already bookmarked
+            fetch(`/bookmarks/check/${questionId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.bookmarked) {
+                        bookmarkBtn.innerHTML = '<i class="fas fa-bookmark"></i> Bookmarked';
+                        bookmarkBtn.classList.add('bookmarked');
+                    }
+                })
+                .catch(error => console.error('Error checking bookmark status:', error));
         //{% endif %}
     });
 </script>

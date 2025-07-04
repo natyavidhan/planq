@@ -387,3 +387,341 @@ br + img.explanation-image {
         gap: 0.5rem;
     }
 }
+
+/* Modal Styles - Enhanced and Modernized */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #15171c;
+    margin: 3rem auto;
+    max-width: 450px;
+    width: 100%;
+    border-radius: 16px;
+    border: 1px solid rgba(107, 138, 253, 0.15);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 
+                0 5px 15px rgba(107, 138, 253, 0.1);
+    overflow: hidden;
+    animation: modalAppear 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+    transform-origin: center center;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid rgba(107, 138, 253, 0.1);
+    background-color: rgba(21, 23, 28, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #fff;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    letter-spacing: -0.01em;
+}
+
+.modal-header h3 i {
+    color: var(--accent-primary);
+    font-size: 1.1em;
+}
+
+.modal-close {
+    color: #8a8f99;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.modal-body {
+    padding: 1.8rem;
+}
+
+.modal-footer {
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    border-top: 1px solid rgba(107, 138, 253, 0.1);
+    background-color: rgba(21, 23, 28, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+/* Custom Radio Button Styling */
+.bookmark-option {
+    margin-bottom: 1.5rem;
+    background-color: rgba(35, 38, 46, 0.5);
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.bookmark-option:hover {
+    background-color: rgba(107, 138, 253, 0.08);
+    border-color: rgba(107, 138, 253, 0.2);
+    transform: translateY(-2px);
+}
+
+.bookmark-option input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+}
+
+.bookmark-option label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #e8e8e8;
+    font-weight: 500;
+    padding-left: 2rem;
+    position: relative;
+}
+
+.bookmark-option label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(107, 138, 253, 0.5);
+    border-radius: 50%;
+    background-color: transparent;
+    transition: all 0.2s ease;
+}
+
+.bookmark-option input[type="radio"]:checked + label::before {
+    border-color: var(--accent-primary);
+    background-color: rgba(107, 138, 253, 0.2);
+}
+
+.bookmark-option input[type="radio"]:checked + label::after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--accent-primary);
+}
+
+.custom-bucket-options {
+    margin-top: 1.2rem;
+    margin-left: 2rem;
+    padding-top: 1.2rem;
+    border-top: 1px dashed rgba(107, 138, 253, 0.15);
+}
+
+.bucket-select-container {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+select.form-select {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background-color: rgba(35, 38, 46, 0.8);
+    color: #e8e8e8;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237a7a7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    transition: all 0.2s ease;
+}
+
+select.form-select:focus {
+    border-color: var(--accent-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(107, 138, 253, 0.15);
+}
+
+select.form-select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: rgba(35, 38, 46, 0.4);
+}
+
+.add-bucket-btn {
+    min-width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(107, 138, 253, 0.3);
+    transition: all 0.2s ease;
+}
+
+.add-bucket-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(107, 138, 253, 0.4);
+    filter: brightness(1.1);
+}
+
+.add-bucket-btn:active {
+    transform: translateY(0);
+}
+
+.add-bucket-btn:disabled {
+    background: rgba(35, 38, 46, 0.5);
+    color: rgba(255, 255, 255, 0.3);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Improved New Bucket Form Styles */
+.new-bucket-form {
+    display: none;
+    margin-top: 1.2rem;
+    background-color: rgba(21, 23, 28, 0.8);
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 1px solid rgba(107, 138, 253, 0.15);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.2s ease;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+.new-bucket-form input[type="text"] {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: rgba(35, 38, 46, 0.6);
+    color: #e8e8e8;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    transition: all 0.2s ease;
+    /* make it span two columns */
+    grid-column: span 2;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.btn-sm {
+    padding: 0.6rem 1.2rem;
+    margin: 0.5rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 80px;
+    text-align: center;
+}
+
+.btn-sm.btn-primary {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    border: none;
+    box-shadow: 0 2px 6px rgba(107, 138, 253, 0.3);
+}
+
+.btn-sm.btn-outline {
+    background-color: rgba(35, 38, 46, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-secondary);
+}
+
+.btn-sm.btn-outline:hover {
+    background-color: rgba(35, 38, 46, 0.8);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Bookmark button styling */
+.bookmark-btn {
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.bookmark-btn:hover {
+    color: var(--accent-primary);
+    transform: translateY(-1px);
+}
+
+.bookmark-btn.bookmarked {
+    color: var(--accent-primary);
+}
+
+.bookmark-btn.bookmarked i {
+    animation: bookmarkPulse 0.5s ease;
+}
+
+@keyframes bookmarkPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}

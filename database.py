@@ -472,3 +472,62 @@ class Database:
             "total_questions": sum([len(i) for i in test['questions']]),
             "feedback": feedback
         }
+
+    def create_bookmark(self, user_id, bucket_name):
+        """Create a new bookmark bucket for the user"""
+        data = self.users['bookmarks'].find_one({"_id": user_id})
+        if not data:
+            data = {
+                "_id": user_id,
+                "bookmarks": {}
+            }
+        
+        bucket_id = str(uuid.uuid4())
+        
+        data['bookmarks'][bucket_id] = {
+            "name": bucket_name,
+            "questions": []
+        }
+
+        self.users['bookmarks'].update_one({"_id": user_id}, {"$set": data}, upsert=True)
+
+    def add_bookmark(self, user_id, question_id, bucket='default'):
+        data = self.users['bookmarks'].find_one({"_id": user_id})
+        if not data:
+            data = {
+                "_id": user_id,
+                "bookmarks": {
+                    "default": {
+                        "name": "Default",
+                        "questions": []
+                    }
+                }
+            }
+
+        if question_id not in data['bookmarks'][bucket]['questions']:
+            data['bookmarks'][bucket]['questions'].append(question_id)
+
+        self.users['bookmarks'].update_one({"_id": user_id}, {"$set": data}, upsert=True)
+
+    def get_bookmarks(self, user_id, bucket='default'):
+        data = self.users['bookmarks'].find_one({"_id": user_id})
+        if not data:
+            return {}
+        if 'bookmarks' not in data:
+            data['bookmarks'] = {
+                "default": {
+                    "name": "Default",
+                    "questions": []
+                }
+            }
+        
+        return data['bookmarks'].get(bucket, {})
+    
+    def remove_bookmark(self, user_id, question_id, bucket='default'):
+        data = self.users['bookmarks'].find_one({"_id": user_id})
+        if not data or 'bookmarks' not in data:
+            return
+        
+        if bucket in data['bookmarks'] and question_id in data['bookmarks'][bucket]['questions']:
+            data['bookmarks'][bucket]['questions'].remove(question_id)
+            self.users['bookmarks'].update_one({"_id": user_id}, {"$set": data})
