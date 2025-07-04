@@ -161,7 +161,7 @@
                         <select id="bucket-select" class="form-select" disabled>
                             <option value="">-- Select Bucket --</option>
                             {% for bucket in bookmarks %}
-                            <option value="{{ bucket.id }}">{{ bucket.name }}</option>
+                            <option value="{{ bucket._id }}">{{ bucket.name }}</option>
                             {% endfor %}
                         </select>
                         
@@ -467,8 +467,8 @@
                     alert('Please enter a bucket name');
                     return;
                 }
-                
-                fetch('/bookmarks/bucket/create', {
+
+                fetch(`/api/bookmarks/bucket/create`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -511,7 +511,7 @@
                 }
                 
                 // Send bookmark request
-                fetch(`/bookmarks/add/${questionId}`, {
+                fetch(`/api/bookmarks/add/${questionId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -543,12 +543,33 @@
             });
             
             // Check if question is already bookmarked
-            fetch(`/bookmarks/check/${questionId}`)
+            fetch(`/api/bookmarks/check/${questionId}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.bookmarked) {
+                        // Update bookmark button visual state
                         bookmarkBtn.innerHTML = '<i class="fas fa-bookmark"></i> Bookmarked';
                         bookmarkBtn.classList.add('bookmarked');
+                        
+                        // Preselect the correct bucket in the modal
+                        if (data.bucket_id) {
+                            if (data.bucket_id === 'default') {
+                                // If it's in the default bucket
+                                defaultBucketRadio.checked = true;
+                                customBucketRadio.checked = false;
+                                bucketSelect.disabled = true;
+                                createBucketBtn.disabled = true;
+                            } else {
+                                // If it's in a custom bucket
+                                defaultBucketRadio.checked = false;
+                                customBucketRadio.checked = true;
+                                bucketSelect.disabled = false;
+                                createBucketBtn.disabled = false;
+                                
+                                // Select the correct bucket in the dropdown
+                                bucketSelect.value = data.bucket_id;
+                            }
+                        }
                     }
                 })
                 .catch(error => console.error('Error checking bookmark status:', error));

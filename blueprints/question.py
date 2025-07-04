@@ -60,9 +60,10 @@ def question_page(question_id):
             'level': question.get('level')
         }
         
-        # Pass only the public data to the template (no correct answers or explanation)
-        return render_template('question.html', question=public_question)
-        
+        buckets = db.get_user_buckets(session['user']['id'])
+        buckets = [{'_id': str(bucket), 'name': data['name']} for bucket, data in buckets.items()]
+        return render_template('question.html', question=public_question, bookmarks=buckets)
+
     except Exception as e:
         print(f"Question Page Error: {str(e)}")
         return render_template('question.html', error=f"Failed to load question: {str(e)}")

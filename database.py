@@ -473,7 +473,7 @@ class Database:
             "feedback": feedback
         }
 
-    def create_bookmark(self, user_id, bucket_name):
+    def create_bookmark_bucket(self, user_id, bucket_name):
         """Create a new bookmark bucket for the user"""
         data = self.users['bookmarks'].find_one({"_id": user_id})
         if not data:
@@ -490,6 +490,8 @@ class Database:
         }
 
         self.users['bookmarks'].update_one({"_id": user_id}, {"$set": data}, upsert=True)
+
+        return bucket_id
 
     def add_bookmark(self, user_id, question_id, bucket='default'):
         data = self.users['bookmarks'].find_one({"_id": user_id})
@@ -531,3 +533,21 @@ class Database:
         if bucket in data['bookmarks'] and question_id in data['bookmarks'][bucket]['questions']:
             data['bookmarks'][bucket]['questions'].remove(question_id)
             self.users['bookmarks'].update_one({"_id": user_id}, {"$set": data})
+
+    def check_bookmark(self, user_id, question_id):
+        data = self.users['bookmarks'].find_one({"_id": user_id})
+        if not data or 'bookmarks' not in data:
+            return False
+
+        for b_id, bucket in data['bookmarks'].items():
+            if question_id in bucket['questions']:
+                return (True, b_id)
+        
+        return (False, None)
+    
+    def get_user_buckets(self, user_id):
+        data = self.users['bookmarks'].find_one({"_id": user_id})
+        if not data or 'bookmarks' not in data:
+            return {}
+        
+        return data['bookmarks']
