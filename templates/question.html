@@ -468,7 +468,7 @@
                     return;
                 }
 
-                fetch(`/api/bookmarks/bucket/create`, {
+                fetch(`/bookmarks/bucket/create`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -511,7 +511,7 @@
                 }
                 
                 // Send bookmark request
-                fetch(`/api/bookmarks/add/${questionId}`, {
+                fetch(`/bookmarks/add/${questionId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -543,7 +543,7 @@
             });
             
             // Check if question is already bookmarked
-            fetch(`/api/bookmarks/check/${questionId}`)
+            fetch(`/bookmarks/check/${questionId}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.bookmarked) {

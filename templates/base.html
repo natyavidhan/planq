@@ -70,8 +70,8 @@
                     <a href="/dashboard" class="nav-link {% if request.path == '/dashboard' %}active{% endif %}">
                         <i class="fas fa-home"></i> Dashboard
                     </a>
-                    <a href="/tests" class="nav-link {% if request.path == '/tests' %}active{% endif %}">
-                        <i class="fas fa-clipboard-list"></i> My Tests
+                    <a href="/bookmarks" class="nav-link {% if request.path == '/bookmarks' %}active{% endif %}">
+                        <i class="fas fa-bookmark"></i> Bookmarks
                     </a>
                 </div>
                 {% endif %}
@@ -80,10 +80,6 @@
             <!-- Center: Search -->
             {% if is_authenticated %}
             <div class="navbar-center">
-                <div class="search-bar">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search" aria-label="Search">
-                </div>
             </div>
             {% endif %}
             

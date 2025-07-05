@@ -14,6 +14,7 @@ from blueprints.search import init_blueprint as init_search_blueprint
 from blueprints.question import init_blueprint as init_question_blueprint
 from blueprints.test import init_blueprint as init_test_blueprint
 from blueprints.api import init_blueprint as init_api_blueprint
+from blueprints.bookmarks import init_blueprint as init_bookmarks_blueprint
 
 load_dotenv()
 
@@ -28,6 +29,7 @@ app.register_blueprint(init_search_blueprint(db))
 app.register_blueprint(init_question_blueprint(db))
 app.register_blueprint(init_test_blueprint(db))
 app.register_blueprint(init_api_blueprint(db))
+app.register_blueprint(init_bookmarks_blueprint(db))
 
 # Custom filters for templates
 @app.template_filter('formatdate')

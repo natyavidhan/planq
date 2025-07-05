@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+
+{% block title %}Bookmarks{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="/static/bookmarks.css">
+<div class="bookmarks-container">
+    <div class="bookmarks-header">
+        <h1><i class="fas fa-bookmark"></i> Bookmarks</h1>
+        <button id="create-bucket-btn" class="btn btn-primary"><i class="fas fa-plus"></i> New Bucket</button>
+    </div>
+    <div class="buckets-tabs" id="buckets-tabs">
+        <!-- Home/default bucket button -->
+        <button class="bucket-tab home-tab active" data-bucket="default">
+            <i class="fas fa-home"></i> Default
+            <span class="badge">{{ buckets['default'].questions|length if buckets['default'] else 0 }}</span>
+        </button>
+        {% for bucket_id, bucket in buckets.items() %}
+            {% if bucket_id != 'default' %}
+            <button class="bucket-tab" data-bucket="{{ bucket_id }}">
+                <i class="fas fa-folder"></i> {{ bucket.name }}
+                <span class="badge">{{ bucket.questions|length }}</span>
+            </button>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="bucket-content" id="bucket-content">
+        {% set active_bucket = buckets['default'] if buckets['default'] else buckets|first %}
+        {% if active_bucket %}
+            <div class="bookmark-list" id="bookmark-list">
+                {% if active_bucket.questions %}
+                    <div class="questions-grid">
+                        {% for qid in active_bucket.questions %}
+                            {% set q = questions[qid] if qid in questions else None %}
+                            {% if q %}
+                            <div class="question-card" data-qid="{{ qid }}">
+                                <div class="question-header">
+                                    <div class="question-meta">
+                                        {% if q.exam_name %}
+                                            <span class="meta-tag exam-tag">{{ q.exam_name }}</span>
+                                        {% endif %}
+                                        {% if q.subject_name %}
+                                            <span class="meta-tag subject-tag">{{ q.subject_name }}</span>
+                                        {% endif %}
+                                        {% if q.chapter_name %}
+                                            <span class="meta-tag chapter-tag">{{ q.chapter_name }}</span>
+                                        {% endif %}
+                                        {% if q.paper_name %}
+                                            <span class="meta-tag paper-tag">{{ q.paper_name }}</span>
+                                        {% endif %}
+                                        <!-- Question type tag -->
+                                        {% if q.type == 'singleCorrect' %}
+                                            <span class="meta-tag type-tag">MCQ</span>
+                                        {% elif q.type == 'numerical' %}
+                                            <span class="meta-tag type-tag">Integer</span>
+                                        {% endif %}
+                                        <!-- Difficulty level tag -->
+                                        {% if q.level %}
+                                            {% if q.level == 1 %}
+                                                <span class="meta-tag difficulty-tag easy">Easy</span>
+                                            {% elif q.level == 2 %}
+                                                <span class="meta-tag difficulty-tag medium">Medium</span>
+                                            {% elif q.level == 3 %}
+                                                <span class="meta-tag difficulty-tag hard">Hard</span>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="question-actions">
+                                        <button class="action-btn bookmark-remove" data-qid="{{ qid }}" title="Remove Bookmark">
+                                            <i class="fas fa-bookmark"></i>
+                                        </button>
+                                        <a href="/question/{{ qid }}" class="action-btn view-btn" title="View Question">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div class="question-content">
+                                    <div class="question-text">
+                                        {{ q.question|safe }}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-inbox empty-icon"></i>
+                        <p>No bookmarks in this bucket.</p>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Modal for creating a new bucket -->
+    <div class="bookmark-modal" id="bookmark-modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <h2>Create Bookmark Bucket</h2>
+            <input type="text" id="bucket-name" placeholder="Bucket Name">
+            <button id="save-bucket-btn" class="btn btn-primary">Create</button>
+        </div>
+    </div>
+</div>
+<script>
+    // JS for switching buckets and modal
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.bucket-tab');
+        const bucketContent = document.getElementById('bucket-content');
+        const buckets = {{ buckets|tojson }};
+        const questions = {{ questions|tojson }};
+        const createBtn = document.getElementById('create-bucket-btn');
+        const modal = document.getElementById('bookmark-modal');
+        const closeModal = document.getElementById('close-modal');
+        const saveBucketBtn = document.getElementById('save-bucket-btn');
+        const bucketNameInput = document.getElementById('bucket-name');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                const bucketId = this.getAttribute('data-bucket');
+                const bucket = buckets[bucketId];
+                let html = '';
+                if (bucket && bucket.questions.length > 0) {
+                    html += '<div class="questions-grid">';
+                    bucket.questions.forEach(qid => {
+                        const q = questions[qid];
+                        if (q) {
+                            const questionType = q.type === 'singleCorrect' ? 'MCQ' : 'Integer';
+                            const typeIcon = q.type === 'singleCorrect' ? 'fas fa-list' : 'fas fa-calculator';
+                            
+                            // Difficulty badge
+                            let difficultyBadge = '';
+                            if (q.level) {
+                                if (q.level == 1) {
+                                    difficultyBadge = '<span class="meta-tag difficulty-tag easy">Easy</span>';
+                                } else if (q.level == 2) {
+                                    difficultyBadge = '<span class="meta-tag difficulty-tag medium">Medium</span>';
+                                } else if (q.level == 3) {
+                                    difficultyBadge = '<span class="meta-tag difficulty-tag hard">Hard</span>';
+                                }
+                            }
+
+                            html += `
+                            <div class="question-card" data-qid="${qid}">
+                                <div class="question-header">
+                                    <div class="question-meta">
+                                        ${q.exam_name ? `<span class="meta-tag exam-tag">${q.exam_name}</span>` : ''}
+                                        ${q.subject_name ? `<span class="meta-tag subject-tag">${q.subject_name}</span>` : ''}
+                                        ${q.chapter_name ? `<span class="meta-tag chapter-tag">${q.chapter_name}</span>` : ''}
+                                        ${q.paper_name ? `<span class="meta-tag paper-tag">${q.paper_name}</span>` : ''}
+                                        <span class="meta-tag type-tag">${questionType}</span>
+                                        ${difficultyBadge}
+                                    </div>
+                                    <div class="question-actions">
+                                        <button class="action-btn bookmark-remove" data-qid="${qid}" title="Remove Bookmark">
+                                            <i class="fas fa-bookmark"></i>
+                                        </button>
+                                        <a href="/question/${qid}" class="action-btn view-btn" title="View Question">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div class="question-content">
+                                    <div class="question-text">
+                                        ${q.question}
+                                    </div>
+                                </div>
+                            </div>`;
+                        }
+                    });
+                    html += '</div>';
+                } else {
+                    html = `<div class="empty-state">
+                        <i class="fas fa-inbox empty-icon"></i>
+                        <p>No bookmarks in this bucket.</p>
+                    </div>`;
+                }
+                bucketContent.innerHTML = `<div class="bookmark-list" id="bookmark-list">${html}</div>`;
+                
+                // Add event listeners for remove bookmark buttons
+                addRemoveBookmarkListeners();
+            });
+        });
+
+        function addRemoveBookmarkListeners() {
+            const removeButtons = document.querySelectorAll('.bookmark-remove');
+            removeButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const qid = this.getAttribute('data-qid');
+                    const activeTab = document.querySelector('.bucket-tab.active');
+                    const bucketId = activeTab.getAttribute('data-bucket');
+                    
+                    if (confirm('Remove this question from bookmarks?')) {
+                        fetch(`/bookmarks/remove/${qid}`, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({bucket: bucketId})
+                        })
+                        .then(r => r.json())
+                        .then(data => {
+                            if (data.success || !data.error) {
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+            });
+        }
+
+        // Add initial remove bookmark listeners
+        addRemoveBookmarkListeners();
+
+        createBtn.addEventListener('click', function() {
+            modal.style.display = 'flex';
+            bucketNameInput.value = '';
+        });
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        saveBucketBtn.addEventListener('click', function() {
+            const name = bucketNameInput.value.trim();
+            if (!name) {
+                bucketNameInput.focus();
+                return;
+            }
+            fetch('/bookmarks/bucket/create', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name})
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.bucket_id) {
+                    location.reload();
+                }
+            });
+        });
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -238,8 +238,15 @@ class Database:
     def get_subject(self, subject_id):
         return self.pyqs['subjects'].find_one({"_id": subject_id}, {"_id": 1, "name": 1, "exam": 1, "chapters": 1})
     
-    def get_questions_by_ids(self, question_ids):
-        return list(self.pyqs['questions'].find({"_id": {"$in": question_ids}}))
+    def get_questions_by_ids(self, question_ids, full_data=False):
+        if not full_data:
+            return list(self.pyqs['questions'].find({"_id": {"$in": question_ids}}))
+        q = list(self.pyqs['questions'].find({"_id": {"$in": question_ids}}))
+        for question in q:
+            question['exam_name'] = self.pyqs['exams'].find_one({"_id": question['exam']}, {"name": 1})['name']
+            question['subject_name'] = self.pyqs['subjects'].find_one({"_id": question['subject']}, {"name": 1})['name']
+            question['paper_name'] = self.pyqs['papers'].find_one({"_id": question.get('paper_id')}, {"name": 1})['name']
+        return q
     
     def get_test_optimized(self, test_id):
         """
@@ -537,7 +544,7 @@ class Database:
     def check_bookmark(self, user_id, question_id):
         data = self.users['bookmarks'].find_one({"_id": user_id})
         if not data or 'bookmarks' not in data:
-            return False
+            return (False, None)
 
         for b_id, bucket in data['bookmarks'].items():
             if question_id in bucket['questions']:
