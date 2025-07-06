@@ -11,7 +11,7 @@ with open('conf.json', 'r') as f:
 
 class Database:
     def __init__(self):
-        self.client = MongoClient(os.getenv("MONGO_URI"), maxPoolSize=20, connectTimeoutMS=3000)
+        self.client = MongoClient(os.getenv("MONGO_URI"), maxPoolSize=20)
         self.users = self.client['userdata']
         self.pyqs = self.client['pyqs']
         self.tests = self.client['tests']

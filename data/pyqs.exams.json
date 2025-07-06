@@ -1,0 +1,154 @@
+[{
+  "_id": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a",
+  "name": "BITSAT",
+  "subjects": [
+    [
+      "45363e06-86a7-4d8e-be8d-318ee79af980",
+      "Physics"
+    ],
+    [
+      "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+      "Chemistry"
+    ],
+    [
+      "6848df90-e6d7-4505-a691-53956ebf45a2",
+      "Mathematics"
+    ]
+  ]
+},
+{
+  "_id": "bb792041-50de-4cfe-83f3-f899a79c0930",
+  "name": "COMEDK",
+  "subjects": [
+    [
+      "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+      "Physics"
+    ],
+    [
+      "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+      "Chemistry"
+    ],
+    [
+      "3d7d5653-4382-4275-be29-58b0eea9f510",
+      "Mathematics"
+    ]
+  ]
+},
+{
+  "_id": "4625ad6f-33db-4c22-96e0-6c23830482de",
+  "name": "NEET",
+  "subjects": [
+    [
+      "4b89e781-8987-47aa-84b6-d95025d590b0",
+      "Physics"
+    ],
+    [
+      "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+      "Chemistry"
+    ],
+    [
+      "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+      "Biology"
+    ]
+  ]
+},
+{
+  "_id": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e",
+  "name": "JEE Main",
+  "subjects": [
+    [
+      "7bc04a29-039c-430d-980d-a066b16efc86",
+      "Physics"
+    ],
+    [
+      "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+      "Chemistry"
+    ],
+    [
+      "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+      "Mathematics"
+    ]
+  ]
+},
+{
+  "_id": "1aa38a2b-dee5-453e-a394-29c033c16789",
+  "name": "MHT CET",
+  "subjects": [
+    [
+      "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+      "Physics"
+    ],
+    [
+      "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+      "Chemistry"
+    ],
+    [
+      "2d820cff-7252-4a17-9f44-10b92970705e",
+      "Mathematics"
+    ]
+  ]
+},
+{
+  "_id": "f3e78517-c050-4fea-822b-e43c4d2d3523",
+  "name": "WBJEE",
+  "subjects": [
+    [
+      "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+      "Physics"
+    ],
+    [
+      "2d96a490-384b-4984-9356-086b3baf166b",
+      "Chemistry"
+    ],
+    [
+      "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+      "Mathematics"
+    ]
+  ]
+},
+{
+  "_id": "2871e14c-fbcf-4047-9955-e210b0fb742b",
+  "name": "NDA",
+  "subjects": [
+    [
+      "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+      "Mathematics"
+    ]
+  ]
+},
+{
+  "_id": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c",
+  "name": "VITEEE",
+  "subjects": [
+    [
+      "fdd0de52-3277-408a-aed9-12c735635134",
+      "Physics"
+    ],
+    [
+      "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+      "Chemistry"
+    ],
+    [
+      "c476840a-2596-4510-878c-d641b83469dc",
+      "Mathematics"
+    ]
+  ]
+},
+{
+  "_id": "6d34f7cd-c80e-4a42-8c35-2b167f459c06",
+  "name": "JEE Advanced",
+  "subjects": [
+    [
+      "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+      "Physics"
+    ],
+    [
+      "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+      "Chemistry"
+    ],
+    [
+      "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+      "Mathematics"
+    ]
+  ]
+}]

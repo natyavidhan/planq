@@ -2,3 +2,5 @@ flask
 dnspython
 pymongo
 python-dotenv
+Brotli
+requests

@@ -1,0 +1,4802 @@
+[
+    {
+        "_id": "1b5a872e-1298-4cc7-bfbb-d997a3733211",
+        "name": "Units and Dimensions",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "d09b550d-c06d-4603-a5c5-8ed115b366a6",
+        "name": "Mathematics in Physics",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "4a320b82-c103-4908-8039-2e17d2262375",
+        "name": "Motion In One Dimension",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "ea0921e1-42c2-411e-a0ee-2a4939d765fe",
+        "name": "Motion In Two Dimensions",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "b69a06b6-626d-4d8d-85c9-a2e44a1c1dd4",
+        "name": "Laws of Motion",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "bd4a4db4-e7c7-4056-98ff-dca31b878da2",
+        "name": "Work Power Energy",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "c846c63a-8f3d-49a9-82d0-397a134f57af",
+        "name": "Gravitation",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "3bdb2d13-4452-4723-b544-c63be341125a",
+        "name": "Rotational Motion",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "43245d58-15ba-442d-83ef-3e8da2d249d4",
+        "name": "Thermodynamics",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "df0d75bf-c6db-455f-918e-a7e39973c60d",
+        "name": "Current Electricity",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "8d14cc07-6d5d-4e0d-94ae-98a1e21433ea",
+        "name": "Mechanical Properties of Solids",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "14c185ce-1506-4323-b715-91430b61dfb9",
+        "name": "Oscillations",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "21ab51e1-5463-4a1c-95e5-70282434c15e",
+        "name": "Thermal Properties of Matter",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "b454f90b-7a83-44f6-a131-6f23fadf1e50",
+        "name": "Kinetic Theory of Gases",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "809ced56-9bc0-4012-97f7-a80b61375f33",
+        "name": "Mechanical Properties of Fluids",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "caf477c1-3d7e-40f2-8e93-715af1c88f8b",
+        "name": "Waves and Sound",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "3298ffc4-d90e-49a0-b2ca-4e3f40630b04",
+        "name": "Capacitance",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "5a761217-9d30-4188-842b-65bb52238b88",
+        "name": "Center of Mass Momentum and Collision",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "a430491d-e364-4562-881c-bd03b308f1a2",
+        "name": "Electrostatics",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "63c0b667-1087-436a-babb-9046004cbc94",
+        "name": "Magnetic Effects of Current",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "6cb8538b-cfc8-460d-b5b8-316719e81dca",
+        "name": "Electromagnetic Waves",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "71138bff-0716-43c5-9eec-f912487e7ee3",
+        "name": "Ray Optics",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "e55e3dcc-8c71-450d-9ea6-d254d6095e78",
+        "name": "Electromagnetic Induction",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "6d5eb8c1-d126-4efb-9bb3-2d5847a10a55",
+        "name": "Wave Optics",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "a1c7fe27-7ad3-4946-9529-b7de25084138",
+        "name": "Alternating Current",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "c160469a-d4a8-4121-8399-ad3d92a80b6f",
+        "name": "Magnetic Properties of Matter",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "bd10a843-4c31-4322-b2af-a8886d8e5e9d",
+        "name": "Nuclear Physics",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "7eac2cbf-5f41-461f-a42e-09d5a7746f52",
+        "name": "Semiconductors",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "d53bf533-977e-4420-8d90-4d595d3d268e",
+        "name": "Hydrocarbons",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "44c79ec8-c23f-4d03-8e41-125ec8ed1b27",
+        "name": "Classification of Elements and Periodicity in Properties",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "03a8cd09-b4c9-4ae9-86c8-b1e8c760736c",
+        "name": "Thermodynamics (C)",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "6d37c05e-b6ae-4a15-9bb9-3fc709317113",
+        "name": "Experimental Physics",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "e9fa2a0c-b0da-4238-8f28-951a074563df",
+        "name": "Atomic Physics",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "6fc172c7-090e-41b8-9954-343fedbed4d2",
+        "name": "Some Basic Concepts of Chemistry",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "0820c3bf-e57d-4de1-abe5-79bb8e7152e6",
+        "name": "Dual Nature of Matter",
+        "subject": "7bc04a29-039c-430d-980d-a066b16efc86",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "e68c220a-af39-4fc9-be72-e8afc4bbfac7",
+        "name": "Chemical Bonding and Molecular Structure",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "bc9a58d3-b690-4003-aa97-6c45fced019d",
+        "name": "Chemical Equilibrium",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "280a98ec-d713-4821-8595-000bb4f65cd3",
+        "name": "p Block Elements (Group 13 & 14)",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "dc132b83-9598-484d-84b7-b99b861da440",
+        "name": "General Organic Chemistry",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "e810b97a-e319-4818-97ed-f0c49037563c",
+        "name": "Ionic Equilibrium",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "ff4a8c51-ceb6-49f6-8c97-bff5fdd2f88f",
+        "name": "Solutions",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "dbddfb1b-30d5-40a5-9ae0-5fa2eb7b3a57",
+        "name": "Structure of Atom",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "fe08b828-cefc-485d-94be-6925eb56baae",
+        "name": "Redox Reactions",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "37340edc-c8e2-4d1e-9e8b-2b54ea5d9664",
+        "name": "d and f Block Elements",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "5e9a19cc-440f-47f0-9193-907221fce6a7",
+        "name": "Trigonometric Ratios & Identities",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "80f3dd36-0cec-4140-9d1f-2d6e73a640c4",
+        "name": "Hyperbola",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "0bb9e994-8fa7-48cc-b112-b37bd43fc2d7",
+        "name": "Carboxylic Acid Derivatives",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "9c421335-774a-48a9-9a08-364132c49b57",
+        "name": "Practical Chemistry",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "bf1ce20c-5d86-4762-a789-98848df2b064",
+        "name": "Chemical Kinetics",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "0efea03b-380f-4ec7-85f9-6aec8f362ebd",
+        "name": "Straight Lines",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "d48906fb-63b2-413b-85b8-50d6140c1815",
+        "name": "Circle",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "d116b80a-8fa9-464c-a458-bc201cf9f531",
+        "name": "p Block Elements (Group 15, 16, 17 & 18)",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "7d7aec71-180f-468e-9748-3f613977edc8",
+        "name": "Alcohols Phenols and Ethers",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "753e5268-c2b9-46eb-aa77-8e7dbe2b8be6",
+        "name": "Sequences and Series",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "f3cf54c3-6757-40bd-8418-0256ecc90c66",
+        "name": "Basic of Mathematics",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "b8c71473-4ece-418b-a732-2c47aac3af33",
+        "name": "Parabola",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "30049ae3-007f-4cac-8d6d-1897f103c728",
+        "name": "Limits",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "76022842-461a-439a-960e-2e647b9af71b",
+        "name": "Haloalkanes and Haloarenes",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "5c96ce9d-cf92-47f3-9d76-756bdffec62c",
+        "name": "Permutation Combination",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "7fa84739-d326-4b68-87f8-b207a9c71048",
+        "name": "Amines",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "5bbdc52f-7337-4362-96d7-3a50b9a5295e",
+        "name": "Biomolecules",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "115ba735-858f-49de-b2ee-4fe8847199f2",
+        "name": "Coordination Compounds",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "08037c00-a5cf-4806-96ee-6c48338d030c",
+        "name": "Aldehydes and Ketones",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "e8bb887a-3f43-4497-89b0-b8842e000893",
+        "name": "Binomial Theorem",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "1c4cf1db-a8a6-4986-9c5a-898dafe23405",
+        "name": "Electrochemistry",
+        "subject": "bdcc1b1b-5d9d-465d-a7b8-f9619bb61fe7",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "59c39ae7-b17b-4d48-9396-a126510a107e",
+        "name": "Statistics",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "0040bfe5-8298-42df-b5b0-94bef5f1189a",
+        "name": "Quadratic Equation",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "b5266bc9-9f20-43b5-9c10-769b6b86945e",
+        "name": "Ellipse",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "3c6996c6-572e-4505-b2ed-e18cbdd6bd8e",
+        "name": "Complex Number",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "3bde1d54-9406-4e11-88fa-69a92a27d63a",
+        "name": "Motion In One Dimension",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "f547640b-7686-4ca8-b066-0e88d41d557b",
+        "name": "Work Power Energy",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "9df68d05-b0fd-4827-8fad-9653d4f6fbb6",
+        "name": "Three Dimensional Geometry",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "2f5f1097-6e1c-472c-acf8-7a9132d8e453",
+        "name": "Continuity and Differentiability",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "5fda64e7-7668-4b20-92b9-74ef1e0f191f",
+        "name": "Thermal Properties of Matter",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "0e61d089-496a-416d-980d-338d5c24d3f5",
+        "name": "Alternating Current",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "15d0a6f3-4372-492c-b4b9-132c2858f354",
+        "name": "Definite Integration",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "0a029932-344f-4acf-ad75-a2989fe79d88",
+        "name": "Probability",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "522b2493-b370-4279-a230-78ee84efc320",
+        "name": "Mechanical Properties of Solids",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "48767a39-37b1-4301-9f0b-22e1efd94c02",
+        "name": "Capacitance",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "f5d1e01c-81fd-431b-87c9-ae4f179f29d3",
+        "name": "Matrices",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "1a746f02-ecca-4038-9739-e66249ab5eb0",
+        "name": "Electrostatics",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "82da1a0b-8b8c-4445-8cd0-e020db7be37e",
+        "name": "Electromagnetic Induction",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "5ad2c827-40c8-4046-b447-24936c87fac6",
+        "name": "Inverse Trigonometric Functions",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "bba8d6fd-4986-48ec-b7da-8dab02a3a985",
+        "name": "Thermodynamics",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "777888b5-9e04-4fb4-b911-f586087e2459",
+        "name": "Determinants",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "227fdb08-a04e-4d0e-bbed-c7f2a39815b0",
+        "name": "Magnetic Effects of Current",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "234fb7a2-d0c0-43be-943c-e7851ff7bd70",
+        "name": "Differential Equations",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "6c7cef29-e7df-45b2-a2e0-4781cd0d9583",
+        "name": "Motion In Two Dimensions",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "99d68188-5521-4e13-8247-47b1898d462b",
+        "name": "Functions",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "35747669-df27-4acd-9e00-d4dc52e26ec5",
+        "name": "Oscillations",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "92dfc2b7-967f-4cc4-9696-dcf75084301b",
+        "name": "Application of Derivatives",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "bb424b0a-4d5d-4fed-b1ce-12b7acf2a615",
+        "name": "Rotational Motion",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "90685165-d840-410b-ba20-be45998ec18f",
+        "name": "Waves and Sound",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "67ea79f2-8fb8-48c6-a2b4-2776366b3f23",
+        "name": "Center of Mass Momentum and Collision",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "c2767251-f83d-4435-ad3f-d4fe5a2b8ba7",
+        "name": "Area Under Curves",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "1cd58e5c-3259-419e-b468-09097c62176a",
+        "name": "Mathematics in Physics",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "64fe3163-c023-45dd-820d-3726ed5c0a8a",
+        "name": "Units and Dimensions",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "828c1142-2d11-442b-910b-0f27c6e04a41",
+        "name": "Laws of Motion",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "2f7bdef7-32c7-4f0d-8853-e5fa65f7adce",
+        "name": "Kinetic Theory of Gases",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "ca5c1514-68c5-4c4e-9902-052917a82d2b",
+        "name": "Differentiation",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "68073866-84c7-4689-ac59-087a59507f12",
+        "name": "Sets and Relations",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "a8714854-2295-47dc-8c47-7b5847a8e913",
+        "name": "Vector Algebra",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "7c344757-f572-468e-9124-56f2958e1dc2",
+        "name": "Indefinite Integration",
+        "subject": "f1d41a0c-1a71-4994-90f3-4b5d82a6f5f9",
+        "exam": "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+    },
+    {
+        "_id": "d5f5b1f4-2e11-4da3-8e3d-7838a43b37d4",
+        "name": "Gravitation",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "c7408a08-4437-4eae-a134-71c3a2674517",
+        "name": "Mechanical Properties of Fluids",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "d5d184cb-0f8b-4cf8-8692-83787cbfe868",
+        "name": "Current Electricity",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "6821ea46-fc83-4216-9f0f-ec17bb736b53",
+        "name": "p Block Elements (Group 15, 16, 17 & 18)",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "34fa97bb-d178-426a-b6ea-f1a5f76004f8",
+        "name": "Sets and Relations",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "5a96ce27-1e71-4b2a-aad8-b8e5fa8f8daa",
+        "name": "Differentiation",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "d4e176e6-7044-486b-84df-f49ee84e9294",
+        "name": "Mechanical Properties of Solids",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "2d27c82f-3c25-42b1-a1ef-f2a3a0f70455",
+        "name": "Atomic Physics",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "1cc467e4-f382-4fad-955f-e459d1e278fa",
+        "name": "Nuclear Physics",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "45fc57a1-6711-4a61-95b5-873bc4648aab",
+        "name": "Dual Nature of Matter",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "8e519e7d-30fb-42b3-b870-5fe489d72d06",
+        "name": "Chemical Equilibrium",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "bcf749dd-26c1-4dfe-846a-cfe1c947783f",
+        "name": "General Principles and Processes of Isolation of Metals",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "c17f032d-8dd1-432a-a211-1214d2258ee2",
+        "name": "Chemistry in Everyday Life",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "0c0adbb6-64f5-48e6-9e8a-164f7f47e809",
+        "name": "Work Power Energy",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "5f115a92-2abc-4db5-b8a2-031ae1b7ce1f",
+        "name": "Rotational Motion",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "a619c037-77d9-4e42-bf38-8da0f0d13254",
+        "name": "Mechanical Properties of Fluids",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "41588802-cdab-46dc-bdad-a3f4bc32d1de",
+        "name": "Dual Nature of Matter",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "46b036fc-4cd2-47b3-b1a6-0f15990d6cb8",
+        "name": "Chemical Bonding and Molecular Structure",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "f385e667-4d88-49f3-9a43-876d1bd2d6d7",
+        "name": "Chemical Equilibrium",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "148e355c-0774-4c88-ae19-6ed9fbb6119b",
+        "name": "p Block Elements (Group 13 & 14)",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "a904650c-fccf-42f2-a40e-5332575c0580",
+        "name": "Practical Chemistry",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "e9b8cc8d-4261-4798-8126-31c931603d88",
+        "name": "Area Under Curves",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "bb0ad16d-d156-42aa-ad5d-436e8278f0dc",
+        "name": "Electromagnetic Induction",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "7d0ca240-ab8f-4aef-ac58-9d90067dc7bd",
+        "name": "Redox Reactions",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "8e61dc3c-9845-45bd-bea1-2b66d112ca18",
+        "name": "Polymers",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "df82c3dd-5ad0-4e19-b96e-90dfe0ae0905",
+        "name": "Gravitation",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "14f47cc2-43cb-4a7c-ace0-2c5562496446",
+        "name": "Solutions",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "782cdbd9-c0c8-4015-ab45-7be55943dad5",
+        "name": "d and f Block Elements",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "9995db5f-1caa-4fdf-be29-c803dba0ded2",
+        "name": "Carboxylic Acid Derivatives",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "b5c69588-a25f-457e-b91b-c7a396e87ebb",
+        "name": "Amines",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "f34e0612-dab5-4326-a621-c2e802a8d256",
+        "name": "Circle",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "1f0a0d70-a36a-40af-bf9f-d6c82a41bc73",
+        "name": "Definite Integration",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "3824c28a-041f-4ff1-b9b0-1202ba600c5d",
+        "name": "Laws of Motion",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "2e640dc2-ff06-4c5c-a0f6-1ffddbe50581",
+        "name": "Wave Optics",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "ab9625a3-6314-4e91-8466-f80c9ff76c26",
+        "name": "Thermodynamics (C)",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "21445179-9e28-4d3f-b050-75f23b7654da",
+        "name": "Alcohols Phenols and Ethers",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "cc3e2613-350e-4482-86f0-76a3e4a4a834",
+        "name": "Structure of Atom",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "48ffd3aa-1981-4710-84a3-4b65e9458418",
+        "name": "Hydrogen",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "4242118e-db85-4eae-89d3-f48b4f298aa4",
+        "name": "Basic of Mathematics",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "09a773d2-54a9-44bc-a4f6-f9790c0a95fa",
+        "name": "Trigonometric Ratios & Identities",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "48ed3409-85b8-455f-834c-1419e3c31214",
+        "name": "Matrices",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "b7e195f3-e768-4445-9b06-c4aec31f024c",
+        "name": "Functions",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "9efd3ebf-9616-4724-b07c-a6459cd93937",
+        "name": "Units and Dimensions",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "ce5dfb6a-af62-40c6-9922-c74c227f4f0d",
+        "name": "Thermodynamics",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "d0bc08d0-ce32-4a1a-b5e8-2bd7cb532569",
+        "name": "Waves and Sound",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "eb1a5ac7-ebd5-4846-8fac-1a21cfc623af",
+        "name": "Magnetic Effects of Current",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "5acd5518-9345-4de0-987a-5a6f2dfffd66",
+        "name": "d and f Block Elements",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "04c53d95-8c6d-4d18-ba3c-a4972f0e00a9",
+        "name": "Ionic Equilibrium",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "84ddedf4-c595-40c1-9293-fae6b4958bcc",
+        "name": "s Block Elements",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "3112f099-120b-445c-bbb1-17c6568008fe",
+        "name": "p Block Elements (Group 13 & 14)",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "c480277d-67e4-4c97-bf0a-fce649ed25fb",
+        "name": "Surface Chemistry",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "6bb07210-55b0-46c1-9d64-2aef569bcb96",
+        "name": "Permutation Combination",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "f319a32e-8614-4534-86be-41540e45200c",
+        "name": "Continuity and Differentiability",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "66ed043d-fc8c-4465-8ee7-ef06a6d6197e",
+        "name": "Mathematics in Physics",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "589a93ca-e663-4f61-8de8-ef2728e1550b",
+        "name": "Motion In One Dimension",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "e9749dc8-5493-45ad-99fc-00fc8fe6ba74",
+        "name": "Center of Mass Momentum and Collision",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "61ededf6-5cfe-449c-9ca5-3f1f11f7d2d7",
+        "name": "Kinetic Theory of Gases",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "745a5587-219c-4743-8bc3-9fb476121c82",
+        "name": "Coordination Compounds",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "0955356b-56dd-4e19-91e9-a14331312f35",
+        "name": "Nuclear Physics",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "46966bb3-e500-42c9-8002-a764c1e70e1e",
+        "name": "Hydrocarbons",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "d5611c18-a67f-4e2e-8cbc-8685ee0f29a0",
+        "name": "Sequences and Series",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "6f53458e-b6ae-45ee-adc1-ffba974fe162",
+        "name": "Pair of Lines",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "d2793c16-7eaa-488a-8c78-400f1a66035c",
+        "name": "Ellipse",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "ed47ed56-f7f3-40fc-a80d-68a9f4ce8d66",
+        "name": "Three Dimensional Geometry",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "01c40329-e47d-4603-8204-71392083f19d",
+        "name": "States of Matter",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "1496dc8e-cabf-4959-a8a4-9d9b870663dd",
+        "name": "Haloalkanes and Haloarenes",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "e1ac0fe7-6ae1-4090-9e8d-50e1ec3507b4",
+        "name": "Complex Number",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "aea55e8d-a21e-469b-9545-11594d72586c",
+        "name": "Probability",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "bcf1f192-fe7b-4863-bad6-80de79c42b7f",
+        "name": "Thermal Properties of Matter",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "84364def-58da-40fb-a1db-8c43dc710c73",
+        "name": "Alternating Current",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "4686d016-e297-413c-a504-f1c07abda804",
+        "name": "Ionic Equilibrium",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "28289e5c-3cd3-4969-b0aa-5d8e5f5ccc2b",
+        "name": "Wave Optics",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "7fe43f85-1dca-418e-bb73-b09fec50e0be",
+        "name": "Some Basic Concepts of Chemistry",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "862d9794-36ff-4235-81a4-d7c03bed59c6",
+        "name": "General Organic Chemistry",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "8efadab9-1705-465a-a4c9-395608b243fc",
+        "name": "Solid State",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "4e581503-d595-4853-9711-0a9402190eeb",
+        "name": "Electrochemistry",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "03991024-36e8-4486-b30e-325f352da087",
+        "name": "Chemical Kinetics",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "13c036a6-f471-488c-b41f-5a41b43f937a",
+        "name": "Alcohols Phenols and Ethers",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "2086257a-f6bf-4d80-bd9a-ac91664257d2",
+        "name": "Biomolecules",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "81169533-368f-4d39-9db7-e56724503187",
+        "name": "Quadratic Equation",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "a51a0c33-a62c-43e6-a7c5-5078f1135baa",
+        "name": "Ray Optics",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "059fc720-40f9-459e-ab6c-6c5c3bdc3eee",
+        "name": "Atomic Physics",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "76d829b2-6ee3-4868-9c8d-d03260892f43",
+        "name": "Coordination Compounds",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "85422d63-76df-47f7-ba20-ed01a42544bc",
+        "name": "Oscillations",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "be64d597-b41a-4a23-aedd-05428251adb0",
+        "name": "Some Basic Concepts of Chemistry",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "7586d1da-b4e4-4d9a-be12-6b2032509b12",
+        "name": "Structure of Atom",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "4a5edcc3-4433-4f5c-87db-6a633ae90042",
+        "name": "Chemical Kinetics",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "06c38c06-a3f8-4840-89ba-cad8dbcf6206",
+        "name": "Haloalkanes and Haloarenes",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "a56a7b87-783e-4db4-b910-9c23b8d0fcf4",
+        "name": "Classification of Elements and Periodicity in Properties",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "6127297f-0c9b-4356-9970-6ee5c1f48664",
+        "name": "Thermodynamics (C)",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "0f209b0e-876f-4478-9eb9-16d24653961a",
+        "name": "Limits",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "d840a62b-09d9-40e7-aae0-1d2a4086ed12",
+        "name": "p Block Elements (Group 15, 16, 17 & 18)",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "470899df-d5df-43ef-a50d-5cd9ac9ccd05",
+        "name": "Differential Equations",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "b4f3843c-658f-45bd-8700-ad652e1064a1",
+        "name": "Motion In Two Dimensions",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "eb307eb3-4193-4060-a5d3-72852a78ea4e",
+        "name": "Electromagnetic Waves",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "78d4f369-e464-4c65-a425-3af19b382cfd",
+        "name": "Experimental Physics",
+        "subject": "f66d8bfb-ba6a-4b3f-adbc-fbf402e39020",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "439fc2d0-41fa-45ab-ba89-5286e1efbc08",
+        "name": "Binomial Theorem",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "6fb0302a-28b1-4a76-bf3f-eb3723d35ffc",
+        "name": "Application of Derivatives",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "99c2c984-6d23-4d13-a096-cf9db178aef7",
+        "name": "Vector Algebra",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "120071ed-5fb2-413e-8bee-132152e0d80e",
+        "name": "Current Electricity",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "87330791-5462-4a3c-a2e2-eaad327b5f70",
+        "name": "Magnetic Properties of Matter",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "ed2656e9-7708-427e-b0b7-0d874b5ceef2",
+        "name": "Solutions",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "d13bbf6c-dee4-4fb5-b139-8176fc3e4076",
+        "name": "Aldehydes and Ketones",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "270c0663-3362-40a2-9434-c706f3fd4a98",
+        "name": "Parabola",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "aa79b3f5-d9d2-4b61-9737-67ae803ffbdb",
+        "name": "Inverse Trigonometric Functions",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "b40cfff7-7688-45bb-9cb4-821fd4ebbe55",
+        "name": "Indefinite Integration",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "34986af5-a8a3-4347-8b1c-8f30724de443",
+        "name": "Experimental Physics",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "f0d8fbe1-9b47-4488-8497-793941aa1866",
+        "name": "Chemical Bonding and Molecular Structure",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "fcf1589e-f851-4cc8-b997-74a746a37bd4",
+        "name": "Straight Lines",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "6e0a567b-cb6a-41df-a10d-4cd86ec0e0b3",
+        "name": "Determinants",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "401ea012-1ff1-4fab-b19d-098d0d8c0a75",
+        "name": "Electrostatics",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "f95734d6-1e27-4c3a-b3b8-29df612cc0c4",
+        "name": "Semiconductors",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "5944312a-25e9-4d5f-a1e1-2e87257a2784",
+        "name": "General Organic Chemistry",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "1bfcf88b-9c12-48f8-a8bc-fb9b8a8877d8",
+        "name": "Surface Chemistry",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "9aa7a21c-84b6-4210-807a-76b3c418eb41",
+        "name": "Redox Reactions",
+        "subject": "17d9f684-251f-4f52-8092-1b54b33b1ed5",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "eb0dfc20-07ca-47d8-81d8-d475cd9e253a",
+        "name": "Trigonometric Equations",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "7a77addf-cb0c-45ff-8fe3-f21607f68330",
+        "name": "Hyperbola",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "a4b5ba13-b2ba-4fba-af7c-4bc3d4b9569c",
+        "name": "Properties of Triangles",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "0330643a-15b1-4126-ad50-a09cf15b4f99",
+        "name": "Statistics",
+        "subject": "96b44962-2c79-4a42-87ce-f8b87c9e174a",
+        "exam": "6d34f7cd-c80e-4a42-8c35-2b167f459c06"
+    },
+    {
+        "_id": "c79fd6f7-43e8-4840-820a-90ef77855fc8",
+        "name": "Capacitance",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "7222d481-c9d8-4f1d-b1ac-3a2d938bb947",
+        "name": "Electromagnetic Waves",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "6d0eb8ed-1cc4-4a2f-86c1-3b44c70b4874",
+        "name": "Classification of Elements and Periodicity in Properties",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "09a19358-0819-4c54-a536-f62bb66e9d55",
+        "name": "Aldehydes and Ketones",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "699951db-06eb-4ace-94c9-a108a9f83203",
+        "name": "Ray Optics",
+        "subject": "4b89e781-8987-47aa-84b6-d95025d590b0",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "6674bcc1-bbcf-48b9-aab4-2af15460885d",
+        "name": "Hydrocarbons",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "87effa0f-3560-44c8-bc41-6a9347c2d512",
+        "name": "Electrochemistry",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "c920b52d-849b-475f-b532-fe60e1f437c3",
+        "name": "Basic of Mathematics",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "c9f7be09-e4c8-461d-895d-866e0b99597d",
+        "name": "Permutation Combination",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "ccb64a3f-44bd-4be0-93b2-a5b365e5e953",
+        "name": "Sets and Relations",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "f9f91db1-2fea-46a9-b25e-7c123276d05f",
+        "name": "Vector Algebra",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "cbb1cede-182a-416e-9ca2-8ef2300e0fda",
+        "name": "Gravitation",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "86b31041-8870-4904-91b4-24e087e66c9d",
+        "name": "Nuclear Physics",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "5db1d560-26de-40cc-84dd-6b3045158b63",
+        "name": "Chemical Equilibrium",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "d0c14205-e0e4-475b-a387-8078e6fa8db3",
+        "name": "Alcohols Phenols and Ethers",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "5d16d6cc-421a-41b5-a00d-d7f237d4c989",
+        "name": "Polymers",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "3ec70dc8-ded9-4125-82fe-ac5f985e0898",
+        "name": "Parabola",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "5abcc0ac-5c9b-4fa7-befc-ce9ff323027d",
+        "name": "Application of Derivatives",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "0432a29f-bd26-4448-a0dd-bd30470eec73",
+        "name": "States of Matter",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "eae160f3-ba1a-49d3-9d4e-aea677e9a7fa",
+        "name": "Structural Organisation in Animals",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "f2821e23-32dc-427b-ab2a-e8bcc1a9ae0f",
+        "name": "Experimental Physics",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "621a2159-1e97-4839-b3a0-ff97f764a817",
+        "name": "Thermodynamics",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "26278b57-2bbe-4ace-8fc4-49203143e59e",
+        "name": "Environmental Chemistry",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "325be2d2-10ed-48ab-8e87-7ce442da8cad",
+        "name": "Trigonometric Equations",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "49e5bd55-0fd1-401d-a743-1d094b286323",
+        "name": "Pair of Lines",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "1a831177-a7b4-4217-b3f1-97a1d776751f",
+        "name": "Capacitance",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "952d0aec-5357-4527-b868-65ed9fee3f79",
+        "name": "Magnetic Effects of Current",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "ea132747-cb12-4b78-a0f0-84c470a1edb5",
+        "name": "Ray Optics",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "71f034ea-00e0-4864-9e4a-1a981b890376",
+        "name": "Some Basic Concepts of Chemistry",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "757ad50c-970b-42c1-a441-2a5b8ca84163",
+        "name": "Aldehydes and Ketones",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "1f3062af-4aa6-489e-9192-330970fd1d0f",
+        "name": "Limits",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "42a5b71f-1238-474e-8a79-d6f5c30d2946",
+        "name": "Inverse Trigonometric Functions",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "e02ef69b-6669-4a71-8334-34222d3e77ab",
+        "name": "Mechanical Properties of Fluids",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "6bfa4cc9-5063-40a5-ad1b-f108bcaf6844",
+        "name": "Thermal Properties of Matter",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "e3290459-c241-4a53-8f89-0e0cdae47edd",
+        "name": "Thermodynamics",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "d9acfb3c-714f-4043-8b94-4b75ceb753f8",
+        "name": "Ray Optics",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "a97fe4a4-9a0f-444e-a7d5-ce8c7ae5f739",
+        "name": "Classification of Elements and Periodicity in Properties",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "8413ebd3-79cd-466d-a606-831ddd175b5a",
+        "name": "p Block Elements (Group 13 & 14)",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "54b4e438-3c34-4178-93f8-a91ec6844da9",
+        "name": "Surface Chemistry",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "af048119-2af3-476c-a9d8-d7055166db6a",
+        "name": "Amines",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "e8cfb9ca-5b3c-48d5-8a75-594d3e0ffe87",
+        "name": "Binomial Theorem",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "1f7b0528-405a-4eb9-a24c-6a49d601b000",
+        "name": "Differential Equations",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "4a11d9ef-6425-4b25-9c51-2881b1d21e42",
+        "name": "Biological Classification",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "81ec879e-8625-47cc-add8-55d9d813f528",
+        "name": "Sexual Reproduction in Flowering Plants",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "49cd9c0b-1444-4d7a-89dd-83f21f2b5b7c",
+        "name": "Pair of Lines",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "113bbf74-d171-4505-9938-c385b5d82fed",
+        "name": "Circle",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "39428d00-96fc-40e7-8607-c062336a7081",
+        "name": "Limits",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "f49cb7ff-5a94-4a3c-822b-e7a00ee9e21b",
+        "name": "Differential Equations",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "6b1a7b78-9985-4462-9f38-42c70ff2304d",
+        "name": "Mathematics in Physics",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "d950d7ab-89ff-4017-b84c-57a2fc163ef8",
+        "name": "Capacitance",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "2ecd916e-939e-4cc8-b87f-1cb40ea605db",
+        "name": "Electromagnetic Waves",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "0ed9bc27-138d-4e1b-b043-bd39e5374cdf",
+        "name": "Thermodynamics (C)",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "cb8ef38a-0008-421d-ad04-a68313520029",
+        "name": "s Block Elements",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "633ee6d7-62cd-446a-b7e2-c594212e03e0",
+        "name": "General Principles and Processes of Isolation of Metals",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "3379f004-be67-4fa6-9d23-e064a1db409b",
+        "name": "d and f Block Elements",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "42823326-f527-4b33-8cf0-9cafb2b2178c",
+        "name": "Mathematical Induction",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "00306cf5-79b2-42be-9be4-40cd867a6fe3",
+        "name": "Motion In One Dimension",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "08eb4c27-5aec-4e7c-8c97-a39ea0d08854",
+        "name": "Oscillations",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "a7eaacb7-4fdc-47e2-af43-9edeebd348e9",
+        "name": "Alternating Current",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "21be7b79-e2d2-4255-b10b-131fcba4914f",
+        "name": "Wave Optics",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "e19f6a02-8fdf-4977-8097-fda9ef4c07f7",
+        "name": "General Organic Chemistry",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "926c6644-f8ff-4a03-8de4-ac2b4c202182",
+        "name": "Practical Chemistry",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "0c31d1ca-3c95-4624-a00c-f46efa84d3c3",
+        "name": "Biotechnology and Its Applications",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "68f80ed6-71cc-4fe0-b43f-19223407391b",
+        "name": "Continuity and Differentiability",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "37cfa81f-5397-4895-a5cb-5f0c77563f4e",
+        "name": "Hydrogen",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "57a8368a-41fd-40aa-9e91-acdb539ec69a",
+        "name": "Solutions",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "5badfaba-89a3-4def-ab95-ee0a6d5d2198",
+        "name": "Differentiation",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "c1caf500-6050-42c4-8c2b-fe2cc4459fa4",
+        "name": "Thermal Properties of Matter",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "adfd93bb-e968-4bc1-87cb-7632e2009031",
+        "name": "Electrostatics",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "8681e880-6899-4298-93e0-7d014b600214",
+        "name": "Mathematical Reasoning",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "9b3534c0-818d-4413-99d8-825e29caf91e",
+        "name": "Functions",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "123307af-9843-4ac6-bda3-db4264dbb03a",
+        "name": "Kinetic Theory of Gases",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "1291f93a-5f2e-4485-a8b0-ec4dde19d4b5",
+        "name": "Chemical Bonding and Molecular Structure",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "b2a6a0d4-f17f-4cf6-ae86-14e85e20a092",
+        "name": "Properties of Triangles",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "e5014f38-673e-42dc-874a-3e4afc5732ba",
+        "name": "Determinants",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "f8226360-286d-4b7c-a040-222a82dd4b3f",
+        "name": "Three Dimensional Geometry",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "5fceb4e3-b07b-47c4-a6cb-c8028230b202",
+        "name": "Magnetic Properties of Matter",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "a0b0c5d3-9a3a-46da-bea3-e6ca1aafe21b",
+        "name": "Carboxylic Acid Derivatives",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "4291eb28-4fb6-4f11-9dad-2ee93a35faf5",
+        "name": "Photosynthesis in Higher Plants",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "9252a120-5ee7-4dd3-be6b-dff1e74e6571",
+        "name": "Locomotion and Movement",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "34ce4f02-2bf9-4ede-8cb4-1fe50327e640",
+        "name": "Heights and Distances",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "76676c6f-3000-476e-992a-550598bd3ef5",
+        "name": "Chemistry in Everyday Life",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "3effee91-8b6f-40c5-a12c-7ffadc8b7182",
+        "name": "Trigonometric Ratios & Identities",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "da16b3b1-3176-496c-a6df-7efb3433161c",
+        "name": "Matrices",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "82fa8960-1d7a-4d70-83db-30ccc2b74676",
+        "name": "Functions",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "c50336b9-c43a-4c44-b45b-28836f2397d9",
+        "name": "Continuity and Differentiability",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "93f6f0a2-0959-4947-b4f7-eb82e987bba0",
+        "name": "Nuclear Physics",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "91d50648-4685-495a-a8bb-9a4d7bf00fd3",
+        "name": "Classification of Elements and Periodicity in Properties",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "a75608c2-216a-486b-a61e-020f882072ef",
+        "name": "Hydrogen",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "569ae102-51de-4582-a0ab-594f7225ed95",
+        "name": "Electrochemistry",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "5ad3d522-1acd-4c9f-8f92-80d3de10b7ca",
+        "name": "Sequences and Series",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "4c5ec675-45de-4ffd-b79d-9e953934167e",
+        "name": "Mathematical Induction",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "83dc42bd-426e-4123-900f-30be34cceb49",
+        "name": "Mechanical Properties of Solids",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "210459f9-c525-42d9-ba0b-2956eb55d0c4",
+        "name": "Current Electricity",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "fa44ad09-0d7a-44da-bb66-8373f4da7aac",
+        "name": "Wave Optics",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "aa9625bb-1173-4253-aad0-0854dc9c69bc",
+        "name": "Nuclear Physics",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "98044268-4ef7-4d1e-92f0-c8e52ab2ae9d",
+        "name": "Thermodynamics (C)",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "c14a77cd-2397-42a5-b00b-1c425ef8d955",
+        "name": "Chemistry in Everyday Life",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "ca0ee0a4-4d76-4282-b295-42e5eee2bb14",
+        "name": "Permutation Combination",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "093518b6-9ff4-405a-89b1-a820ecc888f7",
+        "name": "Sequences and Series",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "8262cbf9-d3fe-45e3-bc92-7ee35d5999fd",
+        "name": "Ellipse",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "4238f5c4-18d4-416d-9098-4e75344bed50",
+        "name": "Quadratic Equation",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "d3a27c1c-2666-4bf8-ac81-d85fc7f6afa8",
+        "name": "Trigonometric Ratios & Identities",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "f15db62f-6472-4f6b-b1bd-738353b0b33c",
+        "name": "Magnetic Properties of Matter",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "360573d7-0154-45bb-970b-197eb05495b2",
+        "name": "Atomic Physics",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "d4a3aad7-83b1-4c34-8565-117e7d73c215",
+        "name": "Linear Programming",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "18916a43-9985-4616-9369-ce3ac8f6f906",
+        "name": "Binomial Theorem",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "29620aaa-ae93-4272-87dc-e456b7232296",
+        "name": "Properties of Triangles",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "db42480b-e1ef-4056-872e-590bc6880163",
+        "name": "Definite Integration",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "63179949-5f69-4cbd-b8f7-c3fbb15261d5",
+        "name": "Motion In Two Dimensions",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "5b1c55ed-9776-40ad-9522-234dc5976ff7",
+        "name": "Work Power Energy",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "23ab9a72-c1e4-4d01-a9de-a947b9ad0616",
+        "name": "Center of Mass Momentum and Collision",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "225a687e-5d2b-4c48-9f90-2f712a9c2836",
+        "name": "Rotational Motion",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "6e5440a6-e61b-4fc5-b4a6-3c9b94937aca",
+        "name": "d and f Block Elements",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "ea309daa-51af-4035-92fd-201c18160f6e",
+        "name": "Chemistry in Everyday Life",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "48d3f185-05cc-4988-9f4e-e517d7d3aec6",
+        "name": "Pair of Lines",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "3c5a237d-12f1-4544-9d0c-2790656b110a",
+        "name": "Properties of Triangles",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "8dada4a0-8cc2-47e5-bd97-388122688bbb",
+        "name": "Differentiation",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "5c37363b-c4ce-4e90-814b-338fdddb9bcd",
+        "name": "Units and Dimensions",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "0985c2af-6aed-4e39-8cbf-745956dabd3b",
+        "name": "Communication System",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "0a34bfc5-3cd4-4978-b0ed-8a5633e3284f",
+        "name": "Electrochemistry",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "ab98734b-d4c7-40a8-aa37-f2d46f1dafa0",
+        "name": "Parabola",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "8be460d0-454e-425e-8788-657a2906fbdd",
+        "name": "p Block Elements (Group 15, 16, 17 & 18)",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "4d5023da-83fa-4233-8351-e7cca832ba32",
+        "name": "Circle",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "22b24bd3-eb50-4b54-a6e7-87e775751aa2",
+        "name": "Parabola",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "1f852dd2-53d2-431e-aa20-e6480186106d",
+        "name": "Hyperbola",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "2e01680b-7cd4-4743-b504-dadb6dd8e08a",
+        "name": "Heights and Distances",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "c25c1e54-f664-4625-a4de-27b34c386ca4",
+        "name": "Center of Mass Momentum and Collision",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "e569d874-3343-408c-aa1f-2f148bfcaf81",
+        "name": "Rotational Motion",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "a1328f88-d8fb-4296-9557-4dea89c95e05",
+        "name": "Magnetic Effects of Current",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "a3b9a421-c13d-4a4e-b013-b3c13d810e9f",
+        "name": "Limits",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "a0abe51d-bc7d-4ca2-b359-01544c4a5810",
+        "name": "Vector Algebra",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "cbdb1c21-8674-4298-a694-2a01ec61fe13",
+        "name": "Mechanical Properties of Fluids",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "f766c924-09b5-43d7-aae9-90964a1f39c9",
+        "name": "Oscillations",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "0f0d047c-1695-4990-8c69-91355e9f7129",
+        "name": "Anatomy of Flowering Plants",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "7e7823c7-4ca3-4e87-a569-f3b641d41a52",
+        "name": "Excretory Products and their Elimination",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "6be8d78c-93f4-4f8b-9f39-0ca46702d0e0",
+        "name": "Human Health and Diseases",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "514f0741-e5c1-4be2-8e82-3a862e0258b2",
+        "name": "Biomolecules (B)",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "922f958f-a260-48ca-ab26-314598583992",
+        "name": "Biodiversity and its Conservation",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "767d5f67-3083-448f-bd34-ab697554ae31",
+        "name": "Binomial Theorem",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "bbeb4baa-317f-4642-baa6-f7d484b669d1",
+        "name": "Oscillations",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "c284cc4c-6e2a-419e-866a-c036de6ae001",
+        "name": "Ray Optics",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "17a641ed-aac1-48e6-88e0-399129cb30d8",
+        "name": "Semiconductors",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "e74dd316-01b1-43f0-b3d3-3d7a4772049b",
+        "name": "Chemical Bonding and Molecular Structure",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "31b5170b-0f8f-47ae-97b0-7a4fddf87576",
+        "name": "Atomic Physics",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "90b90dd9-0084-43aa-94d5-a8b583d6fe26",
+        "name": "Chemical Equilibrium",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "0fa99b8d-d94e-4689-8030-3e18ba39d4f9",
+        "name": "Solutions",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "cc3ee9ce-9ccd-4309-9d81-f94fd70490d5",
+        "name": "Dual Nature of Matter",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "286f5d22-0ad2-4a69-b474-4916b52e7c31",
+        "name": "Some Basic Concepts of Chemistry",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "19262abb-53cd-42ce-a5ab-a9d5ee7a230b",
+        "name": "s Block Elements",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "3c715cbe-ae4f-483a-b186-45a5a436b107",
+        "name": "Statistics",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "3f825191-1227-4bb3-b18b-761c25f10e71",
+        "name": "Sets and Relations",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "7d1790e0-cb7a-42ae-be17-e97372997a79",
+        "name": "Complex Number",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "84cb3786-caf9-46a9-b18e-2466b551ba39",
+        "name": "Differential Equations",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "e2870a80-d746-4f68-aaa0-aa4eaa44335e",
+        "name": "Vector Algebra",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "4e966422-2b8c-42f7-ab23-ea866435a52a",
+        "name": "Probability",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "36776057-8a94-4fd6-840f-06a3c8defb4b",
+        "name": "Motion In Two Dimensions",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "0351851c-4fad-4ae4-8ec5-a5bacc001b19",
+        "name": "Capacitance",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "64ad98f8-125e-46b9-a368-a2046eda450e",
+        "name": "Magnetic Properties of Matter",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "9130db94-dd6d-4775-8f8e-3a9ce1db37dc",
+        "name": "States of Matter",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "cc589b64-3238-4bc0-b553-20b4828b4ae4",
+        "name": "Chemical Equilibrium",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "1a08840e-50b4-406e-9175-e1c9f34849e7",
+        "name": "Solid State",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "9e672224-66bd-4522-99f7-d7b4ba5595fb",
+        "name": "p Block Elements (Group 15, 16, 17 & 18)",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "d2d584db-19ea-4eab-9c6b-b43f85d85c50",
+        "name": "Circle",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "206eefa1-640e-47b4-8861-ca5d381b7d4a",
+        "name": "Hyperbola",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "27689e3f-2733-4066-908c-73d5029d3957",
+        "name": "Inverse Trigonometric Functions",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "92adbe7a-6d6a-4425-bf91-f2d50214dc7d",
+        "name": "Indefinite Integration",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "1df6d0bd-c304-45db-b58e-1aede13f0013",
+        "name": "Linear Programming",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "54f26a0c-0475-47d3-b6fa-d9d4cd129f72",
+        "name": "Capacitance",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "929e24ac-2d9a-41b5-8bd3-b03775c514a9",
+        "name": "Heights and Distances",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "81c355a8-a9a5-4912-b3d8-9a64fe358cc6",
+        "name": "Matrices",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "13d05555-58d6-4392-a82c-073be8f0b27c",
+        "name": "Continuity and Differentiability",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "2905ad53-bd30-48ba-a341-4d506e2c0471",
+        "name": "Probability",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "b14e6999-1b1c-4c86-a3e5-4f8aa5bcb8e0",
+        "name": "Mathematics in Physics",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "26f3f1e3-7e06-4d3e-83a0-36930913477f",
+        "name": "Gravitation",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "1447ef86-10fc-49bc-81a7-eb4f316f75a9",
+        "name": "Alternating Current",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "24d8b9ae-989d-482a-854c-4a329284173e",
+        "name": "Motion In Two Dimensions",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "fb88d99e-f148-4d08-86e1-f0252943b991",
+        "name": "Wave Optics",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "c4632b7a-8bd3-4450-9c50-cba1d39478e3",
+        "name": "Biomolecules",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "e7b9f01d-ff1c-4031-8183-173e576d9e2b",
+        "name": "Principles of Inheritance and Variation",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "3339690e-cec1-4dd2-842a-3e27c48c621c",
+        "name": "Evolution",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "4c6e3ce1-db03-480e-b59e-34ba7c38fe15",
+        "name": "Indefinite Integration",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "dabc6256-5430-4a1f-86f7-52f9ee567238",
+        "name": "Motion In One Dimension",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "ebb77531-c8b7-4e9d-8ed5-8a2db9cfdd04",
+        "name": "Wave Optics",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "835ab751-e6c3-4714-9b7c-c5269df1d1d8",
+        "name": "Surface Chemistry",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "67746cc8-0d42-4719-9856-6d798c1b01fe",
+        "name": "Haloalkanes and Haloarenes",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "a0bdb937-94e8-4372-8ec3-0a3f912e735d",
+        "name": "Practical Chemistry",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "9934d971-d05e-47f9-b79a-85d684d47186",
+        "name": "Circle",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "d22f26da-dd51-41a1-8eee-f152d0dbb4cd",
+        "name": "Electromagnetic Induction",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "9385c1e9-bf07-4709-b767-5513b3bad0a6",
+        "name": "Solid State",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "b6cdecbd-207a-4917-92d4-fa3b4dda25e5",
+        "name": "Amines",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "51c9919d-4e27-4959-8bde-c64fd93ffca5",
+        "name": "Determinants",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "17af1234-8c61-4fb6-99ca-8de92dac59d2",
+        "name": "Area Under Curves",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "a75e9e0b-e6bc-4ff4-9a34-5daea85a8aa5",
+        "name": "Polymers",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "19ee9413-9e60-4ab0-be41-a176e86e474f",
+        "name": "Quadratic Equation",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "315ed3f4-3984-4ae2-a7c0-a1d841a5d0d8",
+        "name": "Mathematical Reasoning",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "8ef5e20c-3725-4e7d-996d-15916017defa",
+        "name": "Definite Integration",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "e5f4152f-d7c6-4a7e-8518-0ff1c9bb1ae7",
+        "name": "Area Under Curves",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "811107c7-502d-41d9-8374-00eabec7985c",
+        "name": "Animal Kingdom",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "2ef4a69d-fe43-4a47-8f84-dd676e3aa564",
+        "name": "Inverse Trigonometric Functions",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "9c4781a0-8e6c-4458-9ad7-c4de72c6e4b6",
+        "name": "Work Power Energy",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "60b7ae1c-0cc2-4749-8c12-92f99ab65efd",
+        "name": "Mechanical Properties of Fluids",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "1b8e3b1a-c714-4052-9e56-6ba3adea574c",
+        "name": "Waves and Sound",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "3999ccda-b486-4342-a9c2-f1b50241861c",
+        "name": "Current Electricity",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "e9c30086-62a3-4181-bfc5-eb70d4a48569",
+        "name": "Ionic Equilibrium",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "58bc49d4-862e-40c1-9465-8f0c2e7ae509",
+        "name": "Inverse Trigonometric Functions",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "ee0b5d75-b0b3-4c0e-80b8-1663b8d2c8c1",
+        "name": "Kinetic Theory of Gases",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "9dbfe7c1-fae8-4077-9ff0-220451218c2f",
+        "name": "Magnetic Properties of Matter",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "d4fab8f5-b18d-42ec-87b3-e424c58ab016",
+        "name": "Chemical Bonding and Molecular Structure",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "ac9b0c4a-0445-4a7c-9396-18a6f8049c3d",
+        "name": "Redox Reactions",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "9213a533-f9a5-49d3-90ad-85aef7cabac3",
+        "name": "s Block Elements",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "6524ab59-94d0-4fec-b61c-9481554ef867",
+        "name": "Permutation Combination",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "053e431a-7b63-437c-93e9-84c21be63171",
+        "name": "Sets and Relations",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "91c1508d-b551-4d8f-b082-293480338cec",
+        "name": "Continuity and Differentiability",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "31483efc-d5e5-429d-9eb4-47c3bfdb2161",
+        "name": "Indefinite Integration",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "28048e80-ece5-40de-871c-83dab51914d5",
+        "name": "Definite Integration",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "2ca700ac-240c-4eb6-9817-5f9708fa8e0b",
+        "name": "Motion In One Dimension",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "9e75303f-1cb1-423f-8708-c8082acca217",
+        "name": "Waves and Sound",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "05ea8d61-ede3-406f-9073-3a0fa30c9302",
+        "name": "Electromagnetic Induction",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "fcd45dab-cf0c-4989-b4f5-8e101064e0d0",
+        "name": "Hydrocarbons",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "6da87a01-380d-41c9-88b7-d762f840a40f",
+        "name": "Coordination Compounds",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "b641507b-c53e-482a-a56d-80a21e2f453b",
+        "name": "Straight Lines",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "e9af8e20-99f1-4384-95df-d17756080da8",
+        "name": "Pair of Lines",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "60518410-9040-432d-9b83-820b72ae470a",
+        "name": "Work Power Energy",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "ea2c8fbc-9918-4125-a929-cb3e65a81961",
+        "name": "Amines",
+        "subject": "45966dd6-eaed-452f-bfcc-e9632c72da0f",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "acd054f8-6709-4cc1-bb1f-69bdf8b8489c",
+        "name": "Plant Kingdom",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "e3b3adf9-ea15-4589-8cfe-2610ff377790",
+        "name": "Plant - Growth and Development",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "9195139d-e0f2-4165-86c3-86eded250a5b",
+        "name": "Body Fluids and Circulation",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "6ef75375-22b9-4ba4-8b21-29879b2b35a1",
+        "name": "Ecosystem",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "c472f656-2bfd-4303-b9fe-9c761fd55355",
+        "name": "Straight Lines",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "d07a65ff-64de-4ff1-82e6-76208e380a33",
+        "name": "Ellipse",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "c6f07e5b-9daa-447e-81d7-a93dc4ad42d4",
+        "name": "Functions",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "8d79b322-ce0b-448f-8259-6c5038c92f5f",
+        "name": "Definite Integration",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "2f6d273b-a8c0-440b-86e2-b3b65f6e7cbe",
+        "name": "Complex Number",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "55af9ec8-77aa-41ea-9e72-1d89265e367f",
+        "name": "Cell - The Unit of Life",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "0266fa1e-335c-42d5-bc23-bf71d3a96e0f",
+        "name": "Properties of Triangles",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "218a3584-7bb2-4551-a67a-d8e6040f56e5",
+        "name": "Probability",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "53448b63-000e-4b77-bcdd-cc041448b547",
+        "name": "Units and Dimensions",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "64a1341e-2975-47eb-8b68-b7d282f326b8",
+        "name": "Electrostatics",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "89267602-dac4-4ea4-8067-0419bf2d4533",
+        "name": "Electromagnetic Induction",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "7181f038-0419-46a3-9502-51ace21ef229",
+        "name": "Dual Nature of Matter",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "27587aea-f16a-4df4-8348-3df1bddc1391",
+        "name": "Classification of Elements and Periodicity in Properties",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "738052de-4682-4c9e-b58a-d5afc489bc01",
+        "name": "Hydrocarbons",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "0e4ce269-c861-4838-a27a-76d863656e38",
+        "name": "Aldehydes and Ketones",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "51811cd0-d390-450e-9331-2d76ffe8b8d9",
+        "name": "Biomolecules",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "49880847-1305-4bfc-b4ba-078fa9616ebf",
+        "name": "Ellipse",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "75d4433c-9c40-4136-99ad-0a8c27e27873",
+        "name": "Indefinite Integration",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "9ec10a6c-43a3-4db0-a4c3-c4ed13f450a6",
+        "name": "Vector Algebra",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "56bedf96-d148-4ac3-9ce7-048aae93fc62",
+        "name": "Three Dimensional Geometry",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "3bcb9367-a796-41a0-bdda-c608ff82f775",
+        "name": "Semiconductors",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "13a3bf3d-4781-49be-9950-6f90879bdd9f",
+        "name": "Coordination Compounds",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "e476d60e-5eb4-471c-8c23-a9fda94b4a80",
+        "name": "Biomolecules",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "db6a7457-5e9a-4fe8-9da6-17a894948610",
+        "name": "Permutation Combination",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "bc52a0fd-6109-4d70-a0b3-c1d1871a8f4d",
+        "name": "Straight Lines",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "f262fe93-6f63-45bc-99cb-ee5373b0c4e0",
+        "name": "Statistics",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "6e9eda14-1751-4c31-8a4f-755bc495285f",
+        "name": "Gravitation",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "7029aad0-5644-4c29-93eb-3804d53316fd",
+        "name": "Thermodynamics",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "68697090-817d-4371-af74-811dcef9be77",
+        "name": "Experimental Physics",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "1d07f5a0-5249-43c7-9f8f-688b5e4f673f",
+        "name": "Surface Chemistry",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "99711bab-ebea-4949-ab7b-c51305a54b40",
+        "name": "Basic of Mathematics",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "52e3d07a-3f2f-406f-98b5-8ef335273233",
+        "name": "Straight Lines",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "81efe465-a323-490a-b32e-309f4568bba5",
+        "name": "Oscillations",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "07757b49-3cd9-4d1b-9cb5-9a9cb9348965",
+        "name": "Redox Reactions",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "6cd4ec07-88ac-4d15-9260-4de0649b6ee2",
+        "name": "Hydrogen",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "280c3a75-27a6-4a59-921c-566d88a69c27",
+        "name": "Biomolecules",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "23f5ed81-c8c6-4949-b73f-8fd9c1c1bda1",
+        "name": "Basic of Mathematics",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "55020a04-bdbd-44d2-946c-ead9b1a15240",
+        "name": "Complex Number",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "82ddbf34-6de9-47ad-9bb2-5f712fece4b0",
+        "name": "Trigonometric Ratios & Identities",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "6c9c929a-ad64-4712-b9a2-4ef1c35130ca",
+        "name": "Application of Derivatives",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "fbecb79b-ea6a-47bd-9236-f1eb1f48aa02",
+        "name": "Center of Mass Momentum and Collision",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "1072734a-d66c-47e3-b9a5-d906baa5bd4d",
+        "name": "Ray Optics",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "b6909bf2-8b51-402b-b41f-f4cdccaef0b1",
+        "name": "Matrices",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "0a71485a-da70-4187-a442-b043de6db510",
+        "name": "Three Dimensional Geometry",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "fd47d56f-e88b-4749-a883-f6a9156f7f52",
+        "name": "Laws of Motion",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "5f0048ef-d216-4c06-9baf-f92d47eeba8c",
+        "name": "Electrostatics",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "1b2e760f-6493-4c3c-8f28-fb3102f6373e",
+        "name": "Haloalkanes and Haloarenes",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "712a4b6d-49cb-423a-97b0-9a6121fc15e7",
+        "name": "Carboxylic Acid Derivatives",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "e7c9ca1e-85c1-4120-bb59-5d80ffa5fba8",
+        "name": "Motion In One Dimension",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "ef7f2473-f98d-4b16-b33c-9abff160b989",
+        "name": "Current Electricity",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "7d038407-7600-4a61-be99-69bc3b92024c",
+        "name": "Chemical Coordination and Integration",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "a5279e0e-afb9-4e80-a949-6df1b8eeea9e",
+        "name": "Parabola",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "1a403a83-ff03-43ab-a68f-f11d726e5a10",
+        "name": "Area Under Curves",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "79c84054-79d6-45b6-bf1b-8f97b6bce601",
+        "name": "Mechanical Properties of Solids",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "2e81cecb-3754-4af0-8ef8-a05f825a9771",
+        "name": "Thermal Properties of Matter",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "c76d41dd-7213-4cdd-a012-69099d564efc",
+        "name": "Alternating Current",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "feabd56f-813a-48f0-9283-e54a26729386",
+        "name": "Redox Reactions",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "12a6760c-d57a-48c4-b061-9eae28f9f8e1",
+        "name": "General Organic Chemistry",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "620f563e-7069-4e34-807d-204e8b660205",
+        "name": "Chemical Kinetics",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "1882028e-7d73-40b5-86eb-3bde72dd4921",
+        "name": "p Block Elements (Group 15, 16, 17 & 18)",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "2d9a093c-5d8d-46e7-b11e-d350868fea84",
+        "name": "Sets and Relations",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "512c733b-fc9d-48b7-8a56-c7c3f7e10891",
+        "name": "Probability",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "00a51b7f-0396-44df-90be-33568acdc127",
+        "name": "Mechanical Properties of Fluids",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "7a371638-c2df-4c6d-af2c-fb1153b1cea9",
+        "name": "Electromagnetic Waves",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "68651a85-e2c3-453c-8309-2fbae7137b36",
+        "name": "Alcohols Phenols and Ethers",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "4ecc4075-0f6b-4bc5-be87-4c2782c26142",
+        "name": "Trigonometric Equations",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "ad6bce9e-9213-4af4-a0be-0295517d6bd0",
+        "name": "Atomic Physics",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "25a58e5d-dc1e-4126-98a8-7b16d6ff90ce",
+        "name": "Semiconductors",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "70e4d1ee-1a55-4db3-92f9-ac63392c0c0b",
+        "name": "Practical Chemistry",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "8ae665a4-e0af-4d16-8306-3502777978a3",
+        "name": "Trigonometric Equations",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "55495636-a576-47b5-9598-6d6434a2f342",
+        "name": "Units and Dimensions",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "def53fe5-e110-44f3-8ff4-d8dc4d0119f8",
+        "name": "Morphology of Flowering Plants",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "23d4d1a5-ef8a-49d1-8764-0226b5796dd6",
+        "name": "Neural Control and Coordination",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "f21f6750-5719-46e4-bbf5-6a99dc0e630a",
+        "name": "Organisms and Populations",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "aabb2c7a-4f9c-43f1-9a59-b5b381fa1037",
+        "name": "Sequences and Series",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "cf9bdac3-53b7-4c6b-951b-58d5c8ecb2d3",
+        "name": "Determinants",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "7f7da311-9af5-46da-ab7b-686f33f2c27b",
+        "name": "Center of Mass Momentum and Collision",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "4757baa4-5b10-4a10-86a1-ea9ca60bd67d",
+        "name": "Rotational Motion",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "4ff1537c-7308-43a1-938d-9c4e5014e660",
+        "name": "Some Basic Concepts of Chemistry",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "6a963467-c8d5-45b9-b07f-42d6ee72b836",
+        "name": "Limits",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "6c1f0297-d14a-434b-908a-ced9acc53e5c",
+        "name": "Heights and Distances",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "34a4db2a-1514-4bda-bbdc-395a1149ff61",
+        "name": "Determinants",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "5e522fbb-e93d-4833-aa00-1cefab2b6b82",
+        "name": "Differential Equations",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "650b1faa-27ee-4df7-aec2-e2deeb8f775c",
+        "name": "Mathematics in Physics",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "581c9ea1-2b89-4848-abe6-45fc733fc2dc",
+        "name": "Units and Dimensions",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "d5d7e6d0-8cc6-4fc7-bdbe-4fca71fdcc88",
+        "name": "The Living World",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "6b393632-7429-450c-96b3-ccb060be6f6f",
+        "name": "Cell Cycle and Cell Division",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "ad6d6e9e-a2cc-4081-bcda-868d66195ab5",
+        "name": "Respiration in Plants",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "0bb8a964-8a0a-4682-b67d-399afedf75e4",
+        "name": "Breathing and Exchange of Gases",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "5d9ab947-442b-4d34-ab81-3fde29dee0fb",
+        "name": "Human Reproduction",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "7791e855-979a-4eff-8541-5dfefa15036a",
+        "name": "Molecular Basis of Inheritance",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "db28d0bb-508a-497d-8193-02f4b03acea3",
+        "name": "Trigonometric Equations",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "7b869967-cd5f-4f1e-8107-a271e27618bd",
+        "name": "Kinetic Theory of Gases",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "b6198d4e-81a4-4e50-86e3-0a6c7981c2b4",
+        "name": "Magnetic Effects of Current",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "36b46fb4-bcc4-46be-82bf-bf1711c49e93",
+        "name": "Solid State",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "aa2e580c-88cf-4cfa-be3f-ef724c6ed174",
+        "name": "Quadratic Equation",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "4f730c85-7755-4593-a522-1addf99779d6",
+        "name": "Mechanical Properties of Solids",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "c0dec0f2-8235-414d-9440-e740b8cff0f4",
+        "name": "Waves and Sound",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "565b84a5-7c90-48a7-954f-d06fdf67c197",
+        "name": "Thermodynamics (C)",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "5a792c69-340a-40a7-aec5-368ecec2210d",
+        "name": "Biotechnology - Principles and Processes",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "9499bec8-2245-4721-a1fe-c4a54a424b1a",
+        "name": "Statistics",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "dacdb5a2-7a16-490c-bf69-46be584714c0",
+        "name": "Matrices",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "2cd0f03a-78df-43b8-a937-8f9b25284391",
+        "name": "Differentiation",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "85298ffc-4248-400e-9664-bd6de54de12b",
+        "name": "Application of Derivatives",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "0cf303c5-b0bd-4760-ade5-3b87eb2b308d",
+        "name": "Structure of Atom",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "501b5fee-c7a7-4145-b84e-76526604108b",
+        "name": "States of Matter",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "dfac5b7c-cf35-4f99-bfb4-75c63bba9327",
+        "name": "p Block Elements (Group 13 & 14)",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "9c36da80-9b3f-4433-8d27-a661324a2347",
+        "name": "Coordination Compounds",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "ebf07be6-39c3-4566-848c-45c47c713422",
+        "name": "Basic of Mathematics",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "edaa0226-ee2f-4b98-ba75-69d11bd87e3a",
+        "name": "Sequences and Series",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "71d7bc59-3739-4487-875d-c40d3a386ad7",
+        "name": "Hyperbola",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "83ab2879-be13-4f7d-ac14-e33898dea766",
+        "name": "Area Under Curves",
+        "subject": "168bd1c7-3c23-4d1c-ab40-fcf70bb1fb72",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "426cbadc-18e8-4b99-ab2d-0b11de6c159f",
+        "name": "Laws of Motion",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "0b8c6af6-6cd4-4337-9156-6bfc599d6fe5",
+        "name": "Environmental Chemistry",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "64e22e0e-7583-4247-aee7-19e45c0bf1f3",
+        "name": "General Principles and Processes of Isolation of Metals",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "a194677e-73b8-493b-af9f-8591122aab11",
+        "name": "Carboxylic Acid Derivatives",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "e7c15dc5-a555-4f67-8ab9-248ab3ec6e74",
+        "name": "Polymers",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "3c0f4c8b-c7b8-427e-a002-7e652ea1ebd5",
+        "name": "Quadratic Equation",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "9097dc2d-33d2-4001-8a7c-89a0940603c6",
+        "name": "Trigonometric Ratios & Identities",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "e4ced4bb-7b4b-4275-b036-28dcd0742b6c",
+        "name": "Mathematics in Physics",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "b746c88c-18b7-486b-bbb5-632f8d8f7103",
+        "name": "Structure of Atom",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "57250315-4d60-4c02-9b01-55d411f8dbc5",
+        "name": "Ionic Equilibrium",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "8f5fcb3f-66cf-4ec4-9515-c6249c5431b8",
+        "name": "General Organic Chemistry",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "942bbae7-fb55-4954-abe5-aec9a35532e6",
+        "name": "d and f Block Elements",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "0e320a21-63b8-40ec-8008-510252cedb7c",
+        "name": "Alcohols Phenols and Ethers",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "e0e78767-a1cb-43e8-beb5-8fab05be2618",
+        "name": "Rotational Motion",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "91193982-e52f-4c8d-8c68-51b419c98486",
+        "name": "Mechanical Properties of Solids",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "b880732a-50dc-4a60-9f08-c46221d77f92",
+        "name": "Ionic Equilibrium",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "89f3e5c0-2cf0-4ad4-9c74-731865e2afd8",
+        "name": "Hydrocarbons",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "be2773a7-2d75-4874-b513-6c0e157764fd",
+        "name": "Chemical Kinetics",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "2da7b242-ce2e-43f4-9dbc-41764381862e",
+        "name": "Binomial Theorem",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "a39ea56a-b585-4e13-b5b6-18ddc2bd4edd",
+        "name": "Statistics",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "e4c98d36-d68d-416f-a584-6a5187c81d68",
+        "name": "Linear Programming",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "d1e7c91c-d3ae-4b03-bda9-f626c06e3347",
+        "name": "Work Power Energy",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "0b3417c5-7a0f-4ce8-88a4-d45348236caa",
+        "name": "Alternating Current",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "34fa8316-b57d-43a8-93c0-469dd4468349",
+        "name": "Environmental Chemistry",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "1e828f10-5a1a-4d53-bb7c-171056eb9cf8",
+        "name": "General Principles and Processes of Isolation of Metals",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "fef27411-ceb5-4e56-85b7-12e14b4013df",
+        "name": "Functions",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "41495f4a-695c-473b-b467-96a8fccb759d",
+        "name": "Laws of Motion",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "7c9c5870-c391-44c5-9ea8-cd0e9502ac1f",
+        "name": "Electromagnetic Waves",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "4eba154a-ac3d-4de8-9215-583f2bcbb5f2",
+        "name": "Current Electricity",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "02377562-6a5a-4fce-84eb-e7c32600610b",
+        "name": "Dual Nature of Matter",
+        "subject": "45363e06-86a7-4d8e-be8d-318ee79af980",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "f750c782-3e1b-46b1-af22-53d8421e8cf0",
+        "name": "Structure of Atom",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "f47e1bb1-5fa4-4c63-932e-171e6de9e556",
+        "name": "p Block Elements (Group 13 & 14)",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "8dd30dbc-9c8c-4a52-8b1a-6b0cb07e1837",
+        "name": "Haloalkanes and Haloarenes",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "93a70545-1b24-4e58-8b40-047c5df70dcf",
+        "name": "Gravitation",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "f26ff0b2-e4db-4824-aa15-aee0723463d9",
+        "name": "Chemical Kinetics",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "2b125a0b-20fa-4c82-945a-fc175ec4cf5b",
+        "name": "Aldehydes and Ketones",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "fc6a5e4a-777d-45e1-878e-e85e8e1821ec",
+        "name": "Differentiation",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "49057702-cbb5-4f23-ac3a-e8692538b0d1",
+        "name": "Magnetic Effects of Current",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "2ce64e48-fb03-4aaa-a166-c638134d4fc9",
+        "name": "Thermal Properties of Matter",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "0b24de79-745a-46d2-af6f-e2deccb5de1b",
+        "name": "Electrostatics",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "944259dd-ebd8-44e0-a88b-3f5ecce7b901",
+        "name": "Electromagnetic Induction",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "b059b572-da41-456f-9be8-985f26890e10",
+        "name": "Kinetic Theory of Gases",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "ce2ec3fb-c30f-49ba-8cf2-c50191c8004c",
+        "name": "Reproductive Health",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "92d8abdb-1da0-4650-a8c8-34c4e36ff175",
+        "name": "Microbes in Human Welfare",
+        "subject": "634d1a76-ecfd-4d2b-bdb9-5d6658948236",
+        "exam": "4625ad6f-33db-4c22-96e0-6c23830482de"
+    },
+    {
+        "_id": "914f1bde-4f90-467e-9e2d-c891996307b1",
+        "name": "Complex Number",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "c737f631-5b19-4b69-af52-18b379405d15",
+        "name": "Mathematical Induction",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "3b761d88-a181-43e1-bba5-af0e809d3d65",
+        "name": "Hyperbola",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "ec30066e-2ffc-4cb6-b537-e9a3acbfb750",
+        "name": "Three Dimensional Geometry",
+        "subject": "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
+        "exam": "2871e14c-fbcf-4047-9955-e210b0fb742b"
+    },
+    {
+        "_id": "68578dd3-c081-490a-af97-07582769abc9",
+        "name": "Motion In Two Dimensions",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "e2536b1f-4ae3-4128-91da-90488ed28be6",
+        "name": "Laws of Motion",
+        "subject": "c41e01c9-86c8-41ff-8b48-e585020ec8c9",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "a148abb0-98e3-4c66-a6c1-ec4e12b8eabe",
+        "name": "Electrochemistry",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "628da84a-46ea-40c2-9c49-4afaa8bd9e3f",
+        "name": "Carboxylic Acid Derivatives",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "b42a7f03-93e8-4e50-8bb5-7c85a910c774",
+        "name": "Amines",
+        "subject": "2d96a490-384b-4984-9356-086b3baf166b",
+        "exam": "f3e78517-c050-4fea-822b-e43c4d2d3523"
+    },
+    {
+        "_id": "3319b38e-2c5f-40ef-91ee-e2a9215b865a",
+        "name": "Practical Chemistry",
+        "subject": "416dff44-e43b-4cd3-8c5a-d30b56d24151",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "c16036a0-c73c-439e-bc7d-8b9db59ff5c2",
+        "name": "Ellipse",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "7f69b865-0f26-4654-817f-a1aef34bd27c",
+        "name": "Application of Derivatives",
+        "subject": "6848df90-e6d7-4505-a691-53956ebf45a2",
+        "exam": "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a"
+    },
+    {
+        "_id": "c0f4ef71-63e0-4d43-8dbb-c09b5c3d04cc",
+        "name": "Electromagnetic Waves",
+        "subject": "fdd0de52-3277-408a-aed9-12c735635134",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "eea14a34-7903-476d-b068-dcdcadecfeb9",
+        "name": "Solutions",
+        "subject": "2a6d5d09-a157-43a4-aa81-022f2e70f596",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "b18f8f57-7273-4fe4-8039-2489ba5c824f",
+        "name": "Mathematical Induction",
+        "subject": "c476840a-2596-4510-878c-d641b83469dc",
+        "exam": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c"
+    },
+    {
+        "_id": "93ff9506-d3a9-49f0-bb77-11eed12389e5",
+        "name": "Thermodynamics",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "664aef7e-f72c-47b7-8a04-b50513480a2b",
+        "name": "Waves and Sound",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "8eafc203-c293-4f6e-ae19-09bb21b76ca1",
+        "name": "Experimental Physics",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "7441b6e6-9b6c-47f2-803f-cdb0a629003c",
+        "name": "Structure of Atom",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "6d2eb0f9-02fe-4604-901f-8c800e70c1d5",
+        "name": "Polymers",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "5d56a331-b4cb-4106-9a2f-425c347b639b",
+        "name": "Mathematical Reasoning",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "fe22ed5b-4bf1-4031-98cb-ea10f0350580",
+        "name": "Motion In One Dimension",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "01e81a43-e5a0-4799-9dc3-00ad36b49ec8",
+        "name": "Some Basic Concepts of Chemistry",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "a85ee2d9-0864-4f1e-91e9-cad31866a620",
+        "name": "Thermodynamics (C)",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "7bfc2cd0-a59a-49e6-aec2-88c26e8bd851",
+        "name": "General Organic Chemistry",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "2f24383a-2550-4400-9b5a-931972422433",
+        "name": "Limits",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "5bd83ed4-3aa0-4068-97e8-f418bf840d6e",
+        "name": "States of Matter",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "0511f677-7152-47cc-a9ca-47443661b563",
+        "name": "General Organic Chemistry",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "5350c647-2884-4db4-b0a1-4d919dea0a97",
+        "name": "Solid State",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "14696ba0-9a08-4015-8f3d-f26d9d287add",
+        "name": "Environmental Chemistry",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "f1a4f063-e1d7-492a-9b65-474091c93ba2",
+        "name": "Surface Chemistry",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "61301e6b-574d-42b8-afbf-2d7ed7a4a63d",
+        "name": "Basic of Mathematics",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "41a20a85-0d8f-41fb-a6ec-db44819a5823",
+        "name": "Matrices",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "6f63731e-c96e-4100-af1f-e2bfbc447ecb",
+        "name": "Hydrogen",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "a4e03e5e-3887-4761-9e97-085d1a7a1fe7",
+        "name": "Straight Lines",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "99089d99-620b-4ee8-9f12-6b50a0fd1838",
+        "name": "Parabola",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "ff4c55f0-518d-4c20-9d15-3406cca1a05b",
+        "name": "Definite Integration",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "668f9d29-71ef-45c0-bceb-2b070fe299fc",
+        "name": "Units and Dimensions",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "24edb54e-2f9e-42a7-9142-6ad26a7c933a",
+        "name": "Motion In Two Dimensions",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "8afbca4f-cd53-4213-a816-bdb131e53e5f",
+        "name": "Rotational Motion",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "85e5e02f-f74d-4418-a5bd-b305f501c9d7",
+        "name": "Wave Optics",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "f091dcac-98e9-420e-8743-a733850d0977",
+        "name": "Nuclear Physics",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "ba9489ac-fa92-4904-b0fd-b5d5a5d9c4a2",
+        "name": "Solid State",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "6f91e41c-cb6f-4867-a453-951e45e57f92",
+        "name": "Straight Lines",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "eeb872bf-9aff-4765-b982-dbffb994d9e2",
+        "name": "Area Under Curves",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "86e359db-29d4-4747-ab30-48550ee87b95",
+        "name": "Classification of Elements and Periodicity in Properties",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "24a178c4-0104-4fbe-89da-1241e0c17296",
+        "name": "Hyperbola",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "af54fa3c-c407-4f4e-b4b0-d4602be9c22a",
+        "name": "Continuity and Differentiability",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "fdf09cdf-d404-437c-9960-7c67b8ca07e4",
+        "name": "Differential Equations",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "909e4f0b-e3fa-4400-ac48-b85e0668f08a",
+        "name": "Structure of Atom",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "646cae31-9920-4602-958f-58ccc3b46ee0",
+        "name": "Chemical Equilibrium",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "3e6e2a76-8582-45ea-8ea1-36ac63e5675a",
+        "name": "Surface Chemistry",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "8a326069-1583-4bb9-ace4-b27ccba59b07",
+        "name": "Properties of Triangles",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "e1377a86-e0ce-41e3-b624-f483c6f0523f",
+        "name": "Indefinite Integration",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "548c7d16-ba9a-4161-aa39-dbb20d3a6d22",
+        "name": "Differentiation",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "13589f1f-4239-4333-aa40-7eef62bcd151",
+        "name": "Center of Mass Momentum and Collision",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "22e3612d-4202-4b50-94b3-f767e040b58f",
+        "name": "Kinetic Theory of Gases",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "5de00b10-f586-4a27-a4a3-94df6e078b44",
+        "name": "States of Matter",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "741f12ac-61f2-4cd9-8d3a-8437e8ad74a1",
+        "name": "Polymers",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "50ead9dd-0f68-4db9-8895-021d481a0ce5",
+        "name": "Quadratic Equation",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "ffaf9396-02af-45b5-8f23-fa1eddafa305",
+        "name": "Mathematical Induction",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "2125cf96-7f80-4f80-87c5-d64d706396d8",
+        "name": "Heights and Distances",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "1e6b1a40-8e1b-488a-9231-5bc0217cc58b",
+        "name": "Functions",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "4fcc00a1-e482-4388-8794-4dd1b3de1772",
+        "name": "Differentiation",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "44779567-6788-446d-a984-281f585f03b6",
+        "name": "Differential Equations",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "56f56400-eab3-40a9-9a87-c10f3d13050f",
+        "name": "Semiconductors",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "c7413df4-5c52-4915-ae36-a6d043c0d0f0",
+        "name": "Aldehydes and Ketones",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "93f2d27c-2e62-4183-bbaf-aad1d4191c27",
+        "name": "Carboxylic Acid Derivatives",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "3027349b-d5b3-4068-a18f-e03904309f6f",
+        "name": "Practical Chemistry",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "26b56792-b1ea-4f42-93d0-664e5a063c11",
+        "name": "Electromagnetic Induction",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "21ed7069-0420-48bf-869e-873598f2d366",
+        "name": "p Block Elements (Group 13 & 14)",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "5b95cb78-e8cc-4c9b-b36b-e20b7de747b4",
+        "name": "Biomolecules",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "03a02824-9394-4cf5-8852-4c26de705db8",
+        "name": "Sets and Relations",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "e83fd70b-ad4b-4ae7-a0f3-dc42a3dc7888",
+        "name": "Chemical Bonding and Molecular Structure",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "40c3bb04-8fc7-42d2-98fa-8c32f44d0390",
+        "name": "Biomolecules",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "8561a3c9-5a8b-4d4f-a771-f27d5c15bcc3",
+        "name": "Quadratic Equation",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "1e424393-1504-4145-b763-29ab5c921b53",
+        "name": "Complex Number",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "96d2a0bc-ed52-4680-90db-81e4a1c2fe09",
+        "name": "Pair of Lines",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "b6afe67e-6df6-4ad3-92cf-b39d2ca82eae",
+        "name": "Thermodynamics",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "13db453c-f804-46d4-96d6-e24163694d02",
+        "name": "Electrochemistry",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "c58422bc-76f2-470d-92e4-78d9abeec6f4",
+        "name": "p Block Elements (Group 15, 16, 17 & 18)",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "0be457ef-90a4-436b-a1e6-ba16cc96658c",
+        "name": "d and f Block Elements",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "383281c7-f392-4662-9b25-380c0b210f39",
+        "name": "Ellipse",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "3123f1b4-2ef6-4a95-a6ac-0b88d5a7bfe9",
+        "name": "Some Basic Concepts of Chemistry",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "a1340358-157c-49c6-a26c-fcd705e81a90",
+        "name": "Ionic Equilibrium",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "a6791d75-8df1-4cab-ad6f-0f68eb3f2a42",
+        "name": "p Block Elements (Group 15, 16, 17 & 18)",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "f7b6cad6-1fbe-47b4-96bc-589047cf72a3",
+        "name": "Binomial Theorem",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "5c71ab26-a234-49dc-a372-6253b70b61eb",
+        "name": "Limits",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "db0d9efa-ea8e-4898-a9af-44e34b482215",
+        "name": "Mathematical Induction",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "e72d218b-ada7-4c5a-900b-19f6ab38aa42",
+        "name": "Laws of Motion",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "febbb533-56bc-4fb6-8c7a-2bcd73dd1d97",
+        "name": "Redox Reactions",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "843f7fd5-8cbd-40cf-b41b-b426f10e48cb",
+        "name": "Trigonometric Ratios & Identities",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "75e9f53b-93e5-45e5-a8b6-0cc020b4d126",
+        "name": "Inverse Trigonometric Functions",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "4969bb5e-0480-463f-8802-0f02602248bc",
+        "name": "Three Dimensional Geometry",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "d24e734d-d4c8-40ee-b5fa-18f3c2f05fb0",
+        "name": "Chemical Equilibrium",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "a123ae3e-1456-425f-b8c0-6f21048018ea",
+        "name": "Hydrocarbons",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "3c1be1ef-ff40-40ff-b610-4becf5a9e882",
+        "name": "Circle",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "9512b561-e122-4fbb-9748-be234b7e46ae",
+        "name": "Mathematics in Physics",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "d078aa13-62c8-4993-9efe-5365d37782de",
+        "name": "Dual Nature of Matter",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "c5ad0dc7-6318-4d8d-84e6-9da9921f7e74",
+        "name": "Solutions",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "324b3619-831f-4048-a264-e4e26e963988",
+        "name": "Binomial Theorem",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "1a9047bc-f95b-43c8-89c2-fd221294a9dd",
+        "name": "Hyperbola",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "71b61960-bfa7-4c31-9b89-442fc39f8b0a",
+        "name": "Continuity and Differentiability",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "5f580015-40a1-4881-8718-e2dcd076c97f",
+        "name": "Definite Integration",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "6168114a-01a3-4990-ade1-4fc69c808751",
+        "name": "Dual Nature of Matter",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "ed6ccca0-7ebb-4a7b-9df9-076642c564eb",
+        "name": "Amines",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "773c2654-2d10-4b3e-9351-a2a4224570de",
+        "name": "Trigonometric Equations",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "fffa4d2a-f792-4f38-940a-d11fce5cbfd9",
+        "name": "Properties of Triangles",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "f01a20aa-9ab2-473c-9d80-ae5292092451",
+        "name": "Inverse Trigonometric Functions",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "7ebe7a50-83e9-4ad2-beeb-00d2fa0ed938",
+        "name": "Functions",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "da0ff138-7147-4983-90fc-d4c01232891b",
+        "name": "Communication System",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "16ce5c93-7e29-40f8-bd7b-bfa4082ef403",
+        "name": "Redox Reactions",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "ec5d7f40-70c2-406e-bb92-bae6d666b653",
+        "name": "d and f Block Elements",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "8cd6874f-53b7-452f-9664-9550a277c2ef",
+        "name": "Sequences and Series",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "9055ae06-101e-4e05-98a5-e42aa698015f",
+        "name": "Trigonometric Ratios & Identities",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "335a2806-328e-40c2-ad78-4113cd64e788",
+        "name": "Vector Algebra",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "71cb673d-88c5-4525-b1bd-83161b78a7dc",
+        "name": "Magnetic Effects of Current",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "65c08fd1-61bd-4743-8f22-08f052fffba3",
+        "name": "Experimental Physics",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "ea67d5ce-7479-42f6-93c9-792109ee006b",
+        "name": "Ionic Equilibrium",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "7865c976-36a3-4add-a186-ff967d1f20c6",
+        "name": "Hydrocarbons",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "873d32fe-450e-4184-a8b2-7724e3f05cef",
+        "name": "Environmental Chemistry",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "e668c1e0-b8ba-4d39-a2de-b25f596bd5e3",
+        "name": "Aldehydes and Ketones",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "2ae40d72-fcd2-4336-b9b4-3dd61349e33d",
+        "name": "Mathematical Reasoning",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "89187a14-4ce3-475b-8594-45f528e420fe",
+        "name": "Nuclear Physics",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "31a375e1-ac3f-4527-9ae2-42ec2446de45",
+        "name": "Solutions",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "98d33ef4-bf49-4974-8183-fa2c8a6f3129",
+        "name": "Ellipse",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "7facc79a-00bf-49c7-9eb2-2d90309a4b6e",
+        "name": "Indefinite Integration",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "8b3b4207-9904-4907-857a-df82f0d787c8",
+        "name": "Application of Derivatives",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "6f6ad5f5-1807-4542-a285-30a329ac0477",
+        "name": "Heights and Distances",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "63ac2e11-390b-4dc9-a514-fc26cc8c6c45",
+        "name": "Thermal Properties of Matter",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "d160b9ac-2d1c-4c1c-90fb-e975698569e1",
+        "name": "Magnetic Properties of Matter",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "6f599421-3802-4d60-96d0-44ea7986ce05",
+        "name": "Electromagnetic Waves",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "4afb68bf-7950-491c-9435-c9bc2b12c70c",
+        "name": "Classification of Elements and Periodicity in Properties",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "67efaec7-3de5-479c-8ce4-7e155fcb2fd6",
+        "name": "Chemical Bonding and Molecular Structure",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "030eb0b1-7866-48fd-b35f-10c5ee0445d3",
+        "name": "Sequences and Series",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "5d583bac-0445-462b-ade0-f0be0d261eed",
+        "name": "Atomic Physics",
+        "subject": "eaccceff-1c6e-4d73-bab0-6b2a2a0fb0a0",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "2c1f953c-a27f-4cd8-b1bd-77b100b2a538",
+        "name": "Haloalkanes and Haloarenes",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "bf3e9907-69c2-4e58-8249-dda7fe5d21b4",
+        "name": "Mechanical Properties of Solids",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "4d4eefbd-21ed-4005-bcb7-a64d63b5ae65",
+        "name": "Oscillations",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "3a50f708-6950-453e-8304-519bdcb8a776",
+        "name": "Electrostatics",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "c5de1741-80a3-4058-b70c-9712765d523d",
+        "name": "Ray Optics",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "0aebeeae-402d-48ea-905d-894670d3fc6b",
+        "name": "Communication System",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "bb947975-dc4d-4baa-94bf-695f526689f3",
+        "name": "Coordination Compounds",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "7706d2b7-9d86-4e2d-8e48-a3de7a1c59f2",
+        "name": "Pair of Lines",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "64e6f2c6-1c11-4e44-9b6a-732037c972fd",
+        "name": "Matrices",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "ec8428e9-9e24-4d82-9c68-c759a44398d0",
+        "name": "Waves and Sound",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "95230e40-d6b5-4a60-9748-39c336c07106",
+        "name": "Capacitance",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "426989eb-4144-48df-a694-b5fd93ffee73",
+        "name": "s Block Elements",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "17a7850b-b787-4f57-b0a5-8520246aaf83",
+        "name": "General Principles and Processes of Isolation of Metals",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "9eddb50e-2e33-4316-a389-37fd5d62a5a1",
+        "name": "Haloalkanes and Haloarenes",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "6e94dd3b-da65-47f4-8adf-c24267122fda",
+        "name": "Alcohols Phenols and Ethers",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "0a23be83-df81-49aa-8839-e64ca310e76c",
+        "name": "Chemistry in Everyday Life",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "d4a1e774-9f84-4739-ab27-2a7b65e1e117",
+        "name": "Complex Number",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "dd5ce763-4b2b-428d-ac97-455d1c27549a",
+        "name": "Permutation Combination",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "c18ae70a-dec4-4677-bfec-273305ce74bd",
+        "name": "Trigonometric Equations",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "c5956927-fe99-4ebd-9bed-4e2ec15aff4d",
+        "name": "Application of Derivatives",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "98a2fa3c-ccca-45d7-83f9-058b60d528c9",
+        "name": "Coordination Compounds",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "181b3941-fe41-440f-90f6-6fd19cf3427d",
+        "name": "Permutation Combination",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "bb06f142-ba6f-461f-90c6-0e56cdf7ee92",
+        "name": "Statistics",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "77f83e0b-36fc-489f-94e4-b038550fe9b5",
+        "name": "Determinants",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "abea61ff-8223-4ea3-a585-c91f3af4187c",
+        "name": "Circle",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "6a468548-6f07-4481-8c23-f7fa03a332d5",
+        "name": "Probability",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "945b26ff-84fb-498d-a0ef-5a8be91ad001",
+        "name": "Work Power Energy",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "cbbf9437-836a-4931-b380-d7a983079604",
+        "name": "Gravitation",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "87d85b11-a694-416c-a696-48dc9e988310",
+        "name": "Hydrogen",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "44c30c34-0846-41fa-9795-0e22f29bf669",
+        "name": "Probability",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "e6332f1d-b0f9-4739-aa4d-e6d4be0314b7",
+        "name": "p Block Elements (Group 13 & 14)",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "ef0667f0-beb2-4079-8295-aae596e228f6",
+        "name": "Chemical Kinetics",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "35b44f9a-6e95-475d-b7b3-d16f71fc1bab",
+        "name": "General Principles and Processes of Isolation of Metals",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "53c0624d-4788-4b5e-886c-0043f9bef98e",
+        "name": "Alcohols Phenols and Ethers",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "2c49e103-0156-454e-b814-cf9f476d9f11",
+        "name": "Area Under Curves",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "bc643b65-d619-4006-b32c-884a00cb0124",
+        "name": "Linear Programming",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "376e6cb7-8b77-4bff-aaf7-0a62f6419949",
+        "name": "Atomic Physics",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "02401ade-0024-427d-b0d8-41df4b807392",
+        "name": "Semiconductors",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "bec50012-a09e-458c-9f3d-025a57aeb874",
+        "name": "Chemical Kinetics",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "7644989f-cf8f-426c-a83b-21a7ef1a8c40",
+        "name": "Amines",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "14557fe5-fc6d-4071-bd80-cbeb25ae4003",
+        "name": "Practical Chemistry",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "4a64d1b8-3c9a-456f-8bfa-0f70b0a4a3a5",
+        "name": "Basic of Mathematics",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "79b2c01f-37d7-4b67-bdb1-46fe76933df4",
+        "name": "Parabola",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "7e23d40a-6ef4-4ed6-8a7d-f9fc2a5789ef",
+        "name": "Determinants",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "48028c32-5ab9-452f-a348-9c8beb8a6042",
+        "name": "Thermodynamics (C)",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "1d15c0cd-9eca-40d0-ba40-44137d749063",
+        "name": "s Block Elements",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "ad7c7a98-be02-48da-a482-5b031434dbde",
+        "name": "Electrochemistry",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "f97a265b-33f4-4da4-a161-bbdb4b9eba24",
+        "name": "Chemistry in Everyday Life",
+        "subject": "fe61bc1d-8b3b-4ce8-ab28-a156c8a62fb8",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "2e82a557-f70b-4aff-b66f-c914c4638308",
+        "name": "Sets and Relations",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "e9db3d26-b2a8-4e58-adbc-d15e25b5551a",
+        "name": "Three Dimensional Geometry",
+        "subject": "2d820cff-7252-4a17-9f44-10b92970705e",
+        "exam": "1aa38a2b-dee5-453e-a394-29c033c16789"
+    },
+    {
+        "_id": "bae1eff7-0db2-4699-8d5d-af7ea0f5c4e7",
+        "name": "Mechanical Properties of Fluids",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "e96ba232-51f1-43ee-8962-c34590f9cca3",
+        "name": "Current Electricity",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "35833dcf-6df8-4572-b33e-c67f87809f5c",
+        "name": "Alternating Current",
+        "subject": "1ff8290a-8193-4001-a93e-8aa8fcb1f3ac",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "814c7e2f-39b8-4231-a830-f41a98d9aa5e",
+        "name": "Carboxylic Acid Derivatives",
+        "subject": "6ec16a3d-177a-44f3-b342-4c51cf2b1045",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "1b9617c7-079b-4188-990e-0f46e8e6c709",
+        "name": "Statistics",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "c5b6d6b7-121f-4538-b0df-117becd56386",
+        "name": "Linear Programming",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    },
+    {
+        "_id": "310f8404-770c-453c-89bc-862e41293e5f",
+        "name": "Vector Algebra",
+        "subject": "3d7d5653-4382-4275-be29-58b0eea9f510",
+        "exam": "bb792041-50de-4cfe-83f3-f899a79c0930"
+    }
+]
