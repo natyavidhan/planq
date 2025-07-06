@@ -17,35 +17,11 @@ def init_blueprint(database):
 def question_page(question_id):
     """Frontend route for displaying a question page"""
     try:
-        # Fetch the question by ID
-        question = db.pyqs['questions'].find_one({'_id': question_id})
-        
+        question = db.get_questions_by_ids([question_id], full_data=True)
         if not question:
-            return render_template('question.html', error="Question not found")
-            
-        # Convert ObjectId to string for JSON serialization
-        question['_id'] = str(question['_id'])
+            return render_template('question.html', error="Question not found"), 404
         
-        # Get related data (exam, subject, chapter, paper)
-        if 'exam' in question:
-            exam = db.pyqs['exams'].find_one({'_id': question['exam']}, {'name': 1})
-            if exam:
-                question['exam_name'] = exam['name']
-                
-        if 'subject' in question:
-            subject = db.pyqs['subjects'].find_one({'_id': question['subject']}, {'name': 1})
-            if subject:
-                question['subject_name'] = subject['name']
-                
-        if 'chapter' in question:
-            chapter = db.pyqs['chapters'].find_one({'_id': question['chapter']}, {'name': 1})
-            if chapter:
-                question['chapter_name'] = chapter['name']
-                
-        if 'paper_id' in question:
-            paper = db.pyqs['papers'].find_one({'_id': question['paper_id']}, {'name': 1})
-            if paper:
-                question['paper_name'] = paper['name']
+        question = question[0]  # Get the single question object
         
         # Create a version of the question without answers/explanation
         public_question = {

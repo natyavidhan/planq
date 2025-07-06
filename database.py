@@ -6,9 +6,12 @@ import os
 import uuid
 from datetime import datetime
 
+with open('conf.json', 'r') as f:
+    CONFIG = json.load(f)
+
 class Database:
     def __init__(self):
-        self.client = MongoClient(os.getenv("MONGO_URI"), maxPoolSize=20, minPoolSize=5, connectTimeoutMS=3000)
+        self.client = MongoClient(os.getenv("MONGO_URI"), maxPoolSize=20, connectTimeoutMS=3000)
         self.users = self.client['userdata']
         self.pyqs = self.client['pyqs']
         self.tests = self.client['tests']
@@ -49,62 +52,49 @@ class Database:
     def generate_test(self, exam_id, subjects, num, ratio):
         test = {}
 
-        
         subjects = {k: v for k, v in subjects.items() if v != ['']}
 
-        ques_per_subject = num // len(subjects.keys()) 
+        subject_count = len(subjects)
+        ques_per_subject = -(-num // subject_count)
 
-        if num % len(subjects.keys()) != 0:
-            ques_per_subject += 1
+        all_chapters_subjects = [s for s, c in subjects.items() if c == ['all']]
+        if all_chapters_subjects:
+            subject_docs = self.pyqs['subjects'].find({'_id': {'$in': all_chapters_subjects}}, {'_id': 1, 'chapters': 1})
+            chapters_map = {doc['_id']: [c[0] for c in doc['chapters']] for doc in subject_docs}
+            for s in all_chapters_subjects:
+                subjects[s] = chapters_map[s]
 
-        for subject in subjects:
-            chapters = subjects[subject]
-            if len(chapters) == 1 and chapters[0] == 'all':
-                chapters = [i[0] for i in self.pyqs['subjects'].find_one({'_id': subject})['chapters']]
+        for subject, chapters in subjects.items():
             test[subject] = []
 
-            mcqs = list(self.pyqs['questions'].aggregate([
+            agg_result = list(self.pyqs['questions'].aggregate([
                 {
                     '$match': {
                         'exam': exam_id,
                         'subject': subject,
-                        'chapter': {'$in': chapters},
-                        'type': 'singleCorrect'
+                        'chapter': {'$in': chapters}
                     }
                 },
                 {
-                    '$project': {
-                        '_id': 1
+                    '$facet': {
+                        'mcqs': [
+                            {'$match': {'type': 'singleCorrect'}},
+                            {'$project': {'_id': 1}},
+                            {'$sample': {'size': int(ques_per_subject * ratio)}}
+                        ],
+                        'numericals': [
+                            {'$match': {'type': 'numerical'}},
+                            {'$project': {'_id': 1}},
+                            {'$sample': {'size': ques_per_subject - int(ques_per_subject * ratio)}}
+                        ]
                     }
-                },
-                {
-                    '$sample': {'size': int(ques_per_subject * ratio)}
                 }
-            ]))
+            ]))[0]
 
-            test[subject].extend([i['_id'] for i in mcqs])
+            mcq_ids = [q['_id'] for q in agg_result['mcqs']]
+            numerical_ids = [q['_id'] for q in agg_result['numericals']]
 
-            numericals = list(self.pyqs['questions'].aggregate([
-                {
-                    '$match': {
-                        'exam': exam_id,
-                        'subject': subject,
-                        'chapter': {'$in': chapters},
-                        'type': 'numerical'
-                    }
-                },
-                {
-                    '$project': {
-                        '_id': 1
-                    }
-                },
-                {
-                    '$sample': {'size': ques_per_subject - len(mcqs)}
-                }
-            ]))
-
-            test[subject].extend([i['_id'] for i in numericals])
-
+            test[subject].extend(mcq_ids + numerical_ids)
 
         return test
     
@@ -187,46 +177,60 @@ class Database:
         return []
     
     def get_tests_by_user(self, user_id):
-        tests = list(self.tests['tests'].find({"created_by": user_id}, {"_id": 1, "title": 1, "exam": 1, "created_at": 1, "attempts": 1, "mode": 1, "questions": 1}))
-        
-        # Load marking scheme configuration
-        with open('conf.json', 'r') as f:
-            config = json.loads(f.read())
-        
-        for test in tests:
-            # Get attempts
-            attempts = [i for i in self.tests['attempts'].find({"_id": {"$in": test.get('attempts', [])}}, {"_id": 1, "score": 1, "submitted_at": 1})]
-            attempts.sort(key=lambda x: x.get('submitted_at', ''), reverse=True)
-            test['attempts'] = attempts
+        tests = list(self.tests['tests'].find(
+            {"created_by": user_id},
+            {"_id": 1, "title": 1, "exam": 1, "created_at": 1, "attempts": 1, "mode": 1, "questions": 1, "paper_id": 1}
+        ))
 
-            # Calculate max marks based on marking scheme
-            exam_config = config.get(test['exam'], {})
+        if not tests:
+            return []
+
+        all_attempt_ids = [aid for test in tests for aid in test.get('attempts', [])]
+        
+        attempt_docs = list(self.tests['attempts'].find(
+            {"_id": {"$in": all_attempt_ids}},
+            {"_id": 1, "score": 1, "submitted_at": 1}
+        ).sort("submitted_at", -1))
+        attempt_lookup = {}
+        for a in attempt_docs:
+            attempt_lookup.setdefault(a['_id'], a)
+
+        # Gather all paper_ids for "previous" mode tests
+        paper_ids = [test['paper_id'] for test in tests if test['mode'] == 'previous' and 'paper_id' in test]
+        paper_lookup = {}
+        if paper_ids:
+            paper_docs = self.pyqs['papers'].find(
+                {"_id": {"$in": paper_ids}},
+                {"_id": 1, "questions": 1}
+            )
+            paper_lookup = {paper['_id']: paper for paper in paper_docs}
+
+        for test in tests:
+            # Attach sorted attempts
+            test_attempts = [attempt_lookup[aid] for aid in test.get('attempts', []) if aid in attempt_lookup]
+            test['attempts'] = test_attempts
+
+            # Get marking scheme
+            exam_config = CONFIG.get(test['exam'], {})
             marking_scheme = exam_config.get('marking_scheme', {})
-            
+
+            # Calculate max marks
             max_marks = 0
             if test['mode'] == 'generate':
-                # For custom generated tests
                 total_questions = sum(len(questions) for questions in test['questions'].values())
-                
-                # Handle complex marking schemes (like CAT)
-                if isinstance(marking_scheme.get('correct'), dict):
-                    # Use category 1 as default if categories not specified
-                    max_marks = total_questions * marking_scheme['correct'].get('category_1', 1)
-                else:
-                    max_marks = total_questions * marking_scheme.get('correct', 1)
-            
             elif test['mode'] == 'previous':
-                # For previous year papers
-                paper = self.pyqs['papers'].find_one({'_id': test.get('paper_id')})
-                if paper:
-                    total_questions = len(paper.get('questions', []))
-                    if isinstance(marking_scheme.get('correct'), dict):
-                        max_marks = total_questions * marking_scheme['correct'].get('category_1', 1)
-                    else:
-                        max_marks = total_questions * marking_scheme.get('correct', 1)
-            
+                paper = paper_lookup.get(test.get('paper_id'))
+                total_questions = len(paper.get('questions', [])) if paper else 0
+            else:
+                total_questions = 0
+
+            correct_mark = marking_scheme.get('correct', 1)
+            if isinstance(correct_mark, dict):
+                correct_mark = correct_mark.get('category_1', 1)
+
+            max_marks = total_questions * correct_mark
             test['max_marks'] = max_marks
-            
+
         return tests
     
     def get_test_attempts(self, test_id):
@@ -239,14 +243,33 @@ class Database:
         return self.pyqs['subjects'].find_one({"_id": subject_id}, {"_id": 1, "name": 1, "exam": 1, "chapters": 1})
     
     def get_questions_by_ids(self, question_ids, full_data=False):
+        questions = list(self.pyqs['questions'].find({"_id": {"$in": question_ids}}))
         if not full_data:
-            return list(self.pyqs['questions'].find({"_id": {"$in": question_ids}}))
-        q = list(self.pyqs['questions'].find({"_id": {"$in": question_ids}}))
-        for question in q:
-            question['exam_name'] = self.pyqs['exams'].find_one({"_id": question['exam']}, {"name": 1})['name']
-            question['subject_name'] = self.pyqs['subjects'].find_one({"_id": question['subject']}, {"name": 1})['name']
-            question['paper_name'] = self.pyqs['papers'].find_one({"_id": question.get('paper_id')}, {"name": 1})['name']
-        return q
+            return questions
+        
+        exam_ids = {q['exam'] for q in questions}
+        subject_ids = {q['subject'] for q in questions}
+        chapter_ids = {q['chapter'] for q in questions}
+        paper_ids = {q['paper_id'] for q in questions if 'paper_id' in q}
+        
+
+        exams = self.pyqs['exams'].find({"_id": {"$in": list(exam_ids)}}, {"_id": 1, "name": 1})
+        subjects = self.pyqs['subjects'].find({"_id": {"$in": list(subject_ids)}}, {"_id": 1, "name": 1})
+        chapter = self.pyqs['chapters'].find({"_id": {"$in": list(chapter_ids)}}, {"_id": 1, "name": 1})
+        papers = self.pyqs['papers'].find({"_id": {"$in": list(paper_ids)}}, {"_id": 1, "name": 1})
+
+        exam_lookup = {doc['_id']: doc['name'] for doc in exams}
+        subject_lookup = {doc['_id']: doc['name'] for doc in subjects}
+        chapter_lookup = {doc['_id']: doc['name'] for doc in chapter}
+        paper_lookup = {doc['_id']: doc['name'] for doc in papers}
+
+        for q in questions:
+            q['exam_name'] = exam_lookup[q['exam']]
+            q['subject_name'] = subject_lookup[q['subject']]
+            q['chapter_name'] = chapter_lookup[q['chapter']] if 'chapter' in q else None
+            q['paper_name'] = paper_lookup[q['paper_id']] if 'paper_id' in q else None
+
+        return questions
     
     def get_test_optimized(self, test_id):
         """
@@ -381,102 +404,98 @@ class Database:
         
         return test_data
 
-    # result = db.process_test_submission(test_id, session['user']['id'], answers, time_spent)
     def process_test_submission(self, test_id, user_id, answers, time_spent, question_timings=None):
         """Process test submission with question timing data"""
         test = self.get_test(test_id)
         if not test:
             return {"error": "Test not found"}
 
-        # Load marking scheme from configuration
-        with open('conf.json', 'r') as f:
-            config = json.loads(f.read())
-        
-        exam_config = config.get(test['exam'])
+        exam_config = CONFIG.get(test['exam'])
         if not exam_config:
             return {"error": "Invalid exam configuration"}
         
         marking_scheme = exam_config['marking_scheme']
+        correct_marks = marking_scheme['correct']
+        incorrect_marks = marking_scheme['incorrect']
+        negative_marking = marking_scheme['negative_marking']
 
-        # Validate answers
         if not isinstance(answers, dict):
             return {"error": "Invalid answers format"}
 
-        # Get all questions with their correct answers
-        full_questions = {i["_id"]: i for i in self.get_questions_by_ids(list(answers.keys()))}
+        question_ids = list(answers.keys())
+        question_docs = self.get_questions_by_ids(
+            question_ids
+        )
+        questions_lookup = {str(q["_id"]): q for q in question_docs}
 
-        # Calculate score and feedback
         score = 0
         feedback = []
 
         for q_id, user_answer in answers.items():
-            question = full_questions.get(str(q_id))
+            question = questions_lookup.get(str(q_id))
             if not question:
-                continue
+                continue  # Skip unknown questions
 
-            if question.get('type') == 'numerical':
+            # Determine correct answer
+            if question['type'] == 'numerical':
                 correct_answer = question.get('correct_value')
             else:
-                correct_answer = question.get('correct_option')[0]
-            is_correct = user_answer == correct_answer
-            
-            # Calculate marks based on marking scheme
-            if marking_scheme['negative_marking']:
-                if isinstance(marking_scheme['correct'], dict):
-                    # Complex marking scheme (e.g., CAT where different sections have different marks)
-                    if is_correct:
-                        marks = marking_scheme['correct'].get(question.get('category', 'category_1'), 1)
-                    else:
-                        marks = marking_scheme['incorrect'].get(question.get('category', 'category_1'), 0)
-                else:
-                    # Simple marking scheme with fixed marks
-                    marks = marking_scheme['correct'] if is_correct else marking_scheme['incorrect']
-            else:
-                # No negative marking
-                marks = marking_scheme['correct'] if is_correct else 0
+                correct_answer = question.get('correct_option', [None])[0]
 
+            is_correct = user_answer == correct_answer
+
+            # Determine marks
+            if isinstance(correct_marks, dict):  # Complex marking (per category)
+                category = question.get('category', 'category_1')
+                pos_mark = correct_marks.get(category, 1)
+                neg_mark = incorrect_marks.get(category, 0)
+            else:  # Simple marking
+                pos_mark = correct_marks
+                neg_mark = incorrect_marks
+
+            marks = pos_mark if is_correct else (neg_mark if negative_marking else 0)
             score += marks
-            feedback.append({
+
+            # Append feedback
+            feedback_item = {
                 "question_id": q_id,
                 "correct": is_correct,
                 "user_answer": user_answer,
                 "correct_answer": correct_answer,
-                "marks": marks
-            })
-
-            # Add question timing to feedback if available
-            timing_data = None
+                "marks": marks,
+            }
+            # Include timing if available
             if question_timings and q_id in question_timings:
-                timing_data = int(question_timings[q_id]) # Convert to int in case it's a float or string
+                feedback_item["time_taken"] = int(question_timings[q_id])
+            feedback.append(feedback_item)
 
-            feedback[-1]["time_taken"] = timing_data  # Store timing data
-
-        # Save attempt with timing data
+        # Prepare attempt document
+        attempt_id = str(uuid.uuid4())
         attempt_data = {
-            "_id": str(uuid.uuid4()),
+            "_id": attempt_id,
             "user_id": user_id,
             "test_id": test_id,
             "score": score,
-            "total_questions": len(test['questions']),
+            "total_questions": len(question_ids),
             "time_spent": time_spent,
             "feedback": feedback,
-            "question_timings": question_timings,  # Store all question timings
             "submitted_at": datetime.now()
         }
-        
-        self.tests['attempts'].insert_one(attempt_data)
 
-        # Update user's test attempts
-        self.tests['tests'].update_one({"_id": test_id}, {
-            "$push": {
-                "attempts": attempt_data["_id"]
-            }
-        })
+        if question_timings:
+            attempt_data["question_timings"] = question_timings
+
+        # Insert attempt and update test document atomically
+        self.tests['attempts'].insert_one(attempt_data)
+        self.tests['tests'].update_one(
+            {"_id": test_id},
+            {"$push": {"attempts": attempt_id}}
+        )
 
         return {
-            "attempt_id": attempt_data["_id"],
+            "attempt_id": attempt_id,
             "score": score,
-            "total_questions": sum([len(i) for i in test['questions']]),
+            "total_questions": len(question_ids),
             "feedback": feedback
         }
 
@@ -558,3 +577,6 @@ class Database:
             return {}
         
         return data['bookmarks']
+    
+    def __del__(self):
+        self.client.close()
