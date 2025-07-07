@@ -6,6 +6,77 @@
     <div class="title-bar">
         <h2>Welcome, {{user['username']}} <span class="badge">Pro</span></h2>
     </div>
+    
+    <!-- Activity Heatmap -->
+    <div class="heatmap-container">
+
+        
+        <div class="heatmap-wrapper">
+            <div class="heatmap-container-inner">
+                <!-- Month labels -->
+                <div class="heatmap-months">
+                    {% for month in heatmap_data.months %}
+                    <div class="month-label">{{ month.name }}</div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Heatmap grid -->
+                <div class="heatmap-grid">
+                    <!-- Day labels column -->
+                    <div class="heatmap-days-column">
+                        <div class="day-label">Mon</div>
+                        <div class="day-label">Tue</div>
+                        <div class="day-label">Wed</div>
+                        <div class="day-label">Thu</div>
+                        <div class="day-label">Fri</div>
+                        <div class="day-label">Sat</div>
+                        <div class="day-label">Sun</div>
+                    </div>
+                    
+                    <!-- Activity weeks -->
+                    <div class="heatmap-weeks">
+                        {% for week in heatmap_data.weeks %}
+                        <div class="heatmap-week">
+                            {% for day in week %}
+                            <div class="heatmap-day level-{{ day.level }}" 
+                                 data-date="{{ day.date }}" 
+                                 data-count="{{ day.count }}">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Legend -->
+                <div class="heatmap-legend">
+                    <span class="legend-text">Less</span>
+                    <div class="legend-squares">
+                        <div class="legend-item level-0" title="No activity"></div>
+                        <div class="legend-item level-1" title="1-2 activities"></div>
+                        <div class="legend-item level-2" title="3-5 activities"></div>
+                        <div class="legend-item level-3" title="6-10 activities"></div>
+                        <div class="legend-item level-4" title="11+ activities"></div>
+                    </div>
+                    <span class="legend-text">More</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="heatmap-header">
+            <div class="day-progress-container">
+                <div class="day-progress-circle" id="dayProgress">
+                    <div class="day-progress-inner">
+                        <div class="streak-number">{{ heatmap_data.current_streak or 0 }}</div>
+                        <div class="day-progress-time" id="progressTime">--:--</div>
+                        <div class="day-progress-label">remaining</div>
+                    </div>
+                </div>
+                <div class="day-progress-text">until midnight</div>
+            </div>
+        </div>
+    </div>
+
     <div class="activity">
         <h3 class="section-title"><i class="fas fa-chart-line"></i> Recent Activity</h3>
         {% if activity and activity|length > 0 %}
@@ -163,6 +234,9 @@
     </div>
 </div>
 
+<!-- Tooltip for heatmap -->
+<div id="heatmap-tooltip" class="heatmap-tooltip"></div>
+
 <!-- Activity Modal -->
 <div id="activity-modal" class="modal">
     <div class="modal-content">
@@ -308,8 +382,96 @@
 </div>
 
 <script>
-    // Modal functionality
+    // Day progress and heatmap functionality
     document.addEventListener('DOMContentLoaded', function() {
+        // Day progress circle
+        function updateDayProgress() {
+            const now = new Date();
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
+            
+            const totalMs = 24 * 60 * 60 * 1000; // Total milliseconds in a day
+            const elapsedMs = now.getTime() - new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+            const remainingMs = totalMs - elapsedMs;
+            
+            // Calculate progress percentage (0-100)
+            const progressPercent = (elapsedMs / totalMs) * 100;
+            const progressAngle = (progressPercent / 100) * 360;
+            
+            // Calculate remaining time
+            const remainingHours = Math.floor(remainingMs / (1000 * 60 * 60));
+            const remainingMinutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+            
+            // Update the circle
+            const circle = document.getElementById('dayProgress');
+            const timeDisplay = document.getElementById('progressTime');
+            
+            if (circle && timeDisplay) {
+                circle.style.setProperty('--progress-angle', progressAngle + 'deg');
+                timeDisplay.textContent = `${remainingHours.toString().padStart(2, '0')}:${remainingMinutes.toString().padStart(2, '0')}`;
+            }
+        }
+        
+        // Update immediately and then every minute
+        updateDayProgress();
+        setInterval(updateDayProgress, 60000);
+        
+        // Heatmap tooltip functionality
+        const tooltip = document.getElementById('heatmap-tooltip');
+        const heatmapDays = document.querySelectorAll('.heatmap-day');
+        
+        heatmapDays.forEach(day => {
+            day.addEventListener('mouseenter', function(e) {
+                const date = this.getAttribute('data-date');
+                const count = parseInt(this.getAttribute('data-count'));
+                const formattedDate = new Date(date).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+                
+                let activityText;
+                if (count === 0) {
+                    activityText = 'No activities';
+                } else if (count === 1) {
+                    activityText = '1 activity';
+                } else {
+                    activityText = `${count} activities`;
+                }
+                
+                tooltip.innerHTML = `<strong>${activityText}</strong><br>${formattedDate}`;
+                tooltip.style.display = 'block';
+                
+                // Position tooltip above the hovered day
+                const rect = this.getBoundingClientRect();
+                const tooltipRect = tooltip.getBoundingClientRect();
+                
+                let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+                let top = rect.top - tooltipRect.height - 12;
+                
+                // Keep tooltip within viewport bounds
+                const padding = 10;
+                if (left < padding) {
+                    left = padding;
+                } else if (left + tooltipRect.width > window.innerWidth - padding) {
+                    left = window.innerWidth - tooltipRect.width - padding;
+                }
+                
+                if (top < padding) {
+                    top = rect.bottom + 12;
+                }
+                
+                tooltip.style.left = left + window.scrollX + 'px';
+                tooltip.style.top = top + window.scrollY + 'px';
+            });
+            
+            day.addEventListener('mouseleave', function() {
+                tooltip.style.display = 'none';
+            });
+        });
+        
+        // Modal functionality
         const activityModal = document.getElementById('activity-modal');
         const testsModal = document.getElementById('tests-modal');
         
