@@ -23,157 +23,105 @@ def search_page():
 
 @search_bp.route('/filters', methods=['GET'])
 def filters_api():
-    """API endpoint for fetching filters"""
+    """API endpoint for fetching filters from in-memory pyqs data"""
     try:
+        # Parse query parameters
         exam_ids = request.args.get('examId', '').split(',')
-        exam_ids = [id for id in exam_ids if id]  # Filter out empty strings
-        
+        exam_ids = [eid for eid in exam_ids if eid]  # Remove empty IDs
+
         subject_ids = request.args.get('subjectId', '').split(',')
-        subject_ids = [id for id in subject_ids if id]  # Filter out empty strings
-        
+        subject_ids = [sid for sid in subject_ids if sid]  # Remove empty IDs
+
         if not exam_ids:
             return jsonify({"error": "Missing required parameters"}), 400
-        
-        # If no subject IDs provided, return available papers
+
         if not subject_ids:
-            papers = list(db.pyqs['papers'].find(
-                {"exam": {"$in": exam_ids}},
-                {"_id": 1, "name": 1}
-            ))
-            
-            # Convert ObjectId to string
-            for paper in papers:
-                paper['_id'] = str(paper['_id'])
-                
+            # Return all papers for given exams
+            papers = [
+                {"_id": pid, "name": paper['name']}
+                for pid, paper in db.pyqs['papers'].items()
+                if paper.get('exam') in exam_ids
+            ]
             return jsonify(papers)
-        
-        # If subject IDs provided, return available chapters
-        chapters = list(db.pyqs['chapters'].find(
-            {"exam": {"$in": exam_ids}, "subject": {"$in": subject_ids}},
-            {"_id": 1, "name": 1}
-        ))
-        
-        # Convert ObjectId to string
-        for chapter in chapters:
-            chapter['_id'] = str(chapter['_id'])
-            
-        return jsonify(chapters)
-        
+
+        else:
+            # Return all chapters for given exams and subjects
+            chapters = [
+                {"_id": cid, "name": chapter['name']}
+                for cid, chapter in db.pyqs['chapters'].items()
+                if chapter.get('exam') in exam_ids and chapter.get('subject') in subject_ids
+            ]
+            return jsonify(chapters)
+
     except Exception as e:
         print(f"API Filters Error: {str(e)}")
         return jsonify({"error": "Failed to fetch filters", "details": str(e)}), 500
 
 @search_bp.route('/api', methods=['GET'])
 def search_api():
-    """API endpoint for searching questions"""
+    """API endpoint for searching questions from in-memory pyqs data"""
     try:
-        # Extract all parameters
-        query = request.args.get('query', '')
-        exam_ids = request.args.get('examIds', '').split(',')
-        exam_ids = [id for id in exam_ids if id]
-        
-        subject_ids = request.args.get('subjectIds', '').split(',')
-        subject_ids = [id for id in subject_ids if id]
-        
-        chapter_ids = request.args.get('chapterIds', '').split(',')
-        chapter_ids = [id for id in chapter_ids if id]
-        
-        paper_ids = request.args.get('paperIds', '').split(',')
-        paper_ids = [id for id in paper_ids if id]
-        
-        # Pagination parameters
-        page = int(request.args.get('page', '1'))
-        limit = int(request.args.get('limit', '10'))
-        
-        # Validate pagination parameters
-        if limit > 100:
-            return jsonify({"error": "Limit exceeds maximum value of 100"}), 400
-            
-        if page < 1 or limit < 1:
-            return jsonify({"error": "Page and limit must be greater than 0"}), 400
-            
+        # Extract query parameters
+        query = request.args.get('query', '').strip()
+        exam_ids = [eid for eid in request.args.get('examIds', '').split(',') if eid]
+        subject_ids = [sid for sid in request.args.get('subjectIds', '').split(',') if sid]
+        chapter_ids = [cid for cid in request.args.get('chapterIds', '').split(',') if cid]
+        paper_ids = [pid for pid in request.args.get('paperIds', '').split(',') if pid]
+
+        # Pagination
+        page = max(int(request.args.get('page', 1)), 1)
+        limit = min(max(int(request.args.get('limit', 10)), 1), 100)
         skip = (page - 1) * limit
-        
-        # Build query filter
-        query_filter = {}
-        
-        if query:
-            query_filter['$or'] = [
-                {'question': {'$regex': query, '$options': 'i'}},
-                {'answer': {'$regex': query, '$options': 'i'}},
-                {'options': {'$regex': query, '$options': 'i'}}
-            ]
-        
-        # Add other filters
-        if exam_ids:
-            query_filter['exam'] = {'$in': exam_ids}
-            
-        if subject_ids:
-            query_filter['subject'] = {'$in': subject_ids}
-            
-        if chapter_ids:
-            query_filter['chapter'] = {'$in': chapter_ids}
-            
-        if paper_ids:
-            query_filter['paper_id'] = {'$in': paper_ids}
-        
-        # Count total documents for pagination
-        total_count = db.pyqs['questions'].count_documents(query_filter)
-        total_pages = (total_count + limit - 1) // limit  # Ceiling division
-        
-        # Fetch questions
-        questions = list(db.pyqs['questions'].find(
-            query_filter,
-            {
-                '_id': 1,
-                'type': 1,
-                'question': 1,
-                'exam': 1,
-                'subject': 1,
-                'chapter': 1,
-                'paper_id': 1,
-                'level': 1
-            }
-        ).skip(skip).limit(limit))
-        
-        # Extract unique IDs for related collections
-        exam_ids_to_fetch = list(set(q['exam'] for q in questions if 'exam' in q))
-        subject_ids_to_fetch = list(set(q['subject'] for q in questions if 'subject' in q))
-        chapter_ids_to_fetch = list(set(q['chapter'] for q in questions if 'chapter' in q))
-        paper_ids_to_fetch = list(set(q['paper_id'] for q in questions if 'paper_id' in q))
-        
-        # Fetch related data
-        exams = {}
-        if exam_ids_to_fetch:
-            for exam in db.pyqs['exams'].find({'_id': {'$in': exam_ids_to_fetch}}, {'_id': 1, 'name': 1}):
-                exams[exam['_id']] = exam['name']
-        
-        subjects = {}
-        if subject_ids_to_fetch:
-            for subject in db.pyqs['subjects'].find({'_id': {'$in': subject_ids_to_fetch}}, {'_id': 1, 'name': 1}):
-                subjects[subject['_id']] = subject['name']
-        
-        chapters = {}
-        if chapter_ids_to_fetch:
-            for chapter in db.pyqs['chapters'].find({'_id': {'$in': chapter_ids_to_fetch}}, {'_id': 1, 'name': 1}):
-                chapters[chapter['_id']] = chapter['name']
-        
-        papers = {}
-        if paper_ids_to_fetch:
-            for paper in db.pyqs['papers'].find({'_id': {'$in': paper_ids_to_fetch}}, {'_id': 1, 'name': 1}):
-                papers[paper['_id']] = paper['name']
-        
-        # Add related data to questions
-        for q in questions:
+
+        # Filter in-memory questions
+        filtered_questions = []
+        for q in db.pyqs['questions'].values():
+            if exam_ids and q.get('exam') not in exam_ids:
+                continue
+            if subject_ids and q.get('subject') not in subject_ids:
+                continue
+            if chapter_ids and q.get('chapter') not in chapter_ids:
+                continue
+            if paper_ids and q.get('paper_id') not in paper_ids:
+                continue
+            if query:
+                q_text = (q.get('question', '') + ' ' +
+                          q.get('explanation', '') + ' ' +
+                          ' '.join(q.get('options', [])))
+                if query.lower() not in q_text.lower():
+                    continue
+            filtered_questions.append(q)
+
+        total_count = len(filtered_questions)
+        total_pages = (total_count + limit - 1) // limit
+
+        # Paginate results
+        paginated_questions = filtered_questions[skip:skip + limit]
+
+        # Attach related names from preloaded pyqs
+        for q in paginated_questions:
             q['_id'] = str(q['_id'])
-            q['exam_name'] = exams.get(q.get('exam'))
-            q['subject_name'] = subjects.get(q.get('subject'))
-            q['chapter_name'] = chapters.get(q.get('chapter'))
-            q['paper_name'] = papers.get(q.get('paper_id'))
-        
+            q['exam_name'] = db.pyqs['exams'].get(q.get('exam'), {}).get('name')
+            q['subject_name'] = db.pyqs['subjects'].get(q.get('subject'), {}).get('name')
+            q['chapter_name'] = db.pyqs['chapters'].get(q.get('chapter'), {}).get('name')
+            q['paper_name'] = db.pyqs['papers'].get(q.get('paper_id'), {}).get('name')
+
         # Prepare response
         response = {
-            'results': questions,
+            'results': [{
+                '_id': q['_id'],
+                'type': q.get('type', 'singleCorrect'),
+                'question': q.get('question'),
+                'exam': q.get('exam'),
+                'exam_name': q.get('exam_name'),
+                'subject': q.get('subject'),
+                'subject_name': q.get('subject_name'),
+                'chapter': q.get('chapter'),
+                'chapter_name': q.get('chapter_name'),
+                'paper_id': q.get('paper_id'),
+                'paper_name': q.get('paper_name'),
+                'level': q.get('level', 1)
+            } for q in paginated_questions],
             'pagination': {
                 'currentPage': page,
                 'totalPages': total_pages,
@@ -183,7 +131,7 @@ def search_api():
         }
 
         return jsonify(response)
-        
+
     except Exception as e:
         print(f"API Search Error: {str(e)}")
         return jsonify({"error": "Failed to fetch search results", "details": str(e)}), 500

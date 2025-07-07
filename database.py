@@ -1,5 +1,7 @@
 from pymongo import MongoClient
 import json
+import brotli
+from functools import lru_cache
 
 import random
 import os
@@ -9,12 +11,36 @@ from datetime import datetime
 with open('conf.json', 'r') as f:
     CONFIG = json.load(f)
 
+
+@lru_cache(maxsize=None)
+def load_json_file(path, brotli_compressed=False):
+    """
+    Load JSON file. If brotli_compressed=True, decompress first.
+    Returns a dict keyed by '_id'.
+    """
+    with open(path, 'rb') as f:
+        data_bytes = f.read()
+        if brotli_compressed:
+            data_str = brotli.decompress(data_bytes).decode('utf-8')
+        else:
+            data_str = data_bytes.decode('utf-8')
+        data = json.loads(data_str)
+        return {item['_id']: item for item in data}
+
 class Database:
     def __init__(self):
         self.client = MongoClient(os.getenv("MONGO_URI"), maxPoolSize=20)
         self.users = self.client['userdata']
-        self.pyqs = self.client['pyqs']
+        # self.pyqs = self.client['pyqs']
         self.tests = self.client['tests']
+
+        self.pyqs = {
+            "questions": load_json_file("data/pyqs.questions.json.br", brotli_compressed=True),
+            "chapters":  load_json_file("data/pyqs.chapters.json"),
+            "subjects":  load_json_file("data/pyqs.subjects.json"),
+            "exams":     load_json_file("data/pyqs.exams.json"),
+            "papers":    load_json_file("data/pyqs.papers.json"),
+        }
 
     def get_user(self, key, value):
         return self.users['users'].find_one({key: value})
@@ -39,62 +65,57 @@ class Database:
         self.users['users'].delete_one({"_id": _id})
 
     def get_exams(self):
-        return list(self.pyqs['exams'].find({}, {'_id': 1, 'name': 1}))
-    
+        return list(self.pyqs['exams'].values())
+
     def get_subjects_by_exam(self, exam_id, full=False):
         if full:
-            return list(self.pyqs['subjects'].find({'exam': exam_id}))
-        return list(self.pyqs['subjects'].find({'exam': exam_id}, {'_id': 1, 'name': 1}))
-    
+            return [i for i in self.pyqs['subjects'].values() if i['exam'] == exam_id]
+        return [{'_id': i['_id'], 'name': i['name']} for i in self.pyqs['subjects'].values() if i['exam'] == exam_id]
+
     def get_pyqs_by_exam(self, exam_id):
-        return list(self.pyqs['papers'].find({'exam': exam_id}))
-    
+        return [i for i in self.pyqs['papers'].values() if i['exam'] == exam_id]
+
+
     def generate_test(self, exam_id, subjects, num, ratio):
         test = {}
-
+        
+        # Filter out empty subject lists
         subjects = {k: v for k, v in subjects.items() if v != ['']}
-
         subject_count = len(subjects)
-        ques_per_subject = -(-num // subject_count)
+        ques_per_subject = -(-num // subject_count)  # Ceiling division
 
-        all_chapters_subjects = [s for s, c in subjects.items() if c == ['all']]
-        if all_chapters_subjects:
-            subject_docs = self.pyqs['subjects'].find({'_id': {'$in': all_chapters_subjects}}, {'_id': 1, 'chapters': 1})
-            chapters_map = {doc['_id']: [c[0] for c in doc['chapters']] for doc in subject_docs}
-            for s in all_chapters_subjects:
-                subjects[s] = chapters_map[s]
+        # Resolve 'all' chapters
+        for subject_id, chapters in subjects.items():
+            if chapters == ['all']:
+                subject = self.pyqs['subjects'].get(subject_id)
+                if subject and 'chapters' in subject:
+                    subjects[subject_id] = [c[0] for c in subject['chapters']]  # use chapter IDs
 
-        for subject, chapters in subjects.items():
-            test[subject] = []
+        # Select questions per subject
+        for subject_id, chapters in subjects.items():
+            test[subject_id] = []
 
-            agg_result = list(self.pyqs['questions'].aggregate([
-                {
-                    '$match': {
-                        'exam': exam_id,
-                        'subject': subject,
-                        'chapter': {'$in': chapters}
-                    }
-                },
-                {
-                    '$facet': {
-                        'mcqs': [
-                            {'$match': {'type': 'singleCorrect'}},
-                            {'$project': {'_id': 1}},
-                            {'$sample': {'size': int(ques_per_subject * ratio)}}
-                        ],
-                        'numericals': [
-                            {'$match': {'type': 'numerical'}},
-                            {'$project': {'_id': 1}},
-                            {'$sample': {'size': ques_per_subject - int(ques_per_subject * ratio)}}
-                        ]
-                    }
-                }
-            ]))[0]
+            # Filter questions matching exam, subject, and chapters
+            filtered_questions = [
+                q for q in self.pyqs['questions'].values()
+                if q['exam'] == exam_id
+                and q['subject'] == subject_id
+                and q.get('chapter') in chapters
+            ]
 
-            mcq_ids = [q['_id'] for q in agg_result['mcqs']]
-            numerical_ids = [q['_id'] for q in agg_result['numericals']]
+            # Separate MCQs and Numericals
+            mcqs = [q['_id'] for q in filtered_questions if q.get('type') == 'singleCorrect']
+            numericals = [q['_id'] for q in filtered_questions if q.get('type') == 'numerical']
 
-            test[subject].extend(mcq_ids + numerical_ids)
+            # Determine number of each type
+            num_mcqs = int(ques_per_subject * ratio)
+            num_numericals = ques_per_subject - num_mcqs
+
+            # Randomly sample without replacement
+            selected_mcqs = random.sample(mcqs, min(len(mcqs), num_mcqs))
+            selected_numericals = random.sample(numericals, min(len(numericals), num_numericals))
+
+            test[subject_id].extend(selected_mcqs + selected_numericals)
 
         return test
     
@@ -177,59 +198,66 @@ class Database:
         return []
     
     def get_tests_by_user(self, user_id):
+        """
+        Fetch all tests created by a user, attach attempts & max_marks.
+        Uses MongoDB for tests/attempts, self.pyqs for static data.
+        """
+        # Fetch user tests from MongoDB (project only needed fields)
         tests = list(self.tests['tests'].find(
             {"created_by": user_id},
-            {"_id": 1, "title": 1, "exam": 1, "created_at": 1, "attempts": 1, "mode": 1, "questions": 1, "paper_id": 1}
+            {
+                "_id": 1, "title": 1, "exam": 1, "created_at": 1,
+                "attempts": 1, "mode": 1, "questions": 1, "paper_id": 1
+            }
         ))
 
         if not tests:
             return []
 
+        # Bulk fetch all attempts in one call
         all_attempt_ids = [aid for test in tests for aid in test.get('attempts', [])]
-        
         attempt_docs = list(self.tests['attempts'].find(
             {"_id": {"$in": all_attempt_ids}},
             {"_id": 1, "score": 1, "submitted_at": 1}
         ).sort("submitted_at", -1))
-        attempt_lookup = {}
-        for a in attempt_docs:
-            attempt_lookup.setdefault(a['_id'], a)
+        attempt_lookup = {a['_id']: a for a in attempt_docs}
 
-        # Gather all paper_ids for "previous" mode tests
-        paper_ids = [test['paper_id'] for test in tests if test['mode'] == 'previous' and 'paper_id' in test]
+        # Bulk fetch papers for 'previous' mode tests
+        paper_ids = [t['paper_id'] for t in tests if t['mode'] == 'previous' and 'paper_id' in t]
         paper_lookup = {}
         if paper_ids:
-            paper_docs = self.pyqs['papers'].find(
-                {"_id": {"$in": paper_ids}},
-                {"_id": 1, "questions": 1}
-            )
-            paper_lookup = {paper['_id']: paper for paper in paper_docs}
+            paper_docs = list(self.pyqs['papers'].values())
+            paper_lookup = {p['_id']: p for p in paper_docs if p['_id'] in paper_ids}
 
+        # Load marking scheme config once
+        exam_config_cache = {}
         for test in tests:
-            # Attach sorted attempts
-            test_attempts = [attempt_lookup[aid] for aid in test.get('attempts', []) if aid in attempt_lookup]
-            test['attempts'] = test_attempts
+            # Attach attempts sorted by submitted_at descending
+            test_attempts = [
+                attempt_lookup[aid] for aid in test.get('attempts', [])
+                if aid in attempt_lookup
+            ]
+            test['attempts'] = sorted(test_attempts, key=lambda a: a['submitted_at'], reverse=True)
 
             # Get marking scheme
-            exam_config = CONFIG.get(test['exam'], {})
-            marking_scheme = exam_config.get('marking_scheme', {})
+            exam_id = test['exam']
+            if exam_id not in exam_config_cache:
+                exam_config_cache[exam_id] = CONFIG.get(exam_id, {})
+            marking_scheme = exam_config_cache[exam_id].get('marking_scheme', {})
+            correct_mark = marking_scheme.get('correct', 1)
+            if isinstance(correct_mark, dict):
+                correct_mark = correct_mark.get('category_1', 1)
 
-            # Calculate max marks
-            max_marks = 0
+            # Calculate total questions
             if test['mode'] == 'generate':
-                total_questions = sum(len(questions) for questions in test['questions'].values())
+                total_questions = sum(len(qs) for qs in test['questions'].values())
             elif test['mode'] == 'previous':
                 paper = paper_lookup.get(test.get('paper_id'))
                 total_questions = len(paper.get('questions', [])) if paper else 0
             else:
                 total_questions = 0
 
-            correct_mark = marking_scheme.get('correct', 1)
-            if isinstance(correct_mark, dict):
-                correct_mark = correct_mark.get('category_1', 1)
-
-            max_marks = total_questions * correct_mark
-            test['max_marks'] = max_marks
+            test['max_marks'] = total_questions * correct_mark
 
         return tests
     
@@ -240,168 +268,91 @@ class Database:
         return self.tests['tests'].find_one({"_id": test_id})
     
     def get_subject(self, subject_id):
-        return self.pyqs['subjects'].find_one({"_id": subject_id}, {"_id": 1, "name": 1, "exam": 1, "chapters": 1})
+        return self.pyqs['subjects'].get(subject_id, None)
     
     def get_questions_by_ids(self, question_ids, full_data=False):
-        questions = list(self.pyqs['questions'].find({"_id": {"$in": question_ids}}))
+        questions = [self.pyqs['questions'][qid] for qid in question_ids if qid in self.pyqs['questions']]
         if not full_data:
             return questions
-        
-        exam_ids = {q['exam'] for q in questions}
-        subject_ids = {q['subject'] for q in questions}
-        chapter_ids = {q['chapter'] for q in questions}
-        paper_ids = {q['paper_id'] for q in questions if 'paper_id' in q}
-        
-
-        exams = self.pyqs['exams'].find({"_id": {"$in": list(exam_ids)}}, {"_id": 1, "name": 1})
-        subjects = self.pyqs['subjects'].find({"_id": {"$in": list(subject_ids)}}, {"_id": 1, "name": 1})
-        chapter = self.pyqs['chapters'].find({"_id": {"$in": list(chapter_ids)}}, {"_id": 1, "name": 1})
-        papers = self.pyqs['papers'].find({"_id": {"$in": list(paper_ids)}}, {"_id": 1, "name": 1})
-
-        exam_lookup = {doc['_id']: doc['name'] for doc in exams}
-        subject_lookup = {doc['_id']: doc['name'] for doc in subjects}
-        chapter_lookup = {doc['_id']: doc['name'] for doc in chapter}
-        paper_lookup = {doc['_id']: doc['name'] for doc in papers}
 
         for q in questions:
-            q['exam_name'] = exam_lookup[q['exam']]
-            q['subject_name'] = subject_lookup[q['subject']]
-            q['chapter_name'] = chapter_lookup[q['chapter']] if 'chapter' in q else None
-            q['paper_name'] = paper_lookup[q['paper_id']] if 'paper_id' in q else None
+            q['exam_name'] = self.pyqs['exams'][q['exam']]['name']
+            q['subject_name'] = self.pyqs['subjects'][q['subject']]['name']
+            q['chapter_name'] = self.pyqs['chapters'][q['chapter']]['name']
+            q['paper_name'] = self.pyqs['papers'][q['paper_id']]['name']
 
         return questions
     
     def get_test_optimized(self, test_id):
-        """
-        Get a test with optimized data loading for the attempt page.
-        Only loads necessary data for the test interface.
-        """
         test = self.tests['tests'].find_one({"_id": test_id})
-        print(test)
         if not test:
             return None
-            
-        # Prepare test data for the template
+
         test_data = {
             '_id': test['_id'],
             'title': test['title'],
             'duration': test['duration'],
             'subjects': []
         }
-        
+
         if test.get('mode') == 'generate':
-            # Get all required subject IDs
-            subject_ids = list(test.get('subjects', {}).keys())
-            
-            # One bulk query for all subjects
-            subjects_data = {}
-            if subject_ids:
-                bulk_subjects = list(self.pyqs['subjects'].find(
-                    {'_id': {'$in': subject_ids}}, 
-                    {'_id': 1, 'name': 1}
-                ))
-                for subject in bulk_subjects:
-                    subjects_data[subject['_id']] = subject
-            
-            # Get all question IDs
-            question_ids = []
-            for subject_id, question_list in test.get('questions', {}).items():
-                question_ids.extend(question_list)
-                
-            # One bulk query for all questions - only fetch required fields
-            questions_data = {}
-            if question_ids:
-                bulk_questions = list(self.pyqs['questions'].find(
-                    {'_id': {'$in': question_ids}}, 
-                    {
-                        '_id': 1, 
-                        'question': 1, 
-                        'type': 1, 
-                        'options': 1, 
-                        'subject': 1
-                    }
-                ))
-                for question in bulk_questions:
-                    questions_data[question['_id']] = question
-            
-            # Organize questions by subject
             for subject_id, question_ids in test.get('questions', {}).items():
-                if subject_id not in subjects_data:
+                subject = self.pyqs['subjects'].get(subject_id)
+                if not subject:
                     continue
-                    
-                subject_questions = []
-                for qid in question_ids:
-                    if qid in questions_data:
-                        subject_questions.append(questions_data[qid])
                 
+                subject_questions = [
+                    {
+                        '_id': q['_id'],
+                        'question': q['question'],
+                        'type': q.get('type', 'singleCorrect'),
+                        'options': q.get('options', []),
+                        'subject': q['subject']
+                    }
+                    for qid in question_ids
+                    if (q := self.pyqs['questions'].get(qid))
+                ]
+
                 test_data['subjects'].append({
                     'id': subject_id,
-                    'name': subjects_data[subject_id]['name'],
+                    'name': subject['name'],
                     'questions': subject_questions
                 })
-                
+
         elif test.get('mode') == 'previous':
-            # Get paper data
-            paper = self.pyqs['papers'].find_one({'_id': test.get('paper_id')})
+            paper = self.pyqs['papers'].get(test.get('paper_id'))
             if not paper:
                 return test_data
-                
-            # Get all question IDs from the paper
-            question_ids = paper.get('questions', [])
             
-            # One bulk query for all questions - only fetch required fields
-            questions = []
-            if question_ids:
-                questions = list(self.pyqs['questions'].find(
-                    {'_id': {'$in': question_ids}}, 
-                    {
-                        '_id': 1, 
-                        'question': 1, 
-                        'type': 1, 
-                        'options': 1, 
-                        'subject': 1
-                    }
-                ))
-            
-            # Group questions by subject
             subject_questions = {}
-            subject_ids = set()
-            
-            for q in questions:
-                subject_id = q.get('subject')
-                if not subject_id:
+            for qid in paper.get('questions', []):
+                question = self.pyqs['questions'].get(qid)
+                if not question:
                     continue
-                    
-                subject_ids.add(subject_id)
-                if subject_id not in subject_questions:
-                    subject_questions[subject_id] = []
-                    
-                subject_questions[subject_id].append(q)
-            
-            # Get subject names in bulk
-            subject_names = {}
-            if subject_ids:
-                bulk_subjects = list(self.pyqs['subjects'].find(
-                    {'_id': {'$in': list(subject_ids)}}, 
-                    {'_id': 1, 'name': 1}
-                ))
-                for subject in bulk_subjects:
-                    subject_names[subject['_id']] = subject['name']
-            
-            # Add subjects to test data
+                sid = question.get('subject')
+                if sid not in subject_questions:
+                    subject_questions[sid] = []
+                subject_questions[sid].append({
+                    '_id': question['_id'],
+                    'question': question['question'],
+                    'type': question.get('type', 'singleCorrect'),
+                    'options': question.get('options', []),
+                    'subject': sid
+                })
+
             for subject_id, questions in subject_questions.items():
+                subject_name = self.pyqs['subjects'].get(subject_id, {}).get('name', 'Unknown')
                 test_data['subjects'].append({
                     'id': subject_id,
-                    'name': subject_names.get(subject_id, 'Unknown'),
+                    'name': subject_name,
                     'questions': questions
                 })
-        
-        # Add activity for starting test
+
         self.add_activity(test['created_by'], "test_started", {
             "test_id": test_id,
             "title": test['title']
         })
-        
+
         return test_data
 
     def process_test_submission(self, test_id, user_id, answers, time_spent, question_timings=None):

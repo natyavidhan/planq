@@ -57,7 +57,7 @@ def attempt_question(question_id):
         time_taken = data.get('time_taken', 0)  # Get time taken in seconds
         
         # Fetch the question with correct answer and explanation
-        question = db.pyqs['questions'].find_one({'_id': question_id})
+        question = db.pyqs['questions'].get(question_id)
         
         if not question:
             return jsonify({"error": "Question not found"}), 404
