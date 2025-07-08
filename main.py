@@ -191,19 +191,16 @@ def generate_heatmap_data(activities):
         week_dates.append(current_date)
         current_date += timedelta(days=7)
     
-    # Generate month labels with proper spans
     months = []
     if week_dates:
         first_week_start = week_dates[0]
         total_weeks = len(week_dates)
         
-        # Track which week each month starts
         month_week_map = defaultdict(list)
         for week_idx, week_start in enumerate(week_dates):
             month_key = week_start.strftime('%Y-%m')
             month_week_map[month_key].append(week_idx)
         
-        # Generate month labels
         for month_key in sorted(month_week_map.keys()):
             week_indices = month_week_map[month_key]
             month_date = datetime.strptime(month_key, '%Y-%m').date()
@@ -217,14 +214,20 @@ def generate_heatmap_data(activities):
     current_streak = 0
     longest_streak = 0
     temp_streak = 0
-    
-    # Check for current streak (from today backwards)
-    check_date = end_date
+
+    end_date = datetime.now().date()
+    start_date = end_date - timedelta(days=364)
+
+    today_count = activity_counts.get(end_date, 0)
+    if today_count > 0:
+        check_date = end_date
+    else:
+        check_date = end_date - timedelta(days=1)
+
     while check_date >= start_date and activity_counts.get(check_date, 0) > 0:
         current_streak += 1
         check_date -= timedelta(days=1)
-    
-    # Calculate longest streak
+
     sorted_dates = sorted(activity_counts.keys())
     for i, date in enumerate(sorted_dates):
         if activity_counts[date] > 0:
@@ -232,7 +235,7 @@ def generate_heatmap_data(activities):
             longest_streak = max(longest_streak, temp_streak)
         else:
             temp_streak = 0
-    
+
     return {
         'weeks': weeks,
         'months': months,

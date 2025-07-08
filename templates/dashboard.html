@@ -68,11 +68,16 @@
                 <div class="day-progress-circle" id="dayProgress">
                     <div class="day-progress-inner">
                         <div class="streak-number">{{ heatmap_data.current_streak or 0 }}</div>
-                        <div class="day-progress-time" id="progressTime">--:--</div>
-                        <div class="day-progress-label">remaining</div>
+                        <div id="not-extended">
+                            <div class="day-progress-time" id="progressTime">--:--</div>
+                            <div class="day-progress-label">remaining</div>
+                        </div>
+                        <div id="extended">
+                            <i>Extended</i>
+                        </div>
                     </div>
                 </div>
-                <div class="day-progress-text">until midnight</div>
+                <button class="extend">Extend</button>
             </div>
         </div>
     </div>
@@ -81,7 +86,7 @@
         <h3 class="section-title"><i class="fas fa-chart-line"></i> Recent Activity</h3>
         {% if activity and activity|length > 0 %}
             <div class="activity-list">
-                {% for item in activity[:4] %}
+                {% for item in activity[:5] %}
                     <div class="activity-item">
                         {% if item.action == "test_created" %}
                             <div class="activity-icon"><i class="fas fa-plus-circle"></i></div>
@@ -133,7 +138,7 @@
                     </div>
                 {% endfor %}
             </div>
-            {% if activity|length > 4 %}
+            {% if activity|length > 5 %}
             <div class="view-all-container">
                 <button id="view-all-activity" class="view-all-btn">
                     <i class="fas fa-history"></i> View All Activities
@@ -521,6 +526,36 @@
                 testsModal.style.display = 'none';
             }
         });
+        function isTodayExtended() {
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const todayStr = `${yyyy}-${mm}-${dd}`;
+
+            // Find the heatmap-day for today
+            const todayCell = document.querySelector(`.heatmap-day[data-date="${todayStr}"]`);
+            if (todayCell) {
+                const count = parseInt(todayCell.getAttribute('data-count'), 10);
+                return count > 0;
+            }
+            return false;
+        }
+
+        // Toggle display based on streak extension
+        const extendedDiv = document.getElementById('extended');
+        const notExtendedDiv = document.getElementById('not-extended');
+        const extendButton = document.querySelector('.extend');
+        if (isTodayExtended()) {
+            if (extendedDiv) extendedDiv.style.display = '';
+            if (notExtendedDiv) notExtendedDiv.style.display = 'none';
+            extendButton.style.display = 'none'; // Hide extend button if today is extended
+        } else {
+            if (extendedDiv) extendedDiv.style.display = 'none';
+            if (notExtendedDiv) notExtendedDiv.style.display = '';
+            extendButton.style.display = ''; // Show extend button if today is not extended
+        }
     });
 
 </script>

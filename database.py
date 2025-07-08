@@ -528,6 +528,3 @@ class Database:
             return {}
         
         return data['bookmarks']
-    
-    def __del__(self):
-        self.client.close()

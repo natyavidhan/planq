@@ -1373,3 +1373,21 @@
         font-size: 0.6rem;
     }
 }
+
+.extend{
+    background-color: var(--accent-primary);
+    color: #fff;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 0.25rem 0.75rem;
+}
+
+.extend:hover{
+    background-color: var(--accent-secondary);
+}
+
+#extended{
+    color: var(--text-secondary);
+}
