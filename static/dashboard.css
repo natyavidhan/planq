@@ -540,20 +540,32 @@
 
 .activity-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start; /* Left align */
     align-items: center;
 }
 
 .activity-header-content {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     width: 100%;
+    gap: 0.5rem;
 }
 
-.activity-score {
-    margin-left: 1rem;
+.activity-title {
+    flex: 1;
+    text-align: left;
+    font-weight: 500;
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.activity-score,
+.answer-correct,
+.answer-incorrect {
+    margin-left: auto !important; /* Push badge to the right */
+    flex-shrink: 0;
 }
 
 .answer-correct {
@@ -737,7 +749,7 @@
     justify-content: center;
     padding: 0.5rem 1.25rem;
     background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
-    color: white;
+    color: white !important;
     border-radius: var(--radius-sm);
     font-weight: 500;
     font-size: 0.9rem;
@@ -984,8 +996,8 @@
 
 .tests-grid-full {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
 }
 
 /* Animation for modal */

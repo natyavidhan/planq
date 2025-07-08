@@ -269,14 +269,14 @@
                             <div class="activity-content">
                                 <div class="activity-header">
                                     {% if item.action == "test_created" %}
-                                        Created a new test: <strong>{{ item.details.title }}</strong>
+                                        Created a new test:&nbsp; <strong>{{ item.details.title }}</strong>
                                     {% elif item.action == "test_completed" %}
-                                        Completed test: <strong>{{ item.details.title }}</strong>
+                                        Completed test:&nbsp; <strong>{{ item.details.title }}</strong>
                                         <div class="activity-score">
                                             <i class="fas fa-star"></i> {{ item.details.score }}
                                         </div>
                                     {% elif item.action == "test_started" %}
-                                        Started test: <strong>{{ item.details.title }}</strong>
+                                        Started test:&nbsp; <strong>{{ item.details.title }}</strong>
                                     {% elif item.action == "attempt_question" %}
                                         Attempted a question 
                                         <div class="{% if item.details.is_correct %}answer-correct{% else %}answer-incorrect{% endif %}">
@@ -317,38 +317,33 @@
             {% if tests and tests|length > 0 %}
                 <div class="tests-grid-full">
                     {% for test in tests %}
-                        <div class="test-card">
-                            <div class="test-card-header">
+                        <div class="test-item">
+                            <div class="test-item-header">
                                 <h4 class="test-title">{{ test.title }}</h4>
-                                <div class="test-date">{{ test.created_at|formatdate }}</div>
-                            </div>
-                            <div class="test-card-body">
-                                <div class="test-info">
-                                    {% if test.mode == "generate" %}
-                                        <div class="test-badge custom">
-                                            <i class="fas fa-magic"></i> Custom Test
-                                        </div>
-                                    {% elif test.mode == "previous" %}
-                                        <div class="test-badge previous">
-                                            <i class="fas fa-history"></i> Previous Year
-                                        </div>
-                                    {% endif %}
-                                    <div class="test-duration">
-                                        <i class="fas fa-clock"></i> {{ test.duration }} min
+                                {% if test.mode == "generate" %}
+                                    <div class="test-badge custom">
+                                        <i class="fas fa-magic"></i> Custom
                                     </div>
+                                {% elif test.mode == "previous" %}
+                                    <div class="test-badge previous">
+                                        <i class="fas fa-history"></i> PYQ
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="test-item-body">
+                                <div class="test-meta">
+                                    <div class="test-date"><i class="far fa-calendar-alt"></i> {{ test.created_at|formatdate }}</div>
+                                    <div class="test-duration"><i class="far fa-clock"></i> {{ test.duration }} min</div>
                                 </div>
                                 {% if test.attempts and test.attempts|length > 0 %}
                                     <div class="test-attempts">
-                                        <div class="attempt-header">
+                                        <div class="attempt-count">
                                             <i class="fas fa-check-double"></i> {{ test.attempts|length }} attempt{{ 's' if test.attempts|length > 1 else '' }}
                                         </div>
-                                        <div class="latest-score">
-                                            <div class="score-label">Latest score:</div>
-                                            <div class="score-value {{ 'high-score' if (test.attempts[-1].score / test.max_marks * 100) >= 70 
-                                                                    else 'mid-score' if (test.attempts[-1].score / test.max_marks * 100) >= 40 
-                                                                    else 'low-score' }}">
-                                                {{ "%.1f"|format(test.attempts[-1].score / test.max_marks * 100) }}%
-                                            </div>
+                                        <div class="score-pill {{ 'high-score' if (test.attempts[0].score / test.max_marks * 100) >= 70 
+                                                                else 'mid-score' if (test.attempts[0].score / test.max_marks * 100) >= 40 
+                                                                else 'low-score' }}">
+                                            {{ test.attempts[0].score }}
                                         </div>
                                     </div>
                                 {% else %}
@@ -357,17 +352,19 @@
                                     </div>
                                 {% endif %}
                             </div>
-                            <div class="test-card-footer">
-                                <a href="/test/{{ test._id }}" class="btn btn-primary">
-                                    {% if test.attempts and test.attempts|length > 0 %}
-                                        <i class="fas fa-redo"></i> Retry Test
-                                    {% else %}
-                                        <i class="fas fa-play"></i> Start Test
-                                    {% endif %}
-                                </a>
-                                <a href="/test/{{ test._id }}/analysis" class="btn btn-secondary {{ 'disabled' if not test.attempts or test.attempts|length == 0 }}">
-                                    <i class="fas fa-chart-bar"></i> Analysis
-                                </a>
+                            <div class="test-item-footer">
+                                <div class="test-actions">
+                                    <a href="/test/{{ test._id }}" class="test-action-btn">
+                                        {% if test.attempts and test.attempts|length > 0 %}
+                                            <i class="fas fa-redo"></i> Retry
+                                        {% else %}
+                                            <i class="fas fa-play"></i> Start
+                                        {% endif %}
+                                    </a>
+                                    <a href="/test/{{ test._id }}/analysis" class="test-action-btn analysis {{ 'disabled' if not test.attempts or test.attempts|length == 0 }}">
+                                        <i class="fas fa-chart-bar"></i> Analysis
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -384,6 +381,21 @@
 <script>
     // Day progress and heatmap functionality
     document.addEventListener('DOMContentLoaded', function() {
+        
+        // Destroy all heatmap days after today
+        const today = new Date();
+        today.setHours(0,0,0,0);
+
+        document.querySelectorAll('.heatmap-day').forEach(day => {
+            const dateStr = day.getAttribute('data-date');
+            if (dateStr) {
+                const cellDate = new Date(dateStr);
+                cellDate.setHours(0,0,0,0);
+                if (cellDate > today) {
+                    day.style.display = 'none'; // or: day.remove();
+                }
+            }
+        });
         // Day progress circle
         function updateDayProgress() {
             const now = new Date();
@@ -510,5 +522,6 @@
             }
         });
     });
+
 </script>
 {% endblock %}

@@ -200,12 +200,15 @@ function generateTopicAnalysis(attempt) {
     });
     
     // Create table rows for each topic
-    sortedTopics.forEach(topic => {
+    for (const topic of sortedTopics) {
         // Calculate accuracy
         let accuracy = topic.attempted > 0 ? (topic.correct / topic.attempted) * 100 : 0;
 
         if (topic.attempted == 0) {
             accuracy = 'N/A'
+            // skip this topic
+            continue;
+
         } else {
             // Ensure accuracy is a number
             accuracy = `${Math.round(accuracy)}%`;
@@ -230,7 +233,7 @@ function generateTopicAnalysis(attempt) {
         `;
         
         topicAnalysisBody.appendChild(tr);
-    });
+    }
 }
 
 // Function to generate difficulty analysis chart
@@ -594,7 +597,7 @@ function generateAttemptsHistory() {
     attemptsData.forEach((attempt, index) => {
         const attemptNumber = index + 1;
         const date = new Date(attempt.submitted_at);
-        const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}, ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')} ${date.getHours() >= 12 ? 'pm' : 'am'}`;
+        const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}, ${date.getHours()%12}:${date.getMinutes().toString().padStart(2, '0')} ${date.getHours() >= 12 ? 'pm' : 'am'}`;
         const accuracy = attempt.stats.accuracy * 100;
         const timeSpent = attempt.time_spent;
         const minutes = Math.floor(timeSpent / 1000 / 60);
