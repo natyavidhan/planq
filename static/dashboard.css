@@ -1374,20 +1374,288 @@
     }
 }
 
-.extend{
-    background-color: var(--accent-primary);
-    color: #fff;
-    border: none;
-    border-radius: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    padding: 0.25rem 0.75rem;
+/* Daily Task Modal */
+.daily-task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.extend:hover{
-    background-color: var(--accent-secondary);
+.daily-task-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: space-between;
+    margin-top: 1rem;
 }
 
-#extended{
+.option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 150px;
+}
+
+.option-group label {
+    font-weight: 500;
+    font-size: 0.95rem;
     color: var(--text-secondary);
+}
+
+.number-input {
+    display: flex;
+    height: 40px;
+}
+
+.number-input button {
+    width: 40px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.number-input button:first-child {
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.number-input button:last-child {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.number-input button:hover {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+}
+
+.number-input input {
+    height: 100%;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    border-left: none;
+    border-right: none;
+    width: 60px;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.number-input input::-webkit-inner-spin-button,
+.number-input input::-webkit-outer-spin-button {
+    appearance: none;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+#startDailyTask {
+    padding: 0.75rem 3rem;
+    font-size: 1.1rem;
+    background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+#startDailyTask:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Daily Task Modal Styling - Modern & Sleek */
+#extend-streak-modal .modal-content {
+    max-width: 600px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--bg-secondary);
+}
+
+#extend-streak-modal .modal-header {
+    padding: 1.5rem 1.75rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right, rgba(107, 138, 253, 0.05), rgba(107, 138, 253, 0.01));
+}
+
+#extend-streak-modal .modal-header h3 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+#extend-streak-modal .modal-header h3 i {
+    color: var(--accent-primary);
+    font-size: 1.25rem;
+}
+
+#extend-streak-modal .modal-body {
+    padding: 1.75rem;
+}
+
+.daily-task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Filter Section */
+.filter-section {
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    border: 1px solid var(--border-color);
+}
+
+.filters-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-group label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.form-select {
+    height: 42px;
+    padding: 0 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b8afd' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: all 0.2s ease;
+}
+
+.form-select:hover {
+    border-color: var(--accent-primary);
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px rgba(107, 138, 253, 0.25);
+}
+
+.form-select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Options Section */
+.daily-task-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    border: 1px solid var(--border-color);
+}
+
+.option-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.option-group label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Number Input Styling - Fixed */
+.number-input {
+    display: flex;
+    height: 42px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+}
+
+.number-input button {
+    width: 42px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--accent-primary);
+    font-size: 1.25rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    user-select: none;
+}
+
+.number-input button:first-child {
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+    border-right: none;
+}
+
+.number-input button:last-child {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    border-left: none;
+}
+
+.number-input button:hover {
+    background: rgba(107, 138, 253, 0.1);
+    color: var(--accent-primary);
+}
+
+.number-input button:active {
+    background: rgba(107, 138, 253, 0.2);
+}
+
+.number-input input {
+    height: 100%;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    width: 45px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0;
+    -moz-appearance: textfield;
+}
+
+.number-input input::-webkit-inner-spin-button,
+.number-input input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.number-input input:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(107, 138, 253, 0.25);
 }

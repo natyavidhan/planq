@@ -255,7 +255,53 @@ def dashboard():
     activity = db.get_activities(session['user']['id'])
     heatmap_data = generate_heatmap_data(activity)
     
-    return render_template("dashboard.html", tests=tests, activity=activity, heatmap_data=heatmap_data)
+    # Get all exams for the extend streak modal
+    exams = db.get_exams()
+    
+    return render_template("dashboard.html", tests=tests, activity=activity, heatmap_data=heatmap_data, exams=exams)
+
+@auth_required
+@app.route("/daily-task")
+def daily_task():
+    if 'user' not in session:
+        return redirect(url_for("home"))
+    
+    # Get parameters from query string
+    exam_id = request.args.get('exam')
+    subject_id = request.args.get('subject')
+    chapter_id = request.args.get('chapter')
+    question_count = int(request.args.get('count', 5))
+    time_limit = int(request.args.get('time', 30))
+    difficulty = request.args.get('level', 'medium')
+    
+    # Convert difficulty string to numeric level
+    level_map = {'easy': 1, 'medium': 2, 'hard': 3}
+    level = level_map.get(difficulty, 2)
+    
+    # Create a test with the selected parameters
+    test_metadata = {
+        'title': f"Daily Task - {datetime.now().strftime('%b %d')}",
+        'description': f"Daily task to extend streak",
+        'exam': exam_id,
+        'duration': time_limit,
+        'mode': 'generate',
+        'subjects': {subject_id: [chapter_id] if chapter_id else ['all']}
+    }
+    
+    # Generate questions
+    questions = db.generate_test(exam_id, test_metadata['subjects'], question_count, 0.8)
+    
+    # Create the test
+    test_id = db.add_test(session['user']['id'], test_metadata, questions)
+    
+    # Add activity for creating daily task
+    db.add_activity(session['user']['id'], "daily_task_created", {
+        "test_id": test_id,
+        "title": test_metadata['title']
+    })
+    
+    # Redirect to the test page
+    return redirect(url_for('test.take_test', test_id=test_id))
 
 @app.context_processor
 def inject_user():
