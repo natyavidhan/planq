@@ -425,7 +425,7 @@
                         <label>Questions:</label>
                         <div class="number-input">
                             <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                            <input type="number" min="1" max="20" value="5" id="questionCount">
+                            <input type="number" min="5" max="30" value="5" id="questionCount">
                             <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                         </div>
                     </div>
@@ -437,15 +437,6 @@
                             <input type="number" min="5" max="120" value="30" id="timeLimit">
                             <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
                         </div>
-                    </div>
-                    
-                    <div class="option-group">
-                        <label>Difficulty:</label>
-                        <select id="difficultyLevel" class="form-select">
-                            <option value="easy">Easy</option>
-                            <option value="medium" selected>Medium</option>
-                            <option value="hard">Hard</option>
-                        </select>
                     </div>
                 </div>
                 

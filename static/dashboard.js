@@ -307,7 +307,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const chapterId = chapterFilter.value;
         const questionCount = document.getElementById('questionCount').value;
         const timeLimit = document.getElementById('timeLimit').value;
-        const difficulty = document.getElementById('difficultyLevel').value;
 
         if (!examId) {
             alert('Please select an exam');
@@ -320,7 +319,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Create URL with params
-        const url = `/daily-task?exam=${examId}&subject=${subjectId}${chapterId ? '&chapter=' + chapterId : ''}&count=${questionCount}&time=${timeLimit}&level=${difficulty}`;
+        const url = `/daily-task?exam=${examId}&subject=${subjectId}${chapterId ? '&chapter=' + chapterId : ''}&count=${questionCount}&time=${timeLimit}`;
 
         // Navigate to the daily task
         window.location.href = url;

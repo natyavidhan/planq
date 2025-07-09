@@ -76,7 +76,7 @@ class Database:
         return [i for i in self.pyqs['papers'].values() if i['exam'] == exam_id]
 
 
-    def generate_test(self, exam_id, subjects, num, ratio):
+    def generate_test(self, exam_id, subjects, num, ratio=None):
         test = {}
         
         # Filter out empty subject lists
@@ -104,18 +104,23 @@ class Database:
             ]
 
             # Separate MCQs and Numericals
-            mcqs = [q['_id'] for q in filtered_questions if q.get('type') == 'singleCorrect']
-            numericals = [q['_id'] for q in filtered_questions if q.get('type') == 'numerical']
 
-            # Determine number of each type
-            num_mcqs = int(ques_per_subject * ratio)
-            num_numericals = ques_per_subject - num_mcqs
+            if ratio:
+                mcqs = [q['_id'] for q in filtered_questions if q.get('type') == 'singleCorrect']
+                numericals = [q['_id'] for q in filtered_questions if q.get('type') == 'numerical']
+                # Determine number of each type
+                num_mcqs = int(ques_per_subject * ratio)
+                num_numericals = ques_per_subject - num_mcqs
 
-            # Randomly sample without replacement
-            selected_mcqs = random.sample(mcqs, min(len(mcqs), num_mcqs))
-            selected_numericals = random.sample(numericals, min(len(numericals), num_numericals))
+                # Randomly sample without replacement
+                selected_mcqs = random.sample(mcqs, min(len(mcqs), num_mcqs))
+                selected_numericals = random.sample(numericals, min(len(numericals), num_numericals))
 
-            test[subject_id].extend(selected_mcqs + selected_numericals)
+                test[subject_id].extend(selected_mcqs + selected_numericals)
+            else:
+                # Randomly sample questions without replacement
+                selected_questions = random.sample(filtered_questions, min(len(filtered_questions), ques_per_subject))
+                test[subject_id].extend([q['_id'] for q in selected_questions])
 
         return test
     
@@ -198,11 +203,6 @@ class Database:
         return []
     
     def get_tests_by_user(self, user_id):
-        """
-        Fetch all tests created by a user, attach attempts & max_marks.
-        Uses MongoDB for tests/attempts, self.pyqs for static data.
-        """
-        # Fetch user tests from MongoDB (project only needed fields)
         tests = list(self.tests['tests'].find(
             {"created_by": user_id},
             {
@@ -528,3 +528,29 @@ class Database:
             return {}
         
         return data['bookmarks']
+
+    def record_daily_question_attempt(self, user_id, question_id, is_correct):
+        activity_type = "daily_correct_answer" if is_correct else "daily_incorrect_answer"
+        question = self.get_questions_by_ids([question_id], full_data=True)
+        
+        details = {
+            "question_id": question_id,
+            "is_correct": is_correct
+        }
+        
+        # Add subject and chapter info if available
+        if question:
+            if 'subject' in question:
+                subject = self.get_subject(question['subject'])
+                if subject:
+                    details["subject"] = subject.get('name')
+            
+            if 'chapter' in question:
+                chapter = self.pyqs['chapters'].get(question['chapter'])
+                if chapter:
+                    details["chapter"] = chapter.get('name')
+        
+        self.add_activity(user_id, activity_type, details)
+        
+        # Return True if we've added an activity that extends the streak
+        return True

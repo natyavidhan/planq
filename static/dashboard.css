@@ -28,10 +28,10 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.title-bar:hover {
+/* .title-bar:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
-}
+} */
 
 .title-bar::after {
     content: '';
@@ -66,10 +66,10 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.heatmap-container:hover {
+/* .heatmap-container:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
-}
+} */
 
 .heatmap-header {
     display: grid;
@@ -436,10 +436,10 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.activity:hover {
+/* .activity:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
-}
+} */
 
 .tests {
     grid-column: 9 / 13;
@@ -453,10 +453,10 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.tests:hover {
+/* .tests:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
-}
+} */
 
 .actions {
     grid-column: 1 / -1;
@@ -1382,11 +1382,15 @@
 }
 
 .daily-task-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    justify-content: space-between;
-    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    border: 1px solid var(--border-color);
+    justify-items: center;
+    align-items: center; 
 }
 
 .option-group {

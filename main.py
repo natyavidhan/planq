@@ -272,36 +272,55 @@ def daily_task():
     chapter_id = request.args.get('chapter')
     question_count = int(request.args.get('count', 5))
     time_limit = int(request.args.get('time', 30))
-    difficulty = request.args.get('level', 'medium')
     
-    # Convert difficulty string to numeric level
-    level_map = {'easy': 1, 'medium': 2, 'hard': 3}
-    level = level_map.get(difficulty, 2)
+    # Generate questions but don't save as a test
+    ques = db.generate_test(
+        exam_id=exam_id,
+        subjects={subject_id: [chapter_id] if chapter_id else ['all']},
+        num=question_count,
+        ratio=None
+    )
     
-    # Create a test with the selected parameters
-    test_metadata = {
-        'title': f"Daily Task - {datetime.now().strftime('%b %d')}",
-        'description': f"Daily task to extend streak",
-        'exam': exam_id,
+    # Get exam, subject and chapter names for display
+    exam_data = db.pyqs['exams'].get(exam_id)
+    subject_data = db.get_subject(subject_id)
+    
+    # Prepare test data structure for the template
+    all_question_ids = [qid for subj_questions in ques.values() for qid in subj_questions]
+    
+    # Get full question data
+    question_data = {}
+    for qid in all_question_ids:
+        q = db.get_questions_by_ids([qid], full_data=True) 
+        if q:
+            question_data[qid] = q
+    
+    test_data = {
+        '_id': 'daily-' + datetime.now().strftime('%Y%m%d'),
+        'title': f"Daily Task - {subject_data.get('name', 'Subject')}",
         'duration': time_limit,
-        'mode': 'generate',
-        'subjects': {subject_id: [chapter_id] if chapter_id else ['all']}
+        'questions': ques,
+        'question_data': question_data,
+        'total_questions': len(all_question_ids)
     }
     
-    # Generate questions
-    questions = db.generate_test(exam_id, test_metadata['subjects'], question_count, 0.8)
+    # Add activity for starting daily task
+    # db.add_activity(session['user']['id'], "daily_task_started", {
+    #     "exam": exam_data.get('name', exam_id),
+    #     "subject": subject_data.get('name', subject_id),
+    #     "count": question_count
+    # })
     
-    # Create the test
-    test_id = db.add_test(session['user']['id'], test_metadata, questions)
+    # Calculate current streak
+    activities = db.get_activities(session['user']['id'])
+    heatmap_data = generate_heatmap_data(activities)
+    streak_count = heatmap_data['current_streak']
     
-    # Add activity for creating daily task
-    db.add_activity(session['user']['id'], "daily_task_created", {
-        "test_id": test_id,
-        "title": test_metadata['title']
-    })
-    
-    # Redirect to the test page
-    return redirect(url_for('test.take_test', test_id=test_id))
+    return render_template('daily_task.html', 
+                          test=test_data, 
+                          streak_count=streak_count,
+                          exam=exam_data,
+                          subject=subject_data)
 
 @app.context_processor
 def inject_user():
