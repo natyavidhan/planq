@@ -2,7 +2,7 @@
 {% block title %}Daily Task - {{ test.title }}{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="/static/daily_task.css">
+<link rel="stylesheet" href="/static/css/daily_task.css">
 <div class="daily-task-container">
     <!-- Header with title, timer and streak info -->
     <div class="task-header">
@@ -186,5 +186,5 @@
 const testData = {{ test|tojson|safe }};
 const streakCount = {{ streak_count }};
 </script>
-<script src="/static/daily_task.js"></script>
+<script src="/static/js/daily_task.js"></script>
 {% endblock %}

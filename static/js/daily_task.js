@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const questionsById = {};
     const questionsOrder = [];
     
+    // Add this after your variable declarations
+    let questionAttempts = []; // Store all attempts here instead of sending them immediately
+    
     // Process test data
     function initializeTest() {
         // Create a flat array of all questions from all subjects
@@ -372,7 +375,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Submit the test
+    // Modify the submitTest function to ensure timer keeps running after alerts
     function submitTest() {
+        // Check if all questions have been attempted
+        const unattemptedQuestions = questionsOrder.filter(qId => !userAnswers[qId]);
+        
+        if (unattemptedQuestions.length > 0) {
+            // Show warning that not all questions have been attempted
+            alert(`You have ${unattemptedQuestions.length} unattempted questions. Please attempt all questions before submitting.`);
+            
+            // Go to the first unattempted question
+            const firstUnattemptedIndex = questionsOrder.indexOf(unattemptedQuestions[0]);
+            loadQuestion(firstUnattemptedIndex);
+            updatePalette();
+            
+            // Hide the submit modal
+            document.getElementById('submit-modal').style.display = 'none';
+            return;
+        }
+        
+        // Only stop the timer when actually submitting
         clearInterval(timerInterval);
         
         // Ensure we record time spent on the final question
@@ -385,33 +407,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         questionTimings[questionId] += timeOnQuestion;
         
-        // Calculate score
-        let correctCount = 0;
-        const totalQuestions = questionsOrder.length;
-        
-        for (const questionId in userAnswers) {
-            const question = questionsById[questionId];
-            const userAnswer = userAnswers[questionId];
-            
-            if (question.type === 'mcq' && question.answer === userAnswer) {
-                correctCount++;
-            } else if (question.type === 'numerical' && Math.abs(question.answer - userAnswer) < 0.01) {
-                correctCount++;
-            }
-        }
-        
-        const scorePercent = ((correctCount / totalQuestions) * 100).toFixed(1);
-        
-        // Record daily task completion
-        fetch('/api/daily-task/complete', {
+        // Now send all attempts at once to process on server
+        fetch('/daily-task', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                correct_count: correctCount,
-                total_questions: totalQuestions,
-                time_spent: timeSpent
+                answers: userAnswers,
+                time_spent: timeSpent,
+                questionTimings: questionTimings
             })
         })
         .then(response => response.json())
@@ -424,7 +429,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update the streak display
             document.getElementById('final-streak-count').textContent = data.current_streak;
             document.getElementById('new-streak-count').textContent = data.current_streak;
-            document.getElementById('final-score').textContent = scorePercent + '%';
+            document.getElementById('final-score').textContent = data.score + '%';
             
             // Show success modal
             document.getElementById('submit-modal').style.display = 'none';
@@ -436,7 +441,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Add this function after the selectAnswer function
+    // Replace the recordQuestionAttempt function with this version
     function recordQuestionAttempt(questionId, userAnswer) {
         // Get the current question
         const question = questionsById[questionId];
@@ -451,22 +456,22 @@ document.addEventListener('DOMContentLoaded', function() {
             isCorrect = Math.abs(userAnswer - question.answer) < 0.01;
         }
         
-        // Send the attempt to the server to record activity
-        fetch('/api/daily-task/record-attempt', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                question_id: questionId,
-                user_answer: userAnswer,
-                is_correct: isCorrect
-            })
-        })
-        .then(response => response.json())
-        .catch(error => {
-            console.error('Error recording question attempt:', error);
-        });
+        // Store the attempt locally instead of sending immediately
+        // If an attempt for this question already exists, update it
+        const existingIndex = questionAttempts.findIndex(attempt => attempt.question_id === questionId);
+        
+        const attemptData = {
+            question_id: questionId,
+            user_answer: userAnswer,
+            is_correct: isCorrect,
+            timestamp: Date.now()
+        };
+        
+        if (existingIndex >= 0) {
+            questionAttempts[existingIndex] = attemptData;
+        } else {
+            questionAttempts.push(attemptData);
+        }
         
         return isCorrect;
     }

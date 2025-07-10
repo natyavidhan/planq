@@ -2,7 +2,7 @@
 {% block title %}{{ test.title }}{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="/static/attempt_test.css">
+<link rel="stylesheet" href="/static/css/attempt_test.css">
 <div class="test-container">
     <!-- Test header with title and timer -->
     <div class="test-header">
@@ -129,5 +129,5 @@
 // Store test data for JavaScript access
 const testData = {{ test|tojson|safe }};
 </script>
-<script src="/static/attempt_test.js"></script>
+<script src="/static/js/attempt_test.js"></script>
 {% endblock %}

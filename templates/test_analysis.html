@@ -3,7 +3,7 @@
 {% block title %}Test Analysis{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="/static/test_analysis.css">
+<link rel="stylesheet" href="/static/css/test_analysis.css">
 
 <div class="analysis-container">
     <!-- Header Section -->
@@ -251,5 +251,5 @@
     const attemptsData = {{ attempts|tojson }};
     const questionsData = {{ questions|tojson }};
 </script>
-<script src="/static/test_analysis.js"></script>
+<script src="/static/js/test_analysis.js"></script>
 {% endblock %}

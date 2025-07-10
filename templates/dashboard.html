@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-<link rel="stylesheet" href="/static/dashboard.css">
+<link rel="stylesheet" href="/static/css/dashboard.css">
 <div class="home">
     <div class="title-bar">
         <h2>Welcome, {{user['username']}} <span class="badge">Pro</span></h2>
@@ -113,7 +113,7 @@
                                     <div class="activity-header-content">
                                         <span>Completed test: <strong>{{ item.details.title }}</strong></span>
                                         <div class="activity-score">
-                                            <i class="fas fa-star"></i> {{ item.details.score }}
+                                            {{ item.details.score }}
                                         </div>
                                     </div>
                                 {% elif item.action == "test_started" %}
@@ -278,7 +278,7 @@
                                     {% elif item.action == "test_completed" %}
                                         Completed test:&nbsp; <strong>{{ item.details.title }}</strong>
                                         <div class="activity-score">
-                                            <i class="fas fa-star"></i> {{ item.details.score }}
+                                            {{ item.details.score }}
                                         </div>
                                     {% elif item.action == "test_started" %}
                                         Started test:&nbsp; <strong>{{ item.details.title }}</strong>
@@ -447,5 +447,5 @@
         </div>
     </div>
 </div>
-<script src="/static/dashboard.js"></script>
+<script src="/static/js/dashboard.js"></script>
 {% endblock %}
