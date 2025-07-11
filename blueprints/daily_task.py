@@ -74,17 +74,43 @@ def daily_task():
         # If it's an individual question attempt
         if 'question_id' in data:
             question_id = data['question_id']
-            is_correct = data.get('is_correct', False)
             user_answer = data.get('user_answer')
             time_taken = data.get('time_taken', 0)  # Get time taken in milliseconds
 
-            response = db.pyqs['questions'].get(question_id, {})
-
-            if response['type'] == 'singleCorrect':
-                correct_answer = response.get('correct_option')[0]
-            else:
-                correct_answer = response.get('correct_value')
-
+            # Get the question from the database
+            question = db.pyqs['questions'].get(question_id, {})
+            if not question:
+                return jsonify({'error': 'Question not found'}), 404
+                
+            # Determine if the answer is correct - server-side validation
+            is_correct = False
+            question_type = question.get('type', 'singleCorrect')
+            
+            if question_type == 'singleCorrect' or question_type == 'mcq':
+                correct_option = question.get('correct_option', [0])[0]
+                # Ensure both are treated as integers for comparison
+                try:
+                    correct_option_int = int(correct_option)
+                    user_answer_int = int(user_answer)
+                    is_correct = user_answer_int == correct_option_int
+                except (ValueError, TypeError):
+                    # If conversion fails, compare directly
+                    is_correct = user_answer == correct_option
+            
+            elif question_type == 'numerical':
+                correct_value = question.get('correct_value')
+                
+                # Handle numerical comparison with proper type conversion
+                try:
+                    user_num = float(user_answer)
+                    correct_num = float(correct_value)
+                    
+                    # Allow small margin of error for floating point comparison
+                    is_correct = abs(user_num - correct_num) < 0.01
+                except (ValueError, TypeError):
+                    is_correct = False
+            
+            # Record activity for the question attempt
             db.add_activity(
                 user_id=session['user']['id'],
                 action='attempt_question',
@@ -92,12 +118,16 @@ def daily_task():
                     'question_id': question_id,
                     'is_correct': is_correct,
                     'user_answer': user_answer,
-                    'correct_answer': correct_answer,
                     'time_taken': time_taken
                 }
             )
             
-            return jsonify({'success': True})
+            # Return validation result to frontend
+            return jsonify({
+                'success': True,
+                'is_correct': is_correct,
+                'question_id': question_id
+            })
         
         # If it's the task completion
         elif 'correct_count' in data:
@@ -106,7 +136,7 @@ def daily_task():
                 "correct_count": data.get('correct_count', 0),
                 "incorrect_count": data.get('incorrect_count', 0),
                 "time_spent": data.get('time_spent', 0),
-                "question_timings": data.get('question_timings', {}),  # Add question timing data
+                "question_timings": data.get('question_timings', {}),
                 "health_remaining": data.get('health_remaining', 0),
                 "is_success": data.get('is_success', False)
             })
@@ -123,7 +153,7 @@ def daily_task():
         
         else:
             return jsonify({'error': 'Invalid data format'}), 400
-    
+            
     # GET request handling (existing code)
     test_data = session.get('daily_test')
     if not test_data:
@@ -132,11 +162,25 @@ def daily_task():
     exam_data = db.pyqs['exams'].get(test_data['exam'], {})
     subject_data = db.get_subject(test_data['subject'])
     
+    # Sanitize questions to remove answers before sending to frontend
     question_data = {}
     for qid in test_data['questions'].get(test_data['subject'], []):
-        q = db.get_questions_by_ids([qid], full_data=True) 
+        q = db.get_questions_by_ids([qid], full_data=True)
         if q:
-            question_data[qid] = q
+            # Create a sanitized version of each question without answers
+            sanitized_questions = []
+            for question in q:
+                sanitized_question = {
+                    '_id': question['_id'],
+                    'question': question['question'],
+                    'type': question.get('type', 'singleCorrect'),
+                    'options': question.get('options', []),
+                    'subject': question.get('subject'),
+                    'level': question.get('level', 2),
+                    # Do NOT include correct_option, correct_value or explanation
+                }
+                sanitized_questions.append(sanitized_question)
+            question_data[qid] = sanitized_questions
 
     test_data['question_data'] = question_data
     

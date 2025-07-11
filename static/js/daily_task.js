@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Load a question by index
+    // Update loadQuestion to not use correct answers for UI updates
     function loadQuestion(index) {
         if (index < 0 || index >= questionsOrder.length) {
             return;
@@ -191,13 +191,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     const optionItem = document.createElement('li');
                     optionItem.className = 'option-item';
                     
-                    // If question was already attempted, show correct answer and user's answer
+                    // If question was already attempted, show user's answer
                     if (question.attempted) {
-                        if (optIndex === question.answer) {
-                            optionItem.classList.add('correct-answer');
-                        }
                         if (userAnswers[questionId] === optIndex) {
-                            optionItem.classList.add(userAnswers[questionId] === question.answer ? 'selected-correct' : 'selected-incorrect');
+                            optionItem.classList.add(question.correct ? 'selected-correct' : 'selected-incorrect');
                         }
                     }
                     
@@ -348,45 +345,64 @@ document.addEventListener('DOMContentLoaded', function() {
         // Increment attempt count
         questionAttempts[questionId]++;
         
-        // Mark as attempted
+        // Mark as attempted for UI purposes, but don't determine if correct yet
         question.attempted = true;
         
-        // Check if the answer is correct
-        let isCorrect = false;
-        
-        if (question.type === 'mcq' || question.type === 'singleCorrect') {
-            isCorrect = answer === question.answer;
-        } else if (question.type === 'numerical') {
-            // For numerical questions, allow a small margin of error (0.01)
-            isCorrect = Math.abs(answer - question.answer) < 0.01;
-        }
-        
-        question.correct = isCorrect;
-        
-        // Update question status
-        questionStatus[questionId] = isCorrect ? 'correct' : 'incorrect';
-        
-        // If incorrect and not in retry mode, reduce health
-        if (!isCorrect && !isRetryMode) {
-            const healthDamage = calculateHealthDamage(question.difficulty);
-            health = Math.max(0, health - healthDamage);
-        }
-        
-        // Update the UI to show the result
-        updateUI();
-        
-        // Record the attempt with time spent
-        submitAnswer(questionId, answer, isCorrect, totalTimeSpent);
-        
-        // Auto advance to next question if this is the last attempt or answer is correct
-        if (isCorrect || questionAttempts[questionId] >= 2) {
-            setTimeout(() => {
-                if (currentQuestionIndex < questionsOrder.length - 1) {
-                    currentQuestionIndex++;
-                    updateUI();
-                }
-            }, 1500);
-        }
+        // Send answer to backend for validation and get result
+        submitAnswer(questionId, answer, totalTimeSpent);
+    }
+    
+    // Update submitAnswer to handle the validation response
+    function submitAnswer(questionId, answer, timeTaken) {
+        // AJAX request to submit the answer and get validation
+        fetch('/daily-task', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                question_id: questionId,
+                user_answer: answer,
+                time_taken: timeTaken
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error('Error:', data.error);
+                return;
+            }
+            
+            // Now update the UI based on server's validation
+            const question = questionsById[questionId];
+            const isCorrect = data.is_correct;
+            
+            // Update question status
+            question.correct = isCorrect;
+            questionStatus[questionId] = isCorrect ? 'correct' : 'incorrect';
+            
+            // If incorrect and not in retry mode, reduce health
+            if (!isCorrect && !isRetryMode) {
+                const healthDamage = calculateHealthDamage(question.difficulty);
+                health = Math.max(0, health - healthDamage);
+            }
+            
+            // Update the UI to show the result
+            updateUI();
+            
+            // Auto advance to next question if this is the last attempt or answer is correct
+            if (isCorrect || questionAttempts[questionId] >= 2) {
+                setTimeout(() => {
+                    if (currentQuestionIndex < questionsOrder.length - 1) {
+                        currentQuestionIndex++;
+                        updateUI();
+                    }
+                }, 1500);
+            }
+        })
+        .catch(error => {
+            console.error('Error submitting answer:', error);
+        });
     }
     
     // Calculate health damage based on difficulty
@@ -396,27 +412,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // damage = 100 / sqrt(n) * difficulty_multiplier
         return (100 / Math.sqrt(totalQuestions)) * difficultyMultiplier;
-    }
-    
-    // Submit answer to server
-    function submitAnswer(questionId, answer, isCorrect, timeTaken) {
-        // AJAX request to submit the answer
-        fetch('/daily-task', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                question_id: questionId,
-                user_answer: answer,
-                is_correct: isCorrect,
-                time_taken: timeTaken
-            })
-        })
-        .then(response => response.json())
-        .catch(error => {
-            console.error('Error submitting answer:', error);
-        });
     }
     
     // Update question palette
@@ -436,6 +431,7 @@ document.addEventListener('DOMContentLoaded', function() {
             questionButton.addEventListener('click', () => {
                 loadQuestion(index);
                 updatePalette();
+                updateUI();
             });
             
             palette.appendChild(questionButton);
