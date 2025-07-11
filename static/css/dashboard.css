@@ -1663,3 +1663,38 @@
     outline: none;
     box-shadow: inset 0 0 0 2px rgba(107, 138, 253, 0.25);
 }
+
+/* Health Badge Styling */
+.health-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.health-badge.high {
+    background-color: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+}
+
+.health-badge.medium {
+    background-color: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+}
+
+.health-badge.low {
+    background-color: rgba(244, 63, 94, 0.15);
+    color: #f43f5e;
+}
+
+/* Update daily task stats to accommodate the badges */
+.daily-task-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+    flex-wrap: wrap;
+}

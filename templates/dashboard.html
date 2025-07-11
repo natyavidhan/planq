@@ -85,6 +85,7 @@
     <div class="activity">
         <h3 class="section-title"><i class="fas fa-chart-line"></i> Recent Activity</h3>
         {% if activity and activity|length > 0 %}
+            <!-- Update the activity item section in the main activity list -->
             <div class="activity-list">
                 {% for item in activity[:5] %}
                     <div class="activity-item">
@@ -100,6 +101,14 @@
                                 <i class="fas fa-check"></i>
                                 {% else %}
                                 <i class="fas fa-times"></i>
+                                {% endif %}
+                            </div>
+                        {% elif item.action == "daily_task_completed" %}
+                            <div class="activity-icon {% if item.details.is_success %}correct{% else %}incorrect{% endif %}">
+                                {% if item.details.is_success %}
+                                <i class="fas fa-fire"></i>
+                                {% else %}
+                                <i class="fas fa-heart-broken"></i>
                                 {% endif %}
                             </div>
                         {% else %}
@@ -126,6 +135,26 @@
                                         {% else %}
                                             <i class="fas fa-times-circle"></i> Incorrect
                                         {% endif %}
+                                    </div>
+                                {% elif item.action == "daily_task_completed" %}
+                                    <div class="activity-header-content">
+                                        <span>Completed daily task</span>
+                                        <div class="daily-task-stats">
+                                            {% if item.details.is_success %}
+                                                <div class="daily-task-badge success">
+                                                    <i class="fas fa-fire"></i> Streak Extended
+                                                </div>
+                                            {% else %}
+                                                <div class="daily-task-badge failed">
+                                                    <i class="fas fa-heart-broken"></i> Streak Broken
+                                                </div>
+                                            {% endif %}
+                                            
+                                            <!-- Health Badge - simplified display -->
+                                            <div class="health-badge {% if item.details.health_remaining > 70 %}high{% elif item.details.health_remaining > 30 %}medium{% else %}low{% endif %}">
+                                                <i class="fas fa-heart"></i> {{ item.details.health_remaining|round|int }}%
+                                            </div>
+                                        </div>
                                     </div>
                                 {% else %}
                                     {{ item.action }}
@@ -291,6 +320,26 @@
                                                 <i class="fas fa-times-circle"></i> Incorrect
                                             {% endif %}
                                         </div>
+                                    {% elif item.action == "daily_task_completed" %}
+                                    <div class="activity-header-content">
+                                        <span>Completed daily task</span>
+                                        <div class="daily-task-stats">
+                                            {% if item.details.is_success %}
+                                                <div class="daily-task-badge success">
+                                                    <i class="fas fa-fire"></i> Streak Extended
+                                                </div>
+                                            {% else %}
+                                                <div class="daily-task-badge failed">
+                                                    <i class="fas fa-heart-broken"></i> Streak Broken
+                                                </div>
+                                            {% endif %}
+                                            
+                                            <!-- Health Badge - simplified display -->
+                                            <div class="health-badge {% if item.details.health_remaining > 70 %}high{% elif item.details.health_remaining > 30 %}medium{% else %}low{% endif %}">
+                                                <i class="fas fa-heart"></i> {{ item.details.health_remaining|round|int }}%
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% else %}
                                         {{ item.action }}
                                     {% endif %}

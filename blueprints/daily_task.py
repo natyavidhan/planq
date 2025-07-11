@@ -48,12 +48,15 @@ def generate_task():
 
         session['daily_test'] = test_data
         
+        exam_data = db.pyqs['exams'].get(exam_id, {})
+
         # Add activity for starting daily task
-        # db.add_activity(session['user']['id'], "daily_task_started", {
-        #     "exam": exam_data.get('name', exam_id),
-        #     "subject": subject_data.get('name', subject_id),
-        #     "count": question_count
-        # })
+        db.add_activity(session['user']['id'], "daily_task_started", {
+            "exam": exam_data.get('name', exam_id),
+            "subject": subject_data.get('name', subject_id),
+            "chapter": chapter_id,
+            "count": question_count
+        })
 
         return redirect(url_for('daily_task.daily_task'))
 
