@@ -17,13 +17,40 @@ def generate_heatmap_data(activities):
     end_date = datetime.now().date()
     start_date = end_date - timedelta(days=364)  # 52 weeks * 7 days
     
-    # Count activities per date
+    # Count all activities per date for the heatmap
     activity_counts = defaultdict(int)
+    
+    # Track dates with completed daily tasks (for streak calculation)
+    daily_task_dates = set()
+    
     for activity in activities:
         if activity.get('timestamp'):
-            activity_date = activity['timestamp'].date()
+            # Handle different timestamp formats safely
+            try:
+                # If timestamp is already a datetime object
+                if isinstance(activity['timestamp'], datetime):
+                    activity_date = activity['timestamp'].date()
+                # If timestamp is a string with 'T' format (ISO format)
+                elif 'T' in activity['timestamp']:
+                    activity_date = datetime.strptime(activity['timestamp'].split('T')[0], '%Y-%m-%d').date()
+                # If timestamp is just a date string
+                else:
+                    activity_date = datetime.strptime(activity['timestamp'], '%Y-%m-%d').date()
+            except (ValueError, AttributeError):
+                # If any parsing error occurs, try a more generic approach
+                try:
+                    # Let Python figure out the format
+                    activity_date = datetime.fromisoformat(activity['timestamp']).date()
+                except:
+                    # Skip this activity if we can't parse the date
+                    continue
+            
             if start_date <= activity_date <= end_date:
                 activity_counts[activity_date] += 1
+                
+                # Add to daily task dates if it's a completed daily task
+                if activity.get('type') == 'daily_task_completed':
+                    daily_task_dates.add(activity_date)
     
     # Generate weeks data
     weeks = []
@@ -81,31 +108,47 @@ def generate_heatmap_data(activities):
                 'span': len(week_indices)
             })
     
-    # Calculate streaks
+    # Calculate streaks - ONLY using daily_task_completed dates
     current_streak = 0
     longest_streak = 0
     temp_streak = 0
 
-    end_date = datetime.now().date()
-    start_date = end_date - timedelta(days=364)
-
-    today_count = activity_counts.get(end_date, 0)
-    if today_count > 0:
+    # Check if user completed a daily task today
+    today_completed = end_date in daily_task_dates
+    
+    if today_completed:
         check_date = end_date
     else:
         check_date = end_date - timedelta(days=1)
 
-    while check_date >= start_date and activity_counts.get(check_date, 0) > 0:
+    # Calculate current streak
+    while check_date >= start_date and check_date in daily_task_dates:
         current_streak += 1
         check_date -= timedelta(days=1)
 
-    sorted_dates = sorted(activity_counts.keys())
-    for i, date in enumerate(sorted_dates):
-        if activity_counts[date] > 0:
-            temp_streak += 1
+    # Calculate longest streak
+    sorted_dates = sorted(list(daily_task_dates))
+    
+    if sorted_dates:
+        # Initialize with the first date
+        current_date = sorted_dates[0]
+        temp_streak = 1
+        longest_streak = 1
+        
+        # Check consecutive days
+        for i in range(1, len(sorted_dates)):
+            date = sorted_dates[i]
+            expected_date = current_date + timedelta(days=1)
+            
+            if date == expected_date:
+                # Consecutive day, extend streak
+                temp_streak += 1
+            else:
+                # Streak broken, reset
+                temp_streak = 1
+                
             longest_streak = max(longest_streak, temp_streak)
-        else:
-            temp_streak = 0
+            current_date = date
 
     return {
         'weeks': weeks,

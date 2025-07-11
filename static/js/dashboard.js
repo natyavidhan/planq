@@ -147,31 +147,72 @@ document.addEventListener('DOMContentLoaded', function () {
         const dd = String(today.getDate()).padStart(2, '0');
         const todayStr = `${yyyy}-${mm}-${dd}`;
 
-        // Find the heatmap-day for today
+        // If we already checked and stored the result, use it
+        if (window.todayExtendedChecked !== undefined) {
+            return window.todayExtendedChecked;
+        }
+        
+        // If we have a server-rendered flag available, use that
+        const streakExtendedToday = document.getElementById('streak-extended-today');
+        if (streakExtendedToday) {
+            const isExtended = streakExtendedToday.value === 'true';
+            window.todayExtendedChecked = isExtended;
+            return isExtended;
+        }
+        
+        // Default to using the heatmap cell count as a fallback
         const todayCell = document.querySelector(`.heatmap-day[data-date="${todayStr}"]`);
         if (todayCell) {
+            // We can only estimate based on activity count
+            // This is less accurate but will work without backend changes
             const count = parseInt(todayCell.getAttribute('data-count'), 10);
+            window.todayExtendedChecked = count > 0;
             return count > 0;
         }
+        
         return false;
     }
 
-    // Toggle display based on streak extension
-    const extendedDiv = document.getElementById('extended');
-    const notExtendedDiv = document.getElementById('not-extended');
-    const extendButton = document.querySelector('.extend');
-    if (isTodayExtended()) {
-        if (extendedDiv) extendedDiv.style.display = '';
-        if (notExtendedDiv) notExtendedDiv.style.display = 'none';
-        extendButton.style.display = 'none'; // Hide extend button if today is extended
-    } else {
-        if (extendedDiv) extendedDiv.style.display = 'none';
-        if (notExtendedDiv) notExtendedDiv.style.display = '';
-        extendButton.style.display = ''; // Show extend button if today is not extended
+    // Add an API call to check daily task status more accurately
+    // You can call this early in your page load
+    function checkDailyTaskStatus() {
+        fetch('/api/daily-task/status')
+            .then(response => response.json())
+            .then(data => {
+                window.todayExtendedChecked = data.completed_today;
+                // Update UI after getting the accurate data
+                updateStreakUI();
+            })
+            .catch(error => {
+                console.error('Error checking daily task status:', error);
+            });
     }
+
+    // Update the streak UI based on extension status
+    function updateStreakUI() {
+        const extendedDiv = document.getElementById('extended');
+        const notExtendedDiv = document.getElementById('not-extended');
+        const extendButton = document.querySelector('.extend');
+        
+        const isExtended = isTodayExtended();
+        
+        if (isExtended) {
+            if (extendedDiv) extendedDiv.style.display = '';
+            if (notExtendedDiv) notExtendedDiv.style.display = 'none';
+            if (extendButton) extendButton.style.display = 'none';
+        } else {
+            if (extendedDiv) extendedDiv.style.display = 'none';
+            if (notExtendedDiv) notExtendedDiv.style.display = '';
+            if (extendButton) extendButton.style.display = '';
+        }
+    }
+
+    // Call this early in your page load
+    checkDailyTaskStatus();
 
     // Daily task modal functionality
     const extendStreakModal = document.getElementById('extend-streak-modal');
+    const extendButton = document.querySelector('.extend'); // Define extendButton here
 
     // Show modal when extend button is clicked
     if (extendButton) {

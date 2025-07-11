@@ -1,52 +1,51 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize variables
-    console.log("Test data:", testData); // Debugging
-
     let currentQuestionIndex = 0;
     let currentSubjectId = null;
     let questionStatus = {};
     let userAnswers = {};
+    let questionAttempts = {}; // Track number of attempts per question
     let timeSpent = 0;
-    let questionTimings = {};
-    let currentQuestionStartTime = Date.now();
     let timerInterval;
+    let health = 100;
+    let questionsById = {};
+    let questionsOrder = [];
+    let isRetryMode = false;
+    let incorrectQuestions = [];
     
-    // Store question data by ID for easy access
-    const questionsById = {};
-    const questionsOrder = [];
-    
-    // Add this after your variable declarations
-    let questionAttempts = []; // Store all attempts here instead of sending them immediately
+    // New variables for question timing
+    let questionStartTime = Date.now();
+    let questionTimings = {};
+    let currentQuestionId = null;
+    let questionTimerInterval = null;
     
     // Process test data
     function initializeTest() {
-        // Create a flat array of all questions from all subjects
         let questionNumber = 1;
         
         for (const subject in testData.questions) {
-            currentSubjectId = subject;  // Set first subject as default
+            currentSubjectId = subject;
             
             for (const questionId of testData.questions[subject]) {
-                // The issue is here - question data structure needs to be fixed
+                // Get question data from the test data
                 const questionData = testData.question_data[questionId];
-                
-                // In your case, the question data is stored as an array with one item
                 const question = questionData && questionData.length > 0 ? questionData[0] : null;
                 
                 if (question) {
-                    // Copy essential properties to avoid modifying the original
+                    // Process question data
                     const processedQuestion = {
                         _id: question._id,
                         text: question.question,
-                        // Support both "mcq" type and "singleCorrect" type
                         type: question.type === 'singleCorrect' ? 'mcq' : (question.type || 'mcq'),
                         options: question.options || [],
                         answer: question.correct_option ? question.correct_option[0] : null,
                         subject: subject,
-                        questionNumber: questionNumber++
+                        questionNumber: questionNumber++,
+                        difficulty: question.level || 2, // Default to medium difficulty
+                        attempted: false,
+                        correct: false
                     };
                     
-                    // For numerical questions
                     if (question.type === 'numerical') {
                         processedQuestion.answer = question.correct_value;
                     }
@@ -54,17 +53,41 @@ document.addEventListener('DOMContentLoaded', function() {
                     questionsById[questionId] = processedQuestion;
                     questionsOrder.push(questionId);
                     
-                    // Initialize status for all questions
-                    questionStatus[questionId] = 'not-visited';
+                    // Initialize question status
+                    questionStatus[questionId] = 'unattempted';
+                    questionAttempts[questionId] = 0;
                 }
             }
         }
         
         console.log("Processed questions:", questionsById);
-        updateUI();
+        
+        // Setup start screen
+        setupStartScreen();
     }
     
-    // Initialize timer
+    // Set up the start screen
+    function setupStartScreen() {
+        const startBtn = document.getElementById('start-task-btn');
+        startBtn.addEventListener('click', startTask);
+    }
+    
+    // Start the task
+    function startTask() {
+        // Hide start screen
+        document.getElementById('start-screen').style.display = 'none';
+        
+        // Show task content
+        document.getElementById('task-content').style.display = 'flex';
+        
+        // Initialize UI
+        updateUI();
+        
+        // Start timer
+        initializeTimer();
+    }
+    
+    // Initialize the main task timer
     function initializeTimer() {
         const duration = testData.duration * 60; // Convert to seconds
         let timer = duration;
@@ -76,15 +99,16 @@ document.addEventListener('DOMContentLoaded', function() {
             if (timer < 0) {
                 // Time's up - auto-submit
                 clearInterval(timerInterval);
-                submitTest();
+                checkCompletion();
                 return;
             }
             
-            updateTimerDisplay(timer);
+            updateMainTimerDisplay(timer);
         }, 1000);
     }
     
-    function updateTimerDisplay(seconds) {
+    // Update the main timer display in the header
+    function updateMainTimerDisplay(seconds) {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
         const secs = seconds % 60;
@@ -98,39 +122,38 @@ document.addEventListener('DOMContentLoaded', function() {
         loadQuestion(currentQuestionIndex);
         updatePalette();
         updateProgressStats();
+        
+        // Update health display
+        document.getElementById('health-fill').style.width = `${health}%`;
+        document.getElementById('health-percent').textContent = `${Math.round(health)}%`;
+        
+        // Typeset MathJax if available
         if (window.MathJax) {
             window.MathJax.typeset();
         }
     }
     
     // Load a question by index
-    // Fix the loadQuestion function to properly display MCQ options
     function loadQuestion(index) {
         if (index < 0 || index >= questionsOrder.length) {
             return;
         }
         
-        // Record time spent on previous question
-        const now = Date.now();
-        if (currentQuestionIndex !== index && currentQuestionIndex < questionsOrder.length) {
-            const prevQuestionId = questionsOrder[currentQuestionIndex];
-            const timeOnQuestion = now - currentQuestionStartTime;
-            
-            if (!questionTimings[prevQuestionId]) {
-                questionTimings[prevQuestionId] = 0;
-            }
-            questionTimings[prevQuestionId] += timeOnQuestion;
+        // Record time spent on previous question when switching
+        if (currentQuestionId) {
+            const timeSpent = Date.now() - questionStartTime;
+            questionTimings[currentQuestionId] = (questionTimings[currentQuestionId] || 0) + timeSpent;
         }
         
-        currentQuestionStartTime = now;
+        // Reset timer for the new question
         currentQuestionIndex = index;
         const questionId = questionsOrder[index];
+        currentQuestionId = questionId;
+        questionStartTime = Date.now();
         const question = questionsById[questionId];
         
-        // Update status if this question was not visited before
-        if (questionStatus[questionId] === 'not-visited') {
-            questionStatus[questionId] = 'not-answered';
-        }
+        // Start timer for this question
+        startQuestionTimer();
         
         const questionContainer = document.getElementById('question-container');
         
@@ -141,10 +164,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const questionElement = document.createElement('div');
         questionElement.className = 'question';
         
-        // Question number and text
+        // Question number and text with timer badge
         const questionText = document.createElement('div');
         questionText.className = 'question-text';
-        questionText.innerHTML = `<strong>Q${question.questionNumber}.</strong> ${question.text}`;
+        questionText.innerHTML = `
+            <div class="question-header">
+                <div class="question-number-display">Question ${question.questionNumber} of ${questionsOrder.length}</div>
+                <div class="question-badges">
+                    <span class="question-type-badge">${question.type === 'mcq' ? 'MCQ' : 'Numerical'}</span>
+                    <span class="timer-badge" id="timer-badge">00:00</span>
+                </div>
+            </div>
+            <div class="question-content">
+                <strong>Q${question.questionNumber}.</strong> ${question.text}
+            </div>
+        `;
         questionElement.appendChild(questionText);
         
         // Options
@@ -152,13 +186,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const optionsList = document.createElement('ul');
             optionsList.className = 'options-list';
             
-            // Check if options exist and are in the expected format
             if (Array.isArray(question.options) && question.options.length > 0) {
                 question.options.forEach((option, optIndex) => {
                     const optionItem = document.createElement('li');
                     optionItem.className = 'option-item';
-                    if (userAnswers[questionId] === optIndex) {
-                        optionItem.classList.add('selected');
+                    
+                    // If question was already attempted, show correct answer and user's answer
+                    if (question.attempted) {
+                        if (optIndex === question.answer) {
+                            optionItem.classList.add('correct-answer');
+                        }
+                        if (userAnswers[questionId] === optIndex) {
+                            optionItem.classList.add(userAnswers[questionId] === question.answer ? 'selected-correct' : 'selected-incorrect');
+                        }
                     }
                     
                     optionItem.innerHTML = `
@@ -166,27 +206,24 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="option-text">${option}</div>
                     `;
                     
-                    optionItem.addEventListener('click', () => {
-                        selectAnswer(questionId, optIndex);
-                        
-                        // Update UI for selection
-                        document.querySelectorAll('.option-item').forEach(item => {
-                            item.classList.remove('selected');
+                    // Only allow selection if question hasn't been attempted or we're in retry mode
+                    if (!question.attempted || (isRetryMode && incorrectQuestions.includes(questionId))) {
+                        optionItem.addEventListener('click', () => {
+                            selectAnswer(questionId, optIndex);
                         });
-                        optionItem.classList.add('selected');
-                    });
+                    } else {
+                        optionItem.classList.add('disabled');
+                    }
                     
                     optionsList.appendChild(optionItem);
                 });
                 
                 questionElement.appendChild(optionsList);
             } else {
-                // Handle case where options are missing
                 const errorMsg = document.createElement('div');
                 errorMsg.className = 'error-message';
                 errorMsg.textContent = 'Error: Options not available for this question.';
                 questionElement.appendChild(errorMsg);
-                console.error('Missing options for question:', question);
             }
         } else if (question.type === 'numerical') {
             const numericalInput = document.createElement('div');
@@ -195,12 +232,27 @@ document.addEventListener('DOMContentLoaded', function() {
             numericalInput.innerHTML = `
                 <div class="input-label">Enter your answer:</div>
                 <input type="number" class="numerical-value" step="0.01" value="${userAnswers[questionId] || ''}">
+                <button class="submit-numerical">Submit Answer</button>
             `;
             
             const input = numericalInput.querySelector('input');
-            input.addEventListener('input', () => {
-                selectAnswer(questionId, parseFloat(input.value));
-            });
+            const submitBtn = numericalInput.querySelector('button');
+            
+            // If question was already attempted and not in retry mode, disable the input
+            if (question.attempted && !(isRetryMode && incorrectQuestions.includes(questionId))) {
+                input.disabled = true;
+                submitBtn.disabled = true;
+                submitBtn.classList.add('disabled');
+            } else {
+                submitBtn.addEventListener('click', () => {
+                    const value = parseFloat(input.value);
+                    if (!isNaN(value)) {
+                        selectAnswer(questionId, value);
+                    } else {
+                        alert('Please enter a valid number');
+                    }
+                });
+            }
             
             questionElement.appendChild(numericalInput);
         }
@@ -208,78 +260,163 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add question to container
         questionContainer.appendChild(questionElement);
         
+        // Update the feedback area if the question has been attempted
+        updateFeedbackArea(questionId);
+        
         // Update navigation buttons
         document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
-        document.getElementById('save-next-btn').textContent = 
-            currentQuestionIndex === questionsOrder.length - 1 ? 'Save' : 'Save & Next';
+        document.getElementById('next-btn').textContent = 
+            currentQuestionIndex === questionsOrder.length - 1 ? 'Finish' : 'Next';
         
-        // Update mark button text based on current status
-        const markBtn = document.getElementById('mark-btn');
-        if (questionStatus[questionId] === 'marked' || questionStatus[questionId] === 'answered-and-marked') {
-            markBtn.innerHTML = '<i class="fas fa-flag"></i> Unmark';
-        } else {
-            markBtn.innerHTML = '<i class="fas fa-flag"></i> Mark for Review';
+        // Update the timer display immediately
+        const prevTime = questionTimings[currentQuestionId] || 0;
+        updateQuestionTimerDisplay(prevTime);
+    }
+    
+    // Start question timer
+    function startQuestionTimer() {
+        // Clear any existing interval
+        if (questionTimerInterval) {
+            clearInterval(questionTimerInterval);
         }
         
-        if (window.MathJax) {
-            window.MathJax.typeset();
+        // Get accumulated time for current question (if any)
+        const accumulatedTime = questionTimings[currentQuestionId] || 0;
+        
+        questionTimerInterval = setInterval(function() {
+            // Calculate elapsed time for current question, including any previously accumulated time
+            const elapsedTime = Date.now() - questionStartTime;
+            const totalTime = accumulatedTime + elapsedTime;
+            
+            // Update the timer display
+            updateQuestionTimerDisplay(totalTime);
+        }, 100); // Update more frequently for better responsiveness
+    }
+    
+    // Update question timer display
+    function updateQuestionTimerDisplay(timeInMs) {
+        // Convert to seconds and format
+        const totalSeconds = Math.floor(timeInMs / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        // Update timer in the question header
+        const timerBadge = document.getElementById('timer-badge');
+        if (timerBadge) {
+            timerBadge.textContent = formattedTime;
+        }
+    }
+    
+    // Update feedback area for a question
+    function updateFeedbackArea(questionId) {
+        const question = questionsById[questionId];
+        const feedbackArea = document.getElementById('answer-feedback');
+        
+        if (question.attempted) {
+            feedbackArea.style.display = 'flex';
+            
+            if (question.correct) {
+                feedbackArea.className = 'answer-feedback correct';
+                feedbackArea.innerHTML = `<i class="fas fa-check-circle"></i> <span>Correct answer!</span>`;
+            } else {
+                const healthLost = calculateHealthDamage(question.difficulty);
+                feedbackArea.className = 'answer-feedback incorrect';
+                feedbackArea.innerHTML = `<i class="fas fa-times-circle"></i> <span>Incorrect. Health -${healthLost.toFixed(1)}%</span>`;
+            }
+        } else {
+            feedbackArea.style.display = 'none';
         }
     }
     
     // Select an answer for a question
-    // Modify the selectAnswer function to record attempts
-    function selectAnswer(questionId, answerIndex) {
-        userAnswers[questionId] = answerIndex;
+    function selectAnswer(questionId, answer) {
+        const question = questionsById[questionId];
         
-        // Record this attempt
-        recordQuestionAttempt(questionId, answerIndex);
+        // Store the user's answer
+        userAnswers[questionId] = answer;
+        
+        // Get the time spent on this question so far
+        const currentTime = Date.now();
+        const timeSpent = currentTime - questionStartTime;
+        const totalTimeSpent = (questionTimings[questionId] || 0) + timeSpent;
+        questionTimings[questionId] = totalTimeSpent;
+        
+        // Reset question start time to now, so timing continues correctly
+        questionStartTime = currentTime;
+        
+        // Increment attempt count
+        questionAttempts[questionId]++;
+        
+        // Mark as attempted
+        question.attempted = true;
+        
+        // Check if the answer is correct
+        let isCorrect = false;
+        
+        if (question.type === 'mcq' || question.type === 'singleCorrect') {
+            isCorrect = answer === question.answer;
+        } else if (question.type === 'numerical') {
+            // For numerical questions, allow a small margin of error (0.01)
+            isCorrect = Math.abs(answer - question.answer) < 0.01;
+        }
+        
+        question.correct = isCorrect;
         
         // Update question status
-        if (questionStatus[questionId] === 'not-answered' || questionStatus[questionId] === 'not-visited') {
-            questionStatus[questionId] = 'answered';
-        } else if (questionStatus[questionId] === 'marked') {
-            questionStatus[questionId] = 'answered-and-marked';
+        questionStatus[questionId] = isCorrect ? 'correct' : 'incorrect';
+        
+        // If incorrect and not in retry mode, reduce health
+        if (!isCorrect && !isRetryMode) {
+            const healthDamage = calculateHealthDamage(question.difficulty);
+            health = Math.max(0, health - healthDamage);
         }
         
-        updatePalette();
-        updateProgressStats();
-    }
-    
-    // Mark/unmark question for review
-    function toggleMarkQuestion() {
-        const questionId = questionsOrder[currentQuestionIndex];
-        
-        if (questionStatus[questionId] === 'not-answered' || questionStatus[questionId] === 'not-visited') {
-            questionStatus[questionId] = 'marked';
-        } else if (questionStatus[questionId] === 'answered') {
-            questionStatus[questionId] = 'answered-and-marked';
-        } else if (questionStatus[questionId] === 'marked') {
-            questionStatus[questionId] = 'not-answered';
-        } else if (questionStatus[questionId] === 'answered-and-marked') {
-            questionStatus[questionId] = 'answered';
-        }
-        
+        // Update the UI to show the result
         updateUI();
+        
+        // Record the attempt with time spent
+        submitAnswer(questionId, answer, isCorrect, totalTimeSpent);
+        
+        // Auto advance to next question if this is the last attempt or answer is correct
+        if (isCorrect || questionAttempts[questionId] >= 2) {
+            setTimeout(() => {
+                if (currentQuestionIndex < questionsOrder.length - 1) {
+                    currentQuestionIndex++;
+                    updateUI();
+                }
+            }, 1500);
+        }
     }
     
-    // Clear response for current question
-    function clearResponse() {
-        const questionId = questionsOrder[currentQuestionIndex];
+    // Calculate health damage based on difficulty
+    function calculateHealthDamage(difficulty) {
+        const totalQuestions = questionsOrder.length;
+        const difficultyMultiplier = difficulty === 1 ? 1 : (difficulty === 2 ? 1.5 : 2);
         
-        // Remove from answers
-        delete userAnswers[questionId];
-        
-        // Update status
-        if (questionStatus[questionId] === 'answered') {
-            questionStatus[questionId] = 'not-answered';
-        } else if (questionStatus[questionId] === 'answered-and-marked') {
-            questionStatus[questionId] = 'marked';
-        }
-        
-        // Update UI for the specific question
-        loadQuestion(currentQuestionIndex);
-        updatePalette();
-        updateProgressStats();
+        // damage = 100 / sqrt(n) * difficulty_multiplier
+        return (100 / Math.sqrt(totalQuestions)) * difficultyMultiplier;
+    }
+    
+    // Submit answer to server
+    function submitAnswer(questionId, answer, isCorrect, timeTaken) {
+        // AJAX request to submit the answer
+        fetch('/daily-task', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                question_id: questionId,
+                user_answer: answer,
+                is_correct: isCorrect,
+                time_taken: timeTaken
+            })
+        })
+        .then(response => response.json())
+        .catch(error => {
+            console.error('Error submitting answer:', error);
+        });
     }
     
     // Update question palette
@@ -308,10 +445,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update progress statistics
     function updateProgressStats() {
         let answeredCount = 0;
+        let correctCount = 0;
         
         for (const questionId in questionStatus) {
-            if (questionStatus[questionId] === 'answered' || questionStatus[questionId] === 'answered-and-marked') {
+            const status = questionStatus[questionId];
+            if (status === 'correct' || status === 'incorrect') {
                 answeredCount++;
+            }
+            if (status === 'correct') {
+                correctCount++;
             }
         }
         
@@ -324,199 +466,277 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('progress-fill').style.width = `${progressPercent}%`;
     }
     
-    // Show the submit confirmation dialog
-    function showSubmitDialog() {
-        const submitModal = document.getElementById('submit-modal');
-        const submitSummary = document.getElementById('submit-summary');
+    // Check if all questions have been attempted and show appropriate screen
+    function checkCompletion() {
+        // Record time for the current question
+        if (currentQuestionId) {
+            const timeSpent = Date.now() - questionStartTime;
+            questionTimings[currentQuestionId] = (questionTimings[currentQuestionId] || 0) + timeSpent;
+        }
         
-        let answeredCount = 0;
-        let markedCount = 0;
-        let notAnsweredCount = 0;
-        let notVisitedCount = 0;
+        // Stop question timer
+        if (questionTimerInterval) {
+            clearInterval(questionTimerInterval);
+            questionTimerInterval = null;
+        }
         
-        for (const questionId in questionStatus) {
-            const status = questionStatus[questionId];
-            if (status === 'answered' || status === 'answered-and-marked') {
-                answeredCount++;
-            }
-            if (status === 'marked' || status === 'answered-and-marked') {
-                markedCount++;
-            }
-            if (status === 'not-answered') {
-                notAnsweredCount++;
-            }
-            if (status === 'not-visited') {
-                notVisitedCount++;
+        // Count correct and incorrect questions
+        const correctQuestions = [];
+        incorrectQuestions = []; // Reset the global incorrectQuestions array
+        
+        for (const questionId in questionsById) {
+            const question = questionsById[questionId];
+            if (question.attempted && question.correct) {
+                correctQuestions.push(questionId);
+            } else if (question.attempted && !question.correct) {
+                incorrectQuestions.push(questionId);
             }
         }
         
-        submitSummary.innerHTML = `
-            <div class="summary-stats">
-                <div class="summary-item">
-                    <div class="summary-label">Questions Answered</div>
-                    <div class="summary-value">${answeredCount} / ${questionsOrder.length}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Questions Marked</div>
-                    <div class="summary-value">${markedCount}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Not Answered</div>
-                    <div class="summary-value">${notAnsweredCount}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Not Visited</div>
-                    <div class="summary-value">${notVisitedCount}</div>
-                </div>
-            </div>
-        `;
+        // If not all questions attempted, prompt user
+        const unattemptedCount = questionsOrder.length - (correctQuestions.length + incorrectQuestions.length);
         
-        submitModal.style.display = 'block';
-    }
-    
-    // Submit the test
-    // Modify the submitTest function to ensure timer keeps running after alerts
-    function submitTest() {
-        // Check if all questions have been attempted
-        const unattemptedQuestions = questionsOrder.filter(qId => !userAnswers[qId]);
+        if (unattemptedCount > 0 && health > 0) {
+            const confirmContinue = confirm(`You have ${unattemptedCount} unattempted questions. Do you want to continue anyway?`);
+            if (!confirmContinue) {
+                // Find first unattempted question
+                const unattemptedIndex = questionsOrder.findIndex(qId => !questionsById[qId].attempted);
+                if (unattemptedIndex >= 0) {
+                    currentQuestionIndex = unattemptedIndex;
+                    updateUI();
+                    return;
+                }
+            }
+        }
         
-        if (unattemptedQuestions.length > 0) {
-            // Show warning that not all questions have been attempted
-            alert(`You have ${unattemptedQuestions.length} unattempted questions. Please attempt all questions before submitting.`);
-            
-            // Go to the first unattempted question
-            const firstUnattemptedIndex = questionsOrder.indexOf(unattemptedQuestions[0]);
-            loadQuestion(firstUnattemptedIndex);
-            updatePalette();
-            
-            // Hide the submit modal
-            document.getElementById('submit-modal').style.display = 'none';
+        // If health is 0, show fail screen
+        if (health <= 0) {
+            showFailScreen();
             return;
         }
         
-        // Only stop the timer when actually submitting
-        clearInterval(timerInterval);
-        
-        // Ensure we record time spent on the final question
-        const now = Date.now();
-        const questionId = questionsOrder[currentQuestionIndex];
-        const timeOnQuestion = now - currentQuestionStartTime;
-        
-        if (!questionTimings[questionId]) {
-            questionTimings[questionId] = 0;
+        // If there are incorrect questions and health > 0, show retry screen
+        if (incorrectQuestions.length > 0) {
+            showRetryScreen(correctQuestions.length, incorrectQuestions.length);
+        } else {
+            // All correct, show success screen
+            showSuccessScreen();
         }
-        questionTimings[questionId] += timeOnQuestion;
+    }
+    
+    // Show retry screen
+    function showRetryScreen(correctCount, incorrectCount) {
+        // Stop question timer
+        if (questionTimerInterval) {
+            clearInterval(questionTimerInterval);
+            questionTimerInterval = null;
+        }
         
-        // Now send all attempts at once to process on server
+        // Hide task content
+        document.getElementById('task-content').style.display = 'none';
+        
+        // Show retry screen
+        const retryScreen = document.getElementById('retry-screen');
+        retryScreen.style.display = 'block';
+        
+        // Update retry screen content
+        document.getElementById('retry-health').textContent = `${Math.round(health)}%`;
+        document.getElementById('correct-count').textContent = correctCount;
+        document.getElementById('incorrect-count').textContent = incorrectCount;
+        
+        // Add event listener to retry button
+        document.getElementById('retry-btn').addEventListener('click', startRetry);
+    }
+    
+    // Start retry mode
+    function startRetry() {
+        isRetryMode = true;
+        
+        // Hide retry screen
+        document.getElementById('retry-screen').style.display = 'none';
+        
+        // Show task content
+        document.getElementById('task-content').style.display = 'flex';
+        
+        // Set current question to first incorrect question
+        const firstIncorrectIndex = questionsOrder.findIndex(qId => incorrectQuestions.includes(qId));
+        if (firstIncorrectIndex >= 0) {
+            currentQuestionIndex = firstIncorrectIndex;
+        }
+        
+        // Update question status for retry
+        for (const questionId of incorrectQuestions) {
+            questionStatus[questionId] = 'retry';
+            questionsById[questionId].attempted = false; // Allow another attempt
+        }
+        
+        // Update UI
+        updateUI();
+    }
+    
+    // Show fail screen
+    function showFailScreen() {
+        // Clear timer intervals
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+        
+        if (questionTimerInterval) {
+            clearInterval(questionTimerInterval);
+            questionTimerInterval = null;
+        }
+        
+        // Hide task content
+        document.getElementById('task-content').style.display = 'none';
+        
+        // Show fail screen
+        document.getElementById('fail-screen').style.display = 'block';
+        
+        // Add event listener to restart button
+        document.getElementById('restart-btn').addEventListener('click', () => {
+            window.location.href = '/daily-task/generate?exam=' + testData.exam + '&subject=' + currentSubjectId + '&count=' + questionsOrder.length + '&time=' + testData.duration;
+        });
+    }
+    
+    // Show success screen with confetti animation
+    function showSuccessScreen() {
+        // Clear timer intervals
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+        
+        if (questionTimerInterval) {
+            clearInterval(questionTimerInterval);
+            questionTimerInterval = null;
+        }
+        
+        // Hide task content
+        document.getElementById('task-content').style.display = 'none';
+        
+        // Show success screen
+        document.getElementById('success-screen').style.display = 'block';
+        
+        // Update final health
+        document.getElementById('final-health').textContent = `${Math.round(health)}%`;
+        
+        // Create confetti
+        createConfetti();
+        
+        // Submit final results
+        submitCompletion();
+    }
+    
+    // Create confetti animation
+    function createConfetti() {
+        const container = document.getElementById('confetti-container');
+        const colors = ['#f43f5e', '#3b82f6', '#22c55e', '#eab308', '#8b5cf6'];
+        
+        for (let i = 0; i < 100; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.top = -10 + 'px';
+            confetti.style.width = Math.random() * 10 + 5 + 'px';
+            confetti.style.height = Math.random() * 10 + 5 + 'px';
+            confetti.style.opacity = Math.random();
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+            
+            // Random shapes
+            const shapes = ['circle', 'square', 'triangle'];
+            const shape = shapes[Math.floor(Math.random() * shapes.length)];
+            if (shape === 'circle') {
+                confetti.style.borderRadius = '50%';
+            } else if (shape === 'triangle') {
+                confetti.style.width = 0;
+                confetti.style.height = 0;
+                confetti.style.backgroundColor = 'transparent';
+                confetti.style.borderLeft = '5px solid transparent';
+                confetti.style.borderRight = '5px solid transparent';
+                confetti.style.borderBottom = '10px solid ' + colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            // Animation
+            const duration = Math.random() * 3 + 2;
+            const delay = Math.random() * 2;
+            
+            confetti.style.animation = `confettiFall ${duration}s ease ${delay}s forwards`;
+            
+            // Add the confetti to the container
+            container.appendChild(confetti);
+            
+            // Add CSS animation
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes confettiFall {
+                    0% {
+                        transform: translateY(0) rotate(${Math.random() * 360}deg);
+                    }
+                    100% {
+                        transform: translateY(${container.offsetHeight}px) rotate(${Math.random() * 360}deg);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+    
+    // Submit completion to server
+    function submitCompletion() {
+        // Calculate correct and incorrect counts
+        let correctCount = 0;
+        let incorrectCount = 0;
+        
+        for (const questionId in questionsById) {
+            const question = questionsById[questionId];
+            if (question.attempted && question.correct) {
+                correctCount++;
+            } else if (question.attempted && !question.correct) {
+                incorrectCount++;
+            }
+        }
+        
+        // AJAX request to submit completion with timing data
         fetch('/daily-task', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                answers: userAnswers,
+                correct_count: correctCount,
+                incorrect_count: incorrectCount,
                 time_spent: timeSpent,
-                questionTimings: questionTimings
+                question_timings: questionTimings,
+                health_remaining: health,
+                is_success: true
             })
         })
         .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                alert('Error: ' + data.error);
-                return;
-            }
-            
-            // Update the streak display
-            document.getElementById('final-streak-count').textContent = data.current_streak;
-            document.getElementById('new-streak-count').textContent = data.current_streak;
-            document.getElementById('final-score').textContent = data.score + '%';
-            
-            // Show success modal
-            document.getElementById('submit-modal').style.display = 'none';
-            document.getElementById('success-modal').style.display = 'block';
-        })
         .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while submitting. Please try again.');
+            console.error('Error submitting completion:', error);
         });
     }
     
-    // Replace the recordQuestionAttempt function with this version
-    function recordQuestionAttempt(questionId, userAnswer) {
-        // Get the current question
-        const question = questionsById[questionId];
-        if (!question) return;
-        
-        // Determine if the answer is correct
-        let isCorrect = false;
-        if (question.type === 'mcq') {
-            isCorrect = userAnswer === question.answer;
-        } else if (question.type === 'numerical') {
-            // For numerical questions, allow a small margin of error
-            isCorrect = Math.abs(userAnswer - question.answer) < 0.01;
-        }
-        
-        // Store the attempt locally instead of sending immediately
-        // If an attempt for this question already exists, update it
-        const existingIndex = questionAttempts.findIndex(attempt => attempt.question_id === questionId);
-        
-        const attemptData = {
-            question_id: questionId,
-            user_answer: userAnswer,
-            is_correct: isCorrect,
-            timestamp: Date.now()
-        };
-        
-        if (existingIndex >= 0) {
-            questionAttempts[existingIndex] = attemptData;
-        } else {
-            questionAttempts.push(attemptData);
-        }
-        
-        return isCorrect;
-    }
-    
-    // Event listeners
+    // Event listeners for navigation buttons
     document.getElementById('prev-btn').addEventListener('click', () => {
         if (currentQuestionIndex > 0) {
-            loadQuestion(currentQuestionIndex - 1);
-            updatePalette();
+            currentQuestionIndex--;
+            updateUI();
         }
     });
     
-    document.getElementById('save-next-btn').addEventListener('click', () => {
+    document.getElementById('next-btn').addEventListener('click', () => {
         if (currentQuestionIndex < questionsOrder.length - 1) {
-            loadQuestion(currentQuestionIndex + 1);
-            updatePalette();
+            currentQuestionIndex++;
+            updateUI();
         } else {
-            showSubmitDialog();
-        }
-    });
-    
-    document.getElementById('mark-btn').addEventListener('click', toggleMarkQuestion);
-    document.getElementById('clear-btn').addEventListener('click', clearResponse);
-    document.getElementById('submit-task-btn').addEventListener('click', showSubmitDialog);
-    
-    // Modal close buttons
-    document.getElementById('close-submit-modal').addEventListener('click', () => {
-        document.getElementById('submit-modal').style.display = 'none';
-    });
-    
-    document.getElementById('cancel-submit').addEventListener('click', () => {
-        document.getElementById('submit-modal').style.display = 'none';
-    });
-    
-    document.getElementById('confirm-submit').addEventListener('click', submitTest);
-    
-    // Click outside to close modals
-    window.addEventListener('click', (event) => {
-        const submitModal = document.getElementById('submit-modal');
-        if (event.target === submitModal) {
-            submitModal.style.display = 'none';
+            // Last question, check completion
+            checkCompletion();
         }
     });
     
     // Initialize the test
     initializeTest();
-    initializeTimer();
 });

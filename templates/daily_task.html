@@ -4,7 +4,7 @@
 {% block content %}
 <link rel="stylesheet" href="/static/css/daily_task.css">
 <div class="daily-task-container">
-    <!-- Header with title, timer and streak info -->
+    <!-- Health bar and timer header -->
     <div class="task-header">
         <div class="task-info">
             <div class="task-badge">
@@ -14,40 +14,81 @@
             <h2 class="task-title">{{ test.title }}</h2>
         </div>
         <div class="task-stats">
+            <!-- Health bar -->
+            <div class="health-container">
+                <div class="health-label">
+                    <i class="fas fa-heart"></i>
+                    <span>Health</span>
+                </div>
+                <div class="health-bar">
+                    <div class="health-fill" id="health-fill" style="width: 100%"></div>
+                    <span class="health-percent" id="health-percent">100%</span>
+                </div>
+            </div>
+            <!-- Streak counter -->
             <div class="streak-counter">
                 <i class="fas fa-fire"></i>
                 <span>{{ streak_count }} day streak</span>
             </div>
+            <!-- Timer -->
             <div class="task-timer" id="task-timer">
-                <i class="far fa-clock"></i> <span id="timer-display">00:00:00</span>
+                <i class="far fa-clock"></i>
+                <span id="timer-display">00:00:00</span>
             </div>
         </div>
     </div>
 
-    <!-- Main content area -->
-    <div class="task-content">
-        <!-- Question area - now on the left -->
+    <!-- Start screen (shown before task begins) -->
+    <div id="start-screen" class="start-screen">
+        <div class="start-content">
+            <div class="start-icon">
+                <i class="fas fa-tasks"></i>
+            </div>
+            <h2>Ready for Today's Challenge?</h2>
+            <div class="task-details">
+                <div class="detail-item">
+                    <i class="fas fa-book"></i>
+                    <span>Subject: <strong>{{ subject.name }}</strong></span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Questions: <strong>{{ test.total_questions }}</strong></span>
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Time Limit: <strong>{{ test.duration }} minutes</strong></span>
+                </div>
+            </div>
+            <p class="health-explanation">
+                <i class="fas fa-heart"></i> You start with 100% health. Wrong answers will reduce your health based on question difficulty.
+            </p>
+            <button id="start-task-btn" class="start-btn">
+                <i class="fas fa-play"></i> Start Daily Task
+            </button>
+        </div>
+    </div>
+
+    <!-- Main content area (hidden until start) -->
+    <div id="task-content" class="task-content" style="display: none;">
+        <!-- Question area -->
         <div class="question-area">
             <div class="question-container" id="question-container">
                 <!-- Question content will be dynamically loaded here -->
             </div>
             
+            <!-- Feedback area for correct/incorrect answers -->
+            <div class="answer-feedback" id="answer-feedback" style="display: none;">
+                <!-- Feedback will be dynamically inserted here -->
+            </div>
+            
             <!-- Question navigation controls -->
             <div class="question-actions">
-                <div class="action-buttons">
-                    <button class="action-btn" id="mark-btn">
-                        <i class="fas fa-flag"></i> Mark for Review
-                    </button>
-                    <button class="action-btn" id="clear-btn">
-                        <i class="fas fa-eraser"></i> Clear Response
-                    </button>
-                </div>
                 <div class="navigation-buttons">
                     <button class="nav-btn" id="prev-btn">
                         <i class="fas fa-chevron-left"></i> Previous
                     </button>
-                    <button class="nav-btn primary" id="save-next-btn">
-                        Save & Next <i class="fas fa-chevron-right"></i>
+                    <button class="nav-btn primary" id="next-btn">
+                        Next <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
             </div>
@@ -81,20 +122,20 @@
                 
                 <div class="palette-legend">
                     <div class="legend-item">
-                        <span class="question-status answered"></span>
-                        <span>Answered</span>
+                        <span class="question-status correct"></span>
+                        <span>Correct</span>
                     </div>
                     <div class="legend-item">
-                        <span class="question-status not-answered"></span>
-                        <span>Not Answered</span>
+                        <span class="question-status incorrect"></span>
+                        <span>Incorrect</span>
                     </div>
                     <div class="legend-item">
-                        <span class="question-status marked"></span>
-                        <span>Marked</span>
+                        <span class="question-status unattempted"></span>
+                        <span>Unattempted</span>
                     </div>
                     <div class="legend-item">
-                        <span class="question-status answered-and-marked"></span>
-                        <span>Answered & Marked</span>
+                        <span class="question-status retry"></span>
+                        <span>Retry</span>
                     </div>
                 </div>
                 
@@ -102,79 +143,86 @@
                     <div class="palette-body" id="question-palette-body">
                         <!-- Question numbers will be dynamically added here -->
                     </div>
-                    
-                    <div class="submit-container">
-                        <button class="submit-task-btn" id="submit-task-btn">
-                            <i class="fas fa-check-circle"></i> Complete Daily Task
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Confirmation modal for submitting test -->
-    <div class="modal" id="submit-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Complete Daily Task</h3>
-                <span class="modal-close" id="close-submit-modal">&times;</span>
+    <!-- Retry screen (shown when health > 0 but wrong answers) -->
+    <div id="retry-screen" class="retry-screen" style="display: none;">
+        <div class="retry-content">
+            <div class="retry-icon">
+                <i class="fas fa-redo"></i>
             </div>
-            <div class="modal-body">
-                <div class="submit-summary" id="submit-summary">
-                    <!-- Summary will be dynamically generated -->
+            <h2>Almost There!</h2>
+            <p>You have some incorrect answers, but your streak is still alive.</p>
+            <div class="health-display">
+                <i class="fas fa-heart"></i>
+                <span id="retry-health">75%</span> Health Remaining
+            </div>
+            <div class="retry-details">
+                <div class="detail-item">
+                    <i class="fas fa-check"></i>
+                    <span>Correct: <strong id="correct-count">0</strong></span>
                 </div>
-                <div class="submit-streak">
-                    <i class="fas fa-fire"></i>
-                    <p>Your daily streak will be extended to <span id="new-streak-count">{{ streak_count + 1 }}</span> days!</p>
-                </div>
-                <div class="submit-warning">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <p>Are you sure you want to submit your answers? This action cannot be undone.</p>
+                <div class="detail-item">
+                    <i class="fas fa-times"></i>
+                    <span>Incorrect: <strong id="incorrect-count">0</strong></span>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="cancel-btn" id="cancel-submit">Continue Solving</button>
-                <button class="confirm-btn" id="confirm-submit">Yes, Complete Task</button>
-            </div>
+            <button id="retry-btn" class="retry-btn">
+                <i class="fas fa-redo"></i> Retry Incorrect Questions
+            </button>
         </div>
     </div>
-    
-    <!-- Success modal after completion -->
-    <div class="modal" id="success-modal">
-        <div class="modal-content success-content">
-            <div class="success-header">
-                <div class="success-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <h3>Task Completed!</h3>
+
+    <!-- Failure screen (shown when health <= 0) -->
+    <div id="fail-screen" class="fail-screen" style="display: none;">
+        <div class="fail-content">
+            <div class="fail-icon">
+                <i class="fas fa-heartbeat broken-heart"></i>
             </div>
-            <div class="modal-body">
-                <div class="success-message">
-                    <p>Great job! You've completed your daily task and extended your streak.</p>
-                    <div class="streak-animation">
-                        <div class="streak-counter-large">
-                            <i class="fas fa-fire"></i>
-                            <span id="final-streak-count">{{ streak_count + 1 }}</span> day streak
-                        </div>
-                        <div class="streak-progress">
-                            <div class="streak-bar">
-                                <div class="streak-fill"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="score-display">
-                        <div class="score-label">Your Score:</div>
-                        <div class="score-value" id="final-score">0%</div>
+            <h2>Streak Broken</h2>
+            <p>You've lost all your health points. Your streak has been reset.</p>
+            <div class="streak-broken">
+                <i class="fas fa-fire-alt broken-fire"></i>
+                <span>0 day streak</span>
+            </div>
+            <button id="restart-btn" class="restart-btn">
+                <i class="fas fa-sync"></i> Restart Daily Task
+            </button>
+            <a href="/dashboard" class="dashboard-btn">
+                <i class="fas fa-home"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Success screen (shown when task completed successfully) -->
+    <div id="success-screen" class="success-screen" style="display: none;">
+        <div class="success-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Streak Extended!</h2>
+            <div class="confetti-container" id="confetti-container"></div>
+            <div class="streak-animation">
+                <div class="streak-counter-large">
+                    <i class="fas fa-fire"></i>
+                    <span id="final-streak-count">{{ streak_count + 1 }}</span> day streak
+                </div>
+                <div class="streak-progress">
+                    <div class="streak-bar">
+                        <div class="streak-fill"></div>
                     </div>
                 </div>
+            </div>
+            <div class="score-display">
+                <div class="score-label">Your Health:</div>
+                <div class="score-value" id="final-health">100%</div>
             </div>
             <div class="modal-footer">
                 <a href="/dashboard" class="return-btn">
                     <i class="fas fa-home"></i> Return to Dashboard
-                </a>
-                <a href="#" id="view-analysis-btn" class="analysis-btn">
-                    <i class="fas fa-chart-bar"></i> View Analysis
                 </a>
             </div>
         </div>

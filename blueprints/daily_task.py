@@ -64,129 +64,88 @@ def daily_task():
     if 'user' not in session:
         return redirect(url_for("home"))
     
-    if request.method == 'GET':
-        test_data = session.get('daily_test')
-        if not test_data:
-            return redirect(url_for('dashboard'))
+    if request.method == 'POST':
+        data = request.json
+        user_id = session['user']['id']
         
-        exam_data = db.pyqs['exams'].get(test_data['exam'], {})
-        subject_data = db.get_subject(test_data['subject'])
+        if not data:
+            return jsonify({'error': 'Missing data'}), 400
         
-        question_data = {}
-        for qid in test_data['questions'].get(test_data['subject'], []):
-            q = db.get_questions_by_ids([qid], full_data=True) 
-            if q:
-                question_data[qid] = q
-    
-        test_data['question_data'] = question_data
-        
-        activities = db.get_activities(session['user']['id'])
-        heatmap_data = generate_heatmap_data(activities)
-        streak_count = heatmap_data['current_streak']
-        
-        return render_template('daily_task.html', 
-                           test=test_data, 
-                           streak_count=streak_count,
-                           exam=exam_data,
-                           subject=subject_data)
+        # If it's an individual question attempt
+        if 'question_id' in data:
+            question_id = data['question_id']
+            is_correct = data.get('is_correct', False)
+            user_answer = data.get('user_answer')
+            time_taken = data.get('time_taken', 0)  # Get time taken in milliseconds
 
-    if 'user' not in session or 'daily_test' not in session:
-        return jsonify({'error': 'No active daily task found'}), 400
-    
-    # Get the daily test data from session
-    daily_test = session['daily_test']
-    
-    # Get the submitted answers
-    data = request.json
-    if not data or 'answers' not in data:
-        return jsonify({'error': 'Missing answer data'}), 400
-    
-    submitted_answers = data['answers']
-    time_spent = data.get('time_spent', 0)
-    
-    # Process each answer
-    correct_count = 0
-    total_questions = 0
-    
-    # Get flat list of all question IDs
-    all_question_ids = [qid for subj_questions in daily_test['questions'].values() 
-                        for qid in subj_questions]
-    
-    for question_id in all_question_ids:
-        total_questions += 1
-        
-        # Get question data
-        question_data = daily_test['question_data'].get(question_id, [])
-        if not question_data:
-            continue
+            response = db.pyqs['questions'].get(question_id, {})
+
+            if response['type'] == 'singleCorrect':
+                correct_answer = response.get('correct_option')[0]
+            else:
+                correct_answer = response.get('correct_value')
+
+            db.add_activity(
+                user_id=session['user']['id'],
+                action='attempt_question',
+                details={
+                    'question_id': question_id,
+                    'is_correct': is_correct,
+                    'user_answer': user_answer,
+                    'correct_answer': correct_answer,
+                    'time_taken': time_taken
+                }
+            )
             
-        # Get the first question (your data structure)
-        question = question_data[0] if question_data else None
-        if not question:
-            continue
+            return jsonify({'success': True})
         
-        # Check if this question was answered
-        user_answer = submitted_answers.get(question_id)
-        if user_answer is None:
-            continue
+        # If it's the task completion
+        elif 'correct_count' in data:
+            # Add a completion activity with timing data
+            db.add_activity(user_id, "daily_task_completed", {
+                "correct_count": data.get('correct_count', 0),
+                "incorrect_count": data.get('incorrect_count', 0),
+                "time_spent": data.get('time_spent', 0),
+                "question_timings": data.get('question_timings', {}),  # Add question timing data
+                "health_remaining": data.get('health_remaining', 0),
+                "is_success": data.get('is_success', False)
+            })
             
-        # Check if answer is correct
-        is_correct = False
-        
-        if question['type'] == 'singleCorrect' or question['type'] == 'mcq':
-            correct_option = question['correct_option'][0] if question.get('correct_option') else None
-            is_correct = user_answer == correct_option
-        elif question['type'] == 'numerical':
-            correct_value = question.get('correct_value')
-            # Allow small margin of error for numerical
-            is_correct = abs(float(user_answer) - float(correct_value)) < 0.01 if correct_value is not None else False
-        
-        # Record activity for this question attempt
-        activity_type = "daily_correct_answer" if is_correct else "daily_incorrect_answer"
-        
-        # Add details to the activity
-        details = {
-            "question_id": question_id,
-            "user_answer": user_answer,
-            "is_correct": is_correct,
-            "exam": daily_test.get('exam'),
-            "subject": question.get('subject')
-        }
-        
-        # If the question has chapter info, include it
-        if question.get('chapter'):
-            details["chapter"] = question['chapter']
+            # Get updated streak info
+            activities = db.get_activities(user_id)
+            heatmap_data = generate_heatmap_data(activities)
             
-        db.add_activity(session['user']['id'], activity_type, details)
+            return jsonify({
+                'success': True,
+                'current_streak': heatmap_data['current_streak'],
+                'longest_streak': heatmap_data['longest_streak']
+            })
         
-        if is_correct:
-            correct_count += 1
+        else:
+            return jsonify({'error': 'Invalid data format'}), 400
     
-    # Calculate score
-    score_percent = (correct_count / total_questions * 100) if total_questions > 0 else 0
-    score_percent = round(score_percent, 1)
+    # GET request handling (existing code)
+    test_data = session.get('daily_test')
+    if not test_data:
+        return redirect(url_for('dashboard'))
     
-    # Record daily task completion
-    db.add_activity(session['user']['id'], "daily_task_completed", {
-        "correct_count": correct_count,
-        "total_questions": total_questions,
-        "score": score_percent,
-        "time_spent": time_spent,
-        "title": daily_test.get('title', 'Daily Task')
-    })
+    exam_data = db.pyqs['exams'].get(test_data['exam'], {})
+    subject_data = db.get_subject(test_data['subject'])
     
-    # Clean up the session
-    session.pop('daily_test', None)
+    question_data = {}
+    for qid in test_data['questions'].get(test_data['subject'], []):
+        q = db.get_questions_by_ids([qid], full_data=True) 
+        if q:
+            question_data[qid] = q
+
+    test_data['question_data'] = question_data
     
-    # Get updated streak info
     activities = db.get_activities(session['user']['id'])
     heatmap_data = generate_heatmap_data(activities)
+    streak_count = heatmap_data['current_streak']
     
-    return jsonify({
-        'success': True,
-        'score': score_percent,
-        'correct': correct_count,
-        'total': total_questions,
-        'current_streak': heatmap_data['current_streak'],
-        'longest_streak': heatmap_data['longest_streak']
-    })
+    return render_template('daily_task.html', 
+                       test=test_data, 
+                       streak_count=streak_count,
+                       exam=exam_data,
+                       subject=subject_data)
