@@ -87,7 +87,7 @@
 .task-content {
     display: flex;
     gap: 1.5rem;
-    height: calc(100vh - 200px);
+    height: calc(80vh - 200px);
     min-height: 600px;
 }
 

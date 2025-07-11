@@ -5,17 +5,18 @@ import requests
 import os
 import secrets
 from urllib.parse import urlencode
-from datetime import datetime, timedelta
-from collections import defaultdict
+from datetime import datetime
 
 from config import CONFIG
 from database import Database
-from utils import auth_required
+from utils import auth_required, generate_heatmap_data
+
 from blueprints.search import init_blueprint as init_search_blueprint
 from blueprints.question import init_blueprint as init_question_blueprint
 from blueprints.test import init_blueprint as init_test_blueprint
 from blueprints.api import init_blueprint as init_api_blueprint
 from blueprints.bookmarks import init_blueprint as init_bookmarks_blueprint
+from blueprints.daily_task import init_blueprint as init_task_blueprint
 
 load_dotenv()
 
@@ -31,6 +32,7 @@ app.register_blueprint(init_question_blueprint(db))
 app.register_blueprint(init_test_blueprint(db))
 app.register_blueprint(init_api_blueprint(db))
 app.register_blueprint(init_bookmarks_blueprint(db))
+app.register_blueprint(init_task_blueprint(db))
 
 # Custom filters for templates
 @app.template_filter('formatdate')
@@ -140,108 +142,6 @@ def logout():
     session.pop("user")
     return redirect(url_for("home"))
 
-def generate_heatmap_data(activities):
-    """Generate heatmap data from user activities"""
-    # Create a date range for the last year
-    end_date = datetime.now().date()
-    start_date = end_date - timedelta(days=364)  # 52 weeks * 7 days
-    
-    # Count activities per date
-    activity_counts = defaultdict(int)
-    for activity in activities:
-        if activity.get('timestamp'):
-            activity_date = activity['timestamp'].date()
-            if start_date <= activity_date <= end_date:
-                activity_counts[activity_date] += 1
-    
-    # Generate weeks data
-    weeks = []
-    current_date = start_date
-    
-    # Start from Monday of the first week
-    while current_date.weekday() != 0:
-        current_date -= timedelta(days=1)
-    
-    week_dates = []
-    while current_date <= end_date + timedelta(days=6):  # Add extra days to complete last week
-        week = []
-        for day in range(7):
-            date = current_date + timedelta(days=day)
-            count = activity_counts.get(date, 0)
-            
-            # Determine activity level (0-4)
-            if count == 0:
-                level = 0
-            elif count <= 2:
-                level = 1
-            elif count <= 5:
-                level = 2
-            elif count <= 10:
-                level = 3
-            else:
-                level = 4
-            
-            week.append({
-                'date': date.isoformat(),
-                'count': count,
-                'level': level
-            })
-        
-        weeks.append(week)
-        week_dates.append(current_date)
-        current_date += timedelta(days=7)
-    
-    months = []
-    if week_dates:
-        first_week_start = week_dates[0]
-        total_weeks = len(week_dates)
-        
-        month_week_map = defaultdict(list)
-        for week_idx, week_start in enumerate(week_dates):
-            month_key = week_start.strftime('%Y-%m')
-            month_week_map[month_key].append(week_idx)
-        
-        for month_key in sorted(month_week_map.keys()):
-            week_indices = month_week_map[month_key]
-            month_date = datetime.strptime(month_key, '%Y-%m').date()
-            
-            months.append({
-                'name': month_date.strftime('%b'),
-                'span': len(week_indices)
-            })
-    
-    # Calculate streaks
-    current_streak = 0
-    longest_streak = 0
-    temp_streak = 0
-
-    end_date = datetime.now().date()
-    start_date = end_date - timedelta(days=364)
-
-    today_count = activity_counts.get(end_date, 0)
-    if today_count > 0:
-        check_date = end_date
-    else:
-        check_date = end_date - timedelta(days=1)
-
-    while check_date >= start_date and activity_counts.get(check_date, 0) > 0:
-        current_streak += 1
-        check_date -= timedelta(days=1)
-
-    sorted_dates = sorted(activity_counts.keys())
-    for i, date in enumerate(sorted_dates):
-        if activity_counts[date] > 0:
-            temp_streak += 1
-            longest_streak = max(longest_streak, temp_streak)
-        else:
-            temp_streak = 0
-
-    return {
-        'weeks': weeks,
-        'months': months,
-        'current_streak': current_streak,
-        'longest_streak': longest_streak
-    }
 
 @auth_required
 @app.route("/dashboard")
@@ -260,172 +160,6 @@ def dashboard():
     
     return render_template("dashboard.html", tests=tests, activity=activity, heatmap_data=heatmap_data, exams=exams)
 
-@auth_required
-@app.route("/daily-task", methods=["GET", "POST"])
-def daily_task():
-    if 'user' not in session:
-        return redirect(url_for("home"))
-    
-
-    if request.method == 'GET':
-        # Get parameters from query string
-        exam_id = request.args.get('exam')
-        subject_id = request.args.get('subject')
-        chapter_id = request.args.get('chapter')
-        question_count = int(request.args.get('count', 5))
-        time_limit = int(request.args.get('time', 30))
-        
-        # Generate questions but don't save as a test
-        ques = db.generate_test(
-            exam_id=exam_id,
-            subjects={subject_id: [chapter_id] if chapter_id else ['all']},
-            num=question_count,
-            ratio=None
-        )
-        
-        # Get exam, subject and chapter names for display
-        exam_data = db.pyqs['exams'].get(exam_id)
-        subject_data = db.get_subject(subject_id)
-        
-        # Prepare test data structure for the template
-        all_question_ids = [qid for subj_questions in ques.values() for qid in subj_questions]
-        
-        # Get full question data
-        question_data = {}
-        for qid in all_question_ids:
-            q = db.get_questions_by_ids([qid], full_data=True) 
-            if q:
-                question_data[qid] = q
-        
-        test_data = {
-            '_id': 'daily-' + datetime.now().strftime('%Y%m%d'),
-            'title': f"Daily Task - {subject_data.get('name', 'Subject')}",
-            'duration': time_limit,
-            'questions': ques,
-            'question_data': question_data,
-            'total_questions': len(all_question_ids)
-        }
-
-        session['daily_test'] = test_data
-        
-        # Add activity for starting daily task
-        # db.add_activity(session['user']['id'], "daily_task_started", {
-        #     "exam": exam_data.get('name', exam_id),
-        #     "subject": subject_data.get('name', subject_id),
-        #     "count": question_count
-        # })
-        
-        # Calculate current streak
-        activities = db.get_activities(session['user']['id'])
-        heatmap_data = generate_heatmap_data(activities)
-        streak_count = heatmap_data['current_streak']
-        
-        return render_template('daily_task.html', 
-                            test=test_data, 
-                            streak_count=streak_count,
-                            exam=exam_data,
-                            subject=subject_data)
-
-    if 'user' not in session or 'daily_test' not in session:
-        return jsonify({'error': 'No active daily task found'}), 400
-    
-    # Get the daily test data from session
-    daily_test = session['daily_test']
-    
-    # Get the submitted answers
-    data = request.json
-    if not data or 'answers' not in data:
-        return jsonify({'error': 'Missing answer data'}), 400
-    
-    submitted_answers = data['answers']
-    time_spent = data.get('time_spent', 0)
-    
-    # Process each answer
-    correct_count = 0
-    total_questions = 0
-    
-    # Get flat list of all question IDs
-    all_question_ids = [qid for subj_questions in daily_test['questions'].values() 
-                        for qid in subj_questions]
-    
-    for question_id in all_question_ids:
-        total_questions += 1
-        
-        # Get question data
-        question_data = daily_test['question_data'].get(question_id, [])
-        if not question_data:
-            continue
-            
-        # Get the first question (your data structure)
-        question = question_data[0] if question_data else None
-        if not question:
-            continue
-        
-        # Check if this question was answered
-        user_answer = submitted_answers.get(question_id)
-        if user_answer is None:
-            continue
-            
-        # Check if answer is correct
-        is_correct = False
-        
-        if question['type'] == 'singleCorrect' or question['type'] == 'mcq':
-            correct_option = question['correct_option'][0] if question.get('correct_option') else None
-            is_correct = user_answer == correct_option
-        elif question['type'] == 'numerical':
-            correct_value = question.get('correct_value')
-            # Allow small margin of error for numerical
-            is_correct = abs(float(user_answer) - float(correct_value)) < 0.01 if correct_value is not None else False
-        
-        # Record activity for this question attempt
-        activity_type = "daily_correct_answer" if is_correct else "daily_incorrect_answer"
-        
-        # Add details to the activity
-        details = {
-            "question_id": question_id,
-            "user_answer": user_answer,
-            "is_correct": is_correct,
-            "exam": daily_test.get('exam'),
-            "subject": question.get('subject')
-        }
-        
-        # If the question has chapter info, include it
-        if question.get('chapter'):
-            details["chapter"] = question['chapter']
-            
-        db.add_activity(session['user']['id'], activity_type, details)
-        
-        if is_correct:
-            correct_count += 1
-    
-    # Calculate score
-    score_percent = (correct_count / total_questions * 100) if total_questions > 0 else 0
-    score_percent = round(score_percent, 1)
-    
-    # Record daily task completion
-    db.add_activity(session['user']['id'], "daily_task_completed", {
-        "correct_count": correct_count,
-        "total_questions": total_questions,
-        "score": score_percent,
-        "time_spent": time_spent,
-        "title": daily_test.get('title', 'Daily Task')
-    })
-    
-    # Clean up the session
-    session.pop('daily_test', None)
-    
-    # Get updated streak info
-    activities = db.get_activities(session['user']['id'])
-    heatmap_data = generate_heatmap_data(activities)
-    
-    return jsonify({
-        'success': True,
-        'score': score_percent,
-        'correct': correct_count,
-        'total': total_questions,
-        'current_streak': heatmap_data['current_streak'],
-        'longest_streak': heatmap_data['longest_streak']
-    })
 
 @app.context_processor
 def inject_user():

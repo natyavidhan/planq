@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Create URL with params
-        const url = `/daily-task?exam=${examId}&subject=${subjectId}${chapterId ? '&chapter=' + chapterId : ''}&count=${questionCount}&time=${timeLimit}`;
+        const url = `/daily-task/generate?exam=${examId}&subject=${subjectId}${chapterId ? '&chapter=' + chapterId : ''}&count=${questionCount}&time=${timeLimit}`;
 
         // Navigate to the daily task
         window.location.href = url;
