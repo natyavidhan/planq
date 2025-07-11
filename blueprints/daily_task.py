@@ -170,6 +170,11 @@ def daily_task():
             # Create a sanitized version of each question without answers
             sanitized_questions = []
             for question in q:
+                # print question and answer
+                if question.get('type') == 'singleCorrect':
+                    print(f"Answer: {question.get('correct_option', 'N/A')}")
+                else:
+                    print(f"Answer: {question.get('correct_value', 'N/A')}")
                 sanitized_question = {
                     '_id': question['_id'],
                     'question': question['question'],

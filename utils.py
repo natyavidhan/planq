@@ -49,7 +49,7 @@ def generate_heatmap_data(activities):
                 activity_counts[activity_date] += 1
                 
                 # Add to daily task dates if it's a completed daily task
-                if activity.get('type') == 'daily_task_completed':
+                if activity.get('action') == 'daily_task_completed':
                     daily_task_dates.add(activity_date)
     
     # Generate weeks data

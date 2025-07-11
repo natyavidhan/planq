@@ -84,7 +84,7 @@ def daily_task_status():
                 activity_date = activity['timestamp']
                 
             # If this is a daily task completion from today
-            if activity_date == today_date and activity.get('type') == 'daily_task_completed':
+            if activity_date == today_date and activity.get('action') == 'daily_task_completed':
                 completed_today = True
                 break
         except (ValueError, AttributeError):

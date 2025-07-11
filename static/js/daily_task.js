@@ -408,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Calculate health damage based on difficulty
     function calculateHealthDamage(difficulty) {
         const totalQuestions = questionsOrder.length;
-        const difficultyMultiplier = difficulty === 1 ? 1 : (difficulty === 2 ? 1.5 : 2);
+        const difficultyMultiplier = difficulty === 1 ? 1.2 : (difficulty === 2 ? 1 : 0.8);
         
         // damage = 100 / sqrt(n) * difficulty_multiplier
         return (100 / Math.sqrt(totalQuestions)) * difficultyMultiplier;
