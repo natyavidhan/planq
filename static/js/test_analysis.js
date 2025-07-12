@@ -419,10 +419,19 @@ function generateQuestionAnalysis(attempt) {
             difficultyClass = 'difficulty-hard';
             difficultyText = 'HARD';
         }
+
+        // console.log(question)
+
+        const optionMapping = ['A', 'B', 'C', 'D'];
         
         // Format your answer and correct answer
-        const userAnswer = feedback.user_answer;
-        const correctAnswer = feedback.correct_answer;
+        let userAnswer = feedback.user_answer;
+        let correctAnswer = feedback.correct_answer;
+
+        if (question.type == 'singleCorrect') {
+            userAnswer = optionMapping[userAnswer];
+            correctAnswer = optionMapping[correctAnswer];
+        }
         
         // Format marks (positive or negative)
         const marks = feedback.marks;
@@ -464,7 +473,6 @@ function generateQuestionAnalysis(attempt) {
             <td><span class="${q.difficultyClass}">${q.difficultyText}</span></td>
             <td>${q.userAnswer}</td>
             <td>${q.correctAnswer}</td>
-            <td class="${q.marksClass}">${q.marks >= 0 ? '+' + q.marks : q.marks}</td>
             <td>${q.time}</td>
             <td class="${q.resultClass}">${q.resultIcon}</td>
         `;
