@@ -124,7 +124,7 @@ class Database:
             q['exam_name'] = self.get_exam(q['exam']).get('name')
             q['subject_name'] = self.get_subject(q['subject']).get('name')
             q['chapter_name'] = self.get_chapter(q['chapter']).get('name')
-            q['paper_name'] = self.get_paper(q['paper_id']).get('name')
+            q['paper_name'] = self.pyqs['papers'].get(q.get('paper_id'), {}).get('name', 'Unknown Paper')
 
         return questions
     

@@ -149,7 +149,7 @@ def process_question_attempt(data, user_id):
 
     test_data = session.get('daily_test', {})
     if not is_correct:
-        _, health_remaining = apply_health_damage(test_data, question.get('level', 2))
+        damage_done, health_remaining = apply_health_damage(test_data, question.get('level', 2))
     else:
         health_remaining = test_data.get('health', 100)
     
@@ -163,6 +163,7 @@ def process_question_attempt(data, user_id):
         'success': True,
         'is_correct': is_correct,
         'question_id': question_id,
+        'damage_done': damage_done if not is_correct else 0,
         'health_remaining': health_remaining,
         'time_taken': time_taken,
     })
@@ -192,6 +193,10 @@ def render_daily_task_page():
     test_data = session.get('daily_test')
     if not test_data:
         return redirect(url_for('dashboard'))  # Redirect if no active daily test
+    
+    if test_data['health'] <= 0:
+        flash("Your health is too low to continue the daily task. Please restart the test.")
+        return redirect(url_for('dashboard'))
 
     # Fetch exam and subject metadata
     exam_data = db.get_exam(test_data['exam'])
@@ -200,6 +205,13 @@ def render_daily_task_page():
     # Fetch all questions in bulk and sanitize
     all_question_ids = [qid for subj_questions in test_data['questions'].values() for qid in subj_questions]
     question_docs = db.get_questions_by_ids(all_question_ids, full_data=True)
+
+    # print solution for debugging
+    for q in question_docs:
+        if q['type'] == 'numerical':
+            print(q['correct_value'])
+        else:
+            print(q['correct_option'])
 
     # Sanitize question data to exclude answers
     sanitized_question_data = {}

@@ -22,14 +22,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Process test data
     function initializeTest() {
         let questionNumber = 1;
+
+        console.log("Initializing test with data:", testData);
         
         for (const subject in testData.questions) {
             currentSubjectId = subject;
+
+            console.log(`Processing subject: ${subject}`);
             
             for (const questionId of testData.questions[subject]) {
                 // Get question data from the test data
                 const questionData = testData.question_data[questionId];
-                const question = questionData && questionData.length > 0 ? questionData[0] : null;
+                const question = questionData;
+
+                console.log(`Processing question ID: ${question}`);
                 
                 if (question) {
                     // Process question data
@@ -306,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Update feedback area for a question
-    function updateFeedbackArea(questionId) {
+    function updateFeedbackArea(questionId, damageDone = 0) {
         const question = questionsById[questionId];
         const feedbackArea = document.getElementById('answer-feedback');
         
@@ -317,9 +323,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 feedbackArea.className = 'answer-feedback correct';
                 feedbackArea.innerHTML = `<i class="fas fa-check-circle"></i> <span>Correct answer!</span>`;
             } else {
-                const healthLost = calculateHealthDamage(question.difficulty);
                 feedbackArea.className = 'answer-feedback incorrect';
-                feedbackArea.innerHTML = `<i class="fas fa-times-circle"></i> <span>Incorrect. Health -${healthLost.toFixed(1)}%</span>`;
+                feedbackArea.innerHTML = `<i class="fas fa-times-circle"></i> <span>Incorrect. Health -${damageDone}%</span>`;
             }
         } else {
             feedbackArea.style.display = 'none';
@@ -352,6 +357,57 @@ document.addEventListener('DOMContentLoaded', function() {
         submitAnswer(questionId, answer, totalTimeSpent);
     }
     
+    // Update the submitAnswer function to use server-provided health and damage values
+    function submitAnswer(questionId, answer, timeTaken) {
+        // AJAX request to submit the answer and get validation
+        fetch('/daily-task', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                question_id: questionId,
+                user_answer: answer,
+                time_taken: timeTaken
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error('Error:', data.error);
+                return;
+            }
+            
+            // Now update the UI based on server's validation
+            const question = questionsById[questionId];
+            const isCorrect = data.is_correct;
+            
+            // Update question status
+            question.correct = isCorrect;
+            questionStatus[questionId] = isCorrect ? 'correct' : 'incorrect';
+            
+            // Use health value from server instead of calculating locally
+            health = data.health_remaining;
+            
+            // Update the UI to show the result with server-provided values
+            updateUI();
+            updateFeedbackArea(questionId, data.damage_done || 0);
+            
+            // Auto advance to next question if this is the last attempt or answer is correct
+            if (isCorrect || questionAttempts[questionId] >= 2) {
+                setTimeout(() => {
+                    if (currentQuestionIndex < questionsOrder.length - 1) {
+                        currentQuestionIndex++;
+                        updateUI();
+                    }
+                }, 1500);
+            }
+        })
+        .catch(error => {
+            console.error('Error submitting answer:', error);
+        });
+    }
+    
     // Update submitAnswer to handle the validation response
     function submitAnswer(questionId, answer, timeTaken) {
         // AJAX request to submit the answer and get validation
@@ -381,14 +437,12 @@ document.addEventListener('DOMContentLoaded', function() {
             question.correct = isCorrect;
             questionStatus[questionId] = isCorrect ? 'correct' : 'incorrect';
             
-            // If incorrect and not in retry mode, reduce health
-            if (!isCorrect && !isRetryMode) {
-                const healthDamage = calculateHealthDamage(question.difficulty);
-                health = Math.max(0, health - healthDamage);
-            }
+            // Use health value from server instead of calculating locally
+            health = data.health_remaining;
             
-            // Update the UI to show the result
+            // Update the UI to show the result with server-provided values
             updateUI();
+            updateFeedbackArea(questionId, data.damage_done || 0);
             
             // Auto advance to next question if this is the last attempt or answer is correct
             if (isCorrect || questionAttempts[questionId] >= 2) {
