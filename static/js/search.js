@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Build API URL with filters
         const query = searchQuery.value.trim();
 
-        let apiUrl = `/search/api?page=${currentPage}&limit=10`;
+        let apiUrl = `/api/search?page=${currentPage}&limit=10`;
 
         if (query) {
             apiUrl += `&query=${encodeURIComponent(query)}`;

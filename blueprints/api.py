@@ -168,3 +168,15 @@ def search_api():
     except Exception as e:
         print(f"API Search Error: {str(e)}")
         return jsonify({"error": "Failed to fetch search results", "details": str(e)}), 500
+    
+
+@api_bp.route('/activities')
+@auth_required
+def get_activities():
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+    
+    paginated_activities = db.get_paginated_activities(session['user']['id'], page, per_page)
+    print(paginated_activities)
+    
+    return jsonify(paginated_activities)

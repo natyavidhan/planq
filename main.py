@@ -151,12 +151,28 @@ def dashboard():
         flash("User not found.")
         return redirect(url_for("home"))
     
-    tests = db.get_tests_by_user(session['user']['id'])
-    activity = db.get_activities(session['user']['id'])
-    heatmap_data = generate_heatmap_data(activity)
-    exams = db.get_exams()
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
     
-    return render_template("dashboard.html", tests=tests, activity=activity, heatmap_data=heatmap_data, exams=exams)
+    tests = db.get_tests_by_user(session['user']['id'])
+    
+    all_activities = db.get_activities(session['user']['id'])
+    heatmap_data = generate_heatmap_data(all_activities)
+    
+    paginated_activities = db.get_paginated_activities(session['user']['id'], page, per_page)
+    
+    exams = db.get_exams()
+
+    print(paginated_activities)
+    
+    return render_template("dashboard.html", 
+                          tests=tests, 
+                          activity=all_activities[:6],
+                          paginated_activity=paginated_activities,
+                          heatmap_data=heatmap_data, 
+                          exams=exams,
+                          current_page=page,
+                          total_activities=len(all_activities))
 
 
 @app.context_processor

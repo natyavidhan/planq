@@ -365,4 +365,396 @@ document.addEventListener('DOMContentLoaded', function () {
         // Navigate to the daily task
         window.location.href = url;
     });
+
+    // Activity pagination
+    if (activityModal) {
+        activityModal.addEventListener('click', function(event) {
+            // Check if clicked element is a pagination button
+            const paginationBtn = event.target.closest('.pagination-btn:not(.disabled):not(.active)');
+            if (paginationBtn) {
+                // Prevent default and stop propagation
+                event.preventDefault();
+                event.stopPropagation();
+                
+                const page = paginationBtn.getAttribute('data-page');
+                if (page) {
+                    loadActivityPage(page);
+                }
+            }
+        });
+    }
+    
+    // Fix for the loadActivityPage function to replace only the activity items
+    function loadActivityPage(page) {
+        // Show loading indicator only inside the activity list container
+        const activityListContainer = activityModal.querySelector('.activity-list-full');
+        
+        if (activityListContainer) {
+            // Only replace the activity list content, not the whole modal body
+            activityListContainer.innerHTML = '<div class="loading-spinner"><i class="fas fa-circle-notch fa-spin"></i> Loading activities...</div>';
+            
+            // Fetch the new page
+            fetch(`/api/activities?page=${page}&per_page=10`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update pagination info
+                    const paginationInfo = activityModal.querySelector('.pagination-info');
+                    if (paginationInfo) {
+                        paginationInfo.textContent = `Showing ${(data.page - 1) * data.per_page + 1} to ${Math.min(data.page * data.per_page, data.total)} of ${data.total} activities`;
+                    }
+                    
+                    // Update pagination buttons by completely replacing them
+                    updatePaginationButtons(data.page, data.total_pages);
+                    
+                    // Render only the activity items
+                    let activitiesHtml = '';
+                    data.activities.forEach(item => {
+                        activitiesHtml += renderActivityItem(item);
+                    });
+                    
+                    // Replace only the activity list content
+                    activityListContainer.innerHTML = activitiesHtml;
+                })
+                .catch(error => {
+                    console.error('Error loading activities:', error);
+                    activityListContainer.innerHTML = '<div class="error-message">Error loading activities. Please try again.</div>';
+                });
+        } else {
+            // Fall back to replacing the whole modal body
+            const modalBody = activityModal.querySelector('.modal-body');
+            modalBody.innerHTML = '<div class="loading-spinner"><i class="fas fa-circle-notch fa-spin"></i> Loading activities...</div>';
+            
+            fetch(`/api/activities?page=${page}&per_page=10`)
+                .then(response => response.json())
+                .then(data => {
+                    renderActivities(modalBody, data);
+                })
+                .catch(error => {
+                    console.error('Error loading activities:', error);
+                    modalBody.innerHTML = '<div class="error-message">Error loading activities. Please try again.</div>';
+                });
+        }
+    }
+    
+    // Replace the entire updatePaginationButtons function with this improved version
+    function updatePaginationButtons(currentPage, totalPages) {
+        const paginationControls = activityModal.querySelector('.pagination-controls');
+        if (!paginationControls) return;
+        
+        // Generate entirely new pagination HTML instead of trying to update existing buttons
+        let paginationHtml = '';
+        
+        // First and previous buttons
+        if (currentPage > 1) {
+            paginationHtml += `
+                <button class="pagination-btn" data-page="1">
+                    <i class="fas fa-angle-double-left"></i>
+                </button>
+                <button class="pagination-btn" data-page="${currentPage - 1}">
+                    <i class="fas fa-angle-left"></i>
+                </button>`;
+        } else {
+            paginationHtml += `
+                <button class="pagination-btn disabled">
+                    <i class="fas fa-angle-double-left"></i>
+                </button>
+                <button class="pagination-btn disabled">
+                    <i class="fas fa-angle-left"></i>
+                </button>`;
+        }
+        
+        // Page numbers with ellipses
+        const pagesAroundCurrent = 2; // Show 2 pages before and after current
+        let startPage = Math.max(currentPage - pagesAroundCurrent, 1);
+        let endPage = Math.min(currentPage + pagesAroundCurrent, totalPages);
+        
+        // Always show first page
+        if (startPage > 1) {
+            paginationHtml += `<button class="pagination-btn" data-page="1">1</button>`;
+            
+            // Add ellipsis if there's a gap
+            if (startPage > 2) {
+                paginationHtml += `<span class="pagination-ellipsis">...</span>`;
+            }
+        }
+        
+        // Pages around current
+        for (let i = startPage; i <= endPage; i++) {
+            paginationHtml += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+        }
+        
+        // Always show last page
+        if (endPage < totalPages) {
+            // Add ellipsis if there's a gap
+            if (endPage < totalPages - 1) {
+                paginationHtml += `<span class="pagination-ellipsis">...</span>`;
+            }
+            paginationHtml += `<button class="pagination-btn" data-page="${totalPages}">${totalPages}</button>`;
+        }
+        
+        // Next and last buttons
+        if (currentPage < totalPages) {
+            paginationHtml += `
+                <button class="pagination-btn" data-page="${currentPage + 1}">
+                    <i class="fas fa-angle-right"></i>
+                </button>
+                <button class="pagination-btn" data-page="${totalPages}">
+                    <i class="fas fa-angle-double-right"></i>
+                </button>`;
+        } else {
+            paginationHtml += `
+                <button class="pagination-btn disabled">
+                    <i class="fas fa-angle-right"></i>
+                </button>
+                <button class="pagination-btn disabled">
+                    <i class="fas fa-angle-double-right"></i>
+                </button>`;
+        }
+        
+        // Replace the entire pagination controls content
+        paginationControls.innerHTML = paginationHtml;
+    }
+    
+    function renderActivities(container, data) {
+        // Create a new container for activities
+        let html = '';
+        
+        if (data.activities && data.activities.length > 0) {
+            html += '<div class="activity-list-full">';
+            
+            data.activities.forEach(item => {
+                html += renderActivityItem(item);
+            });
+            
+            html += '</div>';
+            
+            // Add pagination controls
+            html += `
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        Showing ${(data.page - 1) * data.per_page + 1} 
+                        to ${Math.min(data.page * data.per_page, data.total)} 
+                        of ${data.total} activities
+                    </div>
+                    <div class="pagination-controls">
+                        ${data.page > 1 ? 
+                            `<button class="pagination-btn" data-page="1">
+                                <i class="fas fa-angle-double-left"></i>
+                            </button>
+                            <button class="pagination-btn" data-page="${data.page - 1}">
+                                <i class="fas fa-angle-left"></i>
+                            </button>` : 
+                            `<button class="pagination-btn disabled">
+                                <i class="fas fa-angle-double-left"></i>
+                            </button>
+                            <button class="pagination-btn disabled">
+                                <i class="fas fa-angle-left"></i>
+                            </button>`
+                        }
+                        
+                        ${renderPaginationNumbers(data.page, data.total_pages)}
+                        
+                        ${data.page < data.total_pages ? 
+                            `<button class="pagination-btn" data-page="${data.page + 1}">
+                                <i class="fas fa-angle-right"></i>
+                            </button>
+                            <button class="pagination-btn" data-page="${data.total_pages}">
+                                <i class="fas fa-angle-double-right"></i>
+                            </button>` : 
+                            `<button class="pagination-btn disabled">
+                                <i class="fas fa-angle-right"></i>
+                            </button>
+                            <button class="pagination-btn disabled">
+                                <i class="fas fa-angle-double-right"></i>
+                            </button>`
+                        }
+                    </div>
+                </div>`;
+        } else {
+            html = '<div class="empty-state"><p>No activity to show.</p></div>';
+        }
+        
+        container.innerHTML = html;
+    }
+    
+    // Update the renderPaginationNumbers function to include ellipsis and always show last page
+    function renderPaginationNumbers(currentPage, totalPages) {
+        let html = '';
+        
+        // Always show first page, last page, current page, and pages around current
+        const showFirstPage = true;
+        const showLastPage = true;
+        const pagesAroundCurrent = 2; // Show 2 pages before and after current
+        
+        // Calculate the range of pages to show
+        let startPage = Math.max(currentPage - pagesAroundCurrent, 1);
+        let endPage = Math.min(currentPage + pagesAroundCurrent, totalPages);
+        
+        // Always show page 1
+        if (showFirstPage && startPage > 1) {
+            html += `<button class="pagination-btn" data-page="1">1</button>`;
+            
+            // Add ellipsis if there's a gap
+            if (startPage > 2) {
+                html += `<span class="pagination-ellipsis">...</span>`;
+            }
+        }
+        
+        // Show pages around current page
+        for (let i = startPage; i <= endPage; i++) {
+            html += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" 
+                     data-page="${i}">${i}</button>`;
+        }
+        
+        // Always show last page
+        if (showLastPage && endPage < totalPages) {
+            // Add ellipsis if there's a gap
+            if (endPage < totalPages - 1) {
+                html += `<span class="pagination-ellipsis">...</span>`;
+            }
+            
+            html += `<button class="pagination-btn" data-page="${totalPages}">${totalPages}</button>`;
+        }
+        
+        return html;
+    }
+    
+    function renderActivityItem(item) {
+        let iconHtml = '';
+        let contentHtml = '';
+        
+        // Generate icon HTML
+        switch(item.action) {
+            case 'test_created':
+                iconHtml = '<div class="activity-icon"><i class="fas fa-plus-circle"></i></div>';
+                break;
+            case 'test_completed':
+                iconHtml = '<div class="activity-icon"><i class="fas fa-check-circle"></i></div>';
+                break;
+            case 'test_started':
+                iconHtml = '<div class="activity-icon"><i class="fas fa-play-circle"></i></div>';
+                break;
+            case 'attempt_question':
+                if (item.details.is_correct) {
+                    iconHtml = '<div class="activity-icon correct"><i class="fas fa-check"></i></div>';
+                } else {
+                    iconHtml = '<div class="activity-icon incorrect"><i class="fas fa-times"></i></div>';
+                }
+                break;
+            case 'daily_task_completed':
+                if (item.details.is_success) {
+                    iconHtml = '<div class="activity-icon correct"><i class="fas fa-fire"></i></div>';
+                } else {
+                    iconHtml = '<div class="activity-icon incorrect"><i class="fas fa-heart-broken"></i></div>';
+                }
+                break;
+            case 'daily_task_started':
+                iconHtml = '<div class="activity-icon"><i class="fas fa-play"></i></div>';
+                break;
+            default:
+                iconHtml = '<div class="activity-icon"><i class="fas fa-bell"></i></div>';
+        }
+        
+        // Generate content HTML based on action type
+        switch(item.action) {
+            case 'test_created':
+                contentHtml = `<div class="activity-header">Created a new test:&nbsp; <strong>${item.details.title}</strong></div>`;
+                break;
+            case 'test_completed':
+                contentHtml = `
+                    <div class="activity-header">
+                        Completed test:&nbsp; <strong>${item.details.title}</strong>
+                        <div class="activity-score">${item.details.score}</div>
+                    </div>`;
+                break;
+            case 'test_started':
+                contentHtml = `<div class="activity-header">Started test:&nbsp; <strong>${item.details.title}</strong></div>`;
+                break;
+            case 'attempt_question':
+                contentHtml = `
+                    <div class="activity-header">
+                        Attempted a question 
+                        <div class="${item.details.is_correct ? 'answer-correct' : 'answer-incorrect'}">
+                            <i class="fas fa-${item.details.is_correct ? 'check' : 'times'}-circle"></i> 
+                            ${item.details.is_correct ? 'Correct' : 'Incorrect'}
+                        </div>
+                    </div>`;
+                break;
+            case 'daily_task_completed':
+                contentHtml = `
+                    <div class="activity-header">
+                        <div class="activity-header-content">
+                            <span>Completed daily task</span>
+                            <div class="daily-task-stats">
+                                <div class="daily-task-badge ${item.details.is_success ? 'success' : 'failed'}">
+                                    <i class="fas fa-${item.details.is_success ? 'fire' : 'heart-broken'}"></i> 
+                                    ${item.details.is_success ? 'Streak Extended' : 'Streak Broken'}
+                                </div>
+                                
+                                <div class="health-badge ${
+                                    item.details.health_remaining > 70 ? 'high' : 
+                                    item.details.health_remaining > 30 ? 'medium' : 'low'
+                                }">
+                                    <i class="fas fa-heart"></i> ${Math.round(item.details.health_remaining)}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                break;
+            case 'daily_task_started':
+                contentHtml = `
+                    <div class="activity-header">
+                        <div class="activity-header-content">
+                            <span>Started daily task: <strong>${item.details.exam} - ${item.details.subject}</strong></span>
+                            <div class="daily-task-info">
+                                <span class="task-badge">
+                                    <i class="fas fa-list-ol"></i> ${item.details.count} questions
+                                </span>
+                            </div>
+                        </div>
+                    </div>`;
+                break;
+            default:
+                contentHtml = `<div class="activity-header">${item.action}</div>`;
+        }
+        
+        // Format timestamp
+        let formattedDate = 'Unknown date';
+        
+        // Handle the MongoDB timestamp format correctly
+        if (item.timestamp) {
+            // Check if it's a string or number
+            let timestamp;
+            if (typeof item.timestamp === 'string') {
+                timestamp = new Date(item.timestamp);
+            } else if (typeof item.timestamp === 'number') {
+                timestamp = new Date(item.timestamp);
+            }
+            
+            // Only format if it's a valid date
+            if (!isNaN(timestamp.getTime())) {
+                formattedDate = timestamp.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                }) + ' at ' + timestamp.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            }
+        }
+        
+        return `
+            <div class="activity-item">
+                ${iconHtml}
+                <div class="activity-content">
+                    ${contentHtml}
+                    <div class="activity-time">
+                        <i class="far fa-clock"></i> ${formattedDate}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
 });

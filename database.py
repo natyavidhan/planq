@@ -271,6 +271,37 @@ class Database:
             return sorted(activities, key=lambda x: x.get('timestamp'), reverse=True)
         return []
     
+    def get_paginated_activities(self, user_id, page=1, per_page=10):
+        user = self.users['activities'].find_one({"_id": user_id})
+        if not user:
+            return {"activities": [], "page": 1, "total_pages": 0, "total": 0}
+        
+        activities = user.get('activities', [])
+        # Sort by timestamp descending
+        sorted_activities = sorted(activities, key=lambda x: x.get('timestamp'), reverse=True)
+
+        # print(sorted_activities)
+        
+        # Calculate pagination metrics
+        total = len(sorted_activities)
+        total_pages = (total + per_page - 1) // per_page  # Ceiling division
+        
+        # Ensure page is within valid range
+        page = max(1, min(page, total_pages)) if total_pages > 0 else 1
+        
+        # Extract requested page of activities
+        start_idx = (page - 1) * per_page
+        end_idx = start_idx + per_page
+        page_activities = sorted_activities[start_idx:end_idx]
+        
+        return {
+            "activities": page_activities,
+            "page": page,
+            "per_page": per_page,
+            "total_pages": total_pages,
+            "total": total
+        }
+    
     def get_tests_by_user(self, user_id):
         tests = list(self.tests['tests'].find(
             {"created_by": user_id},
@@ -583,31 +614,3 @@ class Database:
             return {}
         
         return data['bookmarks']
-
-
-
-    def record_daily_question_attempt(self, user_id, question_id, is_correct):
-        activity_type = "daily_correct_answer" if is_correct else "daily_incorrect_answer"
-        question = self.get_questions_by_ids([question_id], full_data=True)
-        
-        details = {
-            "question_id": question_id,
-            "is_correct": is_correct
-        }
-        
-        # Add subject and chapter info if available
-        if question:
-            if 'subject' in question:
-                subject = self.get_subject(question['subject'])
-                if subject:
-                    details["subject"] = subject.get('name')
-            
-            if 'chapter' in question:
-                chapter = self.get_chapter(question['chapter'])
-                if chapter:
-                    details["chapter"] = chapter.get('name')
-        
-        self.add_activity(user_id, activity_type, details)
-        
-        # Return True if we've added an activity that extends the streak
-        return True
