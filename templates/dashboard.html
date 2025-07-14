@@ -297,6 +297,14 @@
                                     <i class="fas fa-times"></i>
                                     {% endif %}
                                 </div>
+                            {% elif item.action == "daily_task_completed" %}
+                                <div class="activity-icon {% if item.details.is_success %}correct{% else %}incorrect{% endif %}">
+                                    {% if item.details.is_success %}
+                                    <i class="fas fa-fire"></i>
+                                    {% else %}
+                                    <i class="fas fa-heart-broken"></i>
+                                    {% endif %}
+                                </div>
                             {% else %}
                                 <div class="activity-icon"><i class="fas fa-bell"></i></div>
                             {% endif %}
