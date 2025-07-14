@@ -62,12 +62,12 @@ def generate_task():
         exam_id = request.args.get('exam')
         subject_id = request.args.get('subject')
         chapter_id = request.args.get('chapter')
-        question_count = int(request.args.get('count', 5))
+        question_count = int(request.args.get('count', 10))
         time_limit = int(request.args.get('time', 30))
         
         ques = db.generate_test(
             exam_id=exam_id,
-            subjects={subject_id: [chapter_id] if chapter_id else ['all']},
+            subjects={subject_id: [chapter_id]},
             num=question_count,
             ratio=None
         )
@@ -76,6 +76,7 @@ def generate_task():
         chapter_data = db.get_chapter(chapter_id)
         
         all_question_ids = [qid for subj_questions in ques.values() for qid in subj_questions]
+        print(all_question_ids)
         
         test_data = {
             '_id': 'daily-' + datetime.now().strftime('%Y%m%d'),
@@ -88,7 +89,7 @@ def generate_task():
         }
 
         
-        exam_data = db.pyqs['exams'].get(exam_id, {})
+        exam_data = db.get_exam(exam_id)
 
         # Add activity for starting daily task
         db.add_activity(session['user']['id'], "daily_task_started", {
@@ -133,8 +134,8 @@ def process_question_attempt(data, user_id):
     question_id = data.get('question_id')
     user_answer = data.get('user_answer')
     time_taken = data.get('time_taken', 0)
-    
-    question = db.pyqs['questions'].get(question_id)
+
+    question = db.get_question(question_id)
     if not question:
         return jsonify({'error': 'Question not found'}), 404
 
@@ -187,36 +188,44 @@ def process_task_completion(data, user_id):
 
 
 def render_daily_task_page():
+    # GET request handling
     test_data = session.get('daily_test')
     if not test_data:
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('dashboard'))  # Redirect if no active daily test
 
-    exam_data = db.pyqs['exams'].get(test_data['exam'], {})
+    # Fetch exam and subject metadata
+    exam_data = db.get_exam(test_data['exam'])
     subject_data = db.get_subject(test_data['subject'])
-    
-    # Use cached sanitized questions if available
-    sanitized_questions = test_data.get('sanitized_questions')
-    if not sanitized_questions:
-        all_qids = [qid for qlist in test_data['questions'].values() for qid in qlist]
-        all_questions = db.get_questions_by_ids(all_qids, full_data=True)
-        sanitized_questions = {
-            q['_id']: {
-                '_id': q['_id'],
-                'question': q['question'],
-                'type': q.get('type', 'singleCorrect'),
-                'options': q.get('options', []),
-                'subject': q.get('subject'),
-                'level': q.get('level', 2)
-            } for q in all_questions
-        }
-        test_data['sanitized_questions'] = sanitized_questions
-        session['daily_test'] = test_data
 
+    # Fetch all questions in bulk and sanitize
+    all_question_ids = [qid for subj_questions in test_data['questions'].values() for qid in subj_questions]
+    question_docs = db.get_questions_by_ids(all_question_ids, full_data=True)
+
+    # Sanitize question data to exclude answers
+    sanitized_question_data = {}
+    for q in question_docs:
+        sanitized_question_data[q['_id']] = {
+            '_id': q['_id'],
+            'question': q['question'],
+            'type': q.get('type', 'singleCorrect'),
+            'options': q.get('options', []),
+            'subject': q.get('subject'),
+            'level': q.get('level', 2)
+        }
+
+    # Replace raw IDs in session with sanitized details for frontend
+    test_data['question_data'] = sanitized_question_data
+
+    # Fetch user activities for streak display
     activities = db.get_activities(session['user']['id'])
     heatmap_data = generate_heatmap_data(activities)
+    streak_count = heatmap_data['current_streak']
 
-    return render_template('daily_task.html',
-                           test=test_data,
-                           streak_count=heatmap_data['current_streak'],
-                           exam=exam_data,
-                           subject=subject_data)
+    # Render the daily task template
+    return render_template(
+        'daily_task.html',
+        test=test_data,
+        streak_count=streak_count,
+        exam=exam_data,
+        subject=subject_data
+    )

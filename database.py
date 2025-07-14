@@ -42,6 +42,10 @@ class Database:
             "papers":    load_json_file("data/pyqs.papers.json"),
         }
 
+    """
+    User management methods
+    """
+
     def get_user(self, key, value):
         return self.users['users'].find_one({key: value})
     
@@ -64,17 +68,83 @@ class Database:
     def delete_user(self, _id):
         self.users['users'].delete_one({"_id": _id})
 
+    """
+    PYQ Management methods
+    """
+
     def get_exams(self):
         return list(self.pyqs['exams'].values())
 
-    def get_subjects_by_exam(self, exam_id, full=False):
+    def get_subjects(self, exam_id, full=False):
         if full:
             return [i for i in self.pyqs['subjects'].values() if i['exam'] == exam_id]
         return [{'_id': i['_id'], 'name': i['name']} for i in self.pyqs['subjects'].values() if i['exam'] == exam_id]
 
-    def get_pyqs_by_exam(self, exam_id):
-        return [i for i in self.pyqs['papers'].values() if i['exam'] == exam_id]
+    def get_chapters(self, subject_id, full=False):
+        if full:
+            return [i for i in self.pyqs['chapters'].values() if i['subject'] == subject_id]
+        return [{'_id': i['_id'], 'name': i['name']} for i in self.pyqs['chapters'].values() if i['subject'] == subject_id]
 
+    def get_questions(self, chapter_id, full=False):
+        if full:
+            return [i for i in self.pyqs['questions'].values() if i['chapter'] == chapter_id]
+        return [
+            {
+                '_id': i['_id'], 
+                'question': i['question'],
+                'type': i.get('type', 'singleCorrect'),
+                'level': i.get('level', 'easy'),
+                'paper_id': i.get('paper_id'),
+            } for i in self.pyqs['questions'].values() if i['chapter'] == chapter_id]
+
+    def get_pyqs(self, exam_id):
+        return [i for i in self.pyqs['papers'].values() if i['exam'] == exam_id]
+    
+    def get_exam(self, exam_id):
+        return self.pyqs['exams'].get(exam_id, None)
+
+    def get_subject(self, subject_id):
+        return self.pyqs['subjects'].get(subject_id, None)
+    
+    def get_chapter(self, chapter_id):
+        chapter = self.pyqs['chapters'].get(chapter_id, None)
+        questions = self.get_questions(chapter_id)
+        chapter['questions'] = questions
+        return chapter
+
+    def get_question(self, question_id):
+        return self.pyqs['questions'].get(question_id, None)
+
+    def get_questions_by_ids(self, question_ids, full_data=False):
+        questions = [self.get_question(qid) for qid in question_ids]
+        if not full_data:
+            return questions
+
+        for q in questions:
+            q['exam_name'] = self.get_exam(q['exam']).get('name')
+            q['subject_name'] = self.get_subject(q['subject']).get('name')
+            q['chapter_name'] = self.get_chapter(q['chapter']).get('name')
+            q['paper_name'] = self.get_paper(q['paper_id']).get('name')
+
+        return questions
+    
+    def get_pyq(self, paper_id):
+        paper = self.pyqs['papers'].get(paper_id, None)
+        questions = [
+            {
+                '_id': i['_id'], 
+                'question': i['question'],
+                'type': i.get('type', 'singleCorrect'),
+                'level': i.get('level', 'easy'),
+                'paper_id': i.get('paper_id'),
+            } for i in self.pyqs['questions'].values() if i['paper_id'] == paper_id
+        ]
+        paper['questions'] = questions
+        return paper
+
+    """
+    Test Generation and Management methods
+    """
 
     def generate_test(self, exam_id, subjects, num, ratio=None):
         test = {}
@@ -87,7 +157,7 @@ class Database:
         # Resolve 'all' chapters
         for subject_id, chapters in subjects.items():
             if chapters == ['all']:
-                subject = self.pyqs['subjects'].get(subject_id)
+                subject = self.get_subject(subject_id)
                 if subject and 'chapters' in subject:
                     subjects[subject_id] = [c[0] for c in subject['chapters']]  # use chapter IDs
 
@@ -124,7 +194,6 @@ class Database:
 
         return test
     
-
     def add_test(self, user_id, metadata, questions):
         test_id = str(uuid.uuid4())
 
@@ -266,23 +335,7 @@ class Database:
 
     def get_test(self, test_id):
         return self.tests['tests'].find_one({"_id": test_id})
-    
-    def get_subject(self, subject_id):
-        return self.pyqs['subjects'].get(subject_id, None)
-    
-    def get_questions_by_ids(self, question_ids, full_data=False):
-        questions = [self.pyqs['questions'][qid] for qid in question_ids if qid in self.pyqs['questions']]
-        if not full_data:
-            return questions
 
-        for q in questions:
-            q['exam_name'] = self.pyqs['exams'][q['exam']]['name']
-            q['subject_name'] = self.pyqs['subjects'][q['subject']]['name']
-            q['chapter_name'] = self.pyqs['chapters'][q['chapter']]['name']
-            q['paper_name'] = self.pyqs['papers'][q['paper_id']]['name']
-
-        return questions
-    
     def get_test_optimized(self, test_id):
         test = self.tests['tests'].find_one({"_id": test_id})
         if not test:
@@ -297,7 +350,7 @@ class Database:
 
         if test.get('mode') == 'generate':
             for subject_id, question_ids in test.get('questions', {}).items():
-                subject = self.pyqs['subjects'].get(subject_id)
+                subject = self.get_subject(subject_id)
                 if not subject:
                     continue
                 
@@ -310,7 +363,7 @@ class Database:
                         'subject': q['subject']
                     }
                     for qid in question_ids
-                    if (q := self.pyqs['questions'].get(qid))
+                    if (q := self.get_question(qid))
                 ]
 
                 test_data['subjects'].append({
@@ -320,13 +373,13 @@ class Database:
                 })
 
         elif test.get('mode') == 'previous':
-            paper = self.pyqs['papers'].get(test.get('paper_id'))
+            paper = self.get_pyq(test.get('paper_id'))
             if not paper:
                 return test_data
             
             subject_questions = {}
             for qid in paper.get('questions', []):
-                question = self.pyqs['questions'].get(qid)
+                question = self.get_question(qid)
                 if not question:
                     continue
                 sid = question.get('subject')
@@ -341,7 +394,7 @@ class Database:
                 })
 
             for subject_id, questions in subject_questions.items():
-                subject_name = self.pyqs['subjects'].get(subject_id, {}).get('name', 'Unknown')
+                subject_name = self.get_subject(subject_id).get('name', 'Unknown')
                 test_data['subjects'].append({
                     'id': subject_id,
                     'name': subject_name,
@@ -450,6 +503,8 @@ class Database:
             "feedback": feedback
         }
 
+
+
     def create_bookmark_bucket(self, user_id, bucket_name):
         """Create a new bookmark bucket for the user"""
         data = self.users['bookmarks'].find_one({"_id": user_id})
@@ -529,6 +584,8 @@ class Database:
         
         return data['bookmarks']
 
+
+
     def record_daily_question_attempt(self, user_id, question_id, is_correct):
         activity_type = "daily_correct_answer" if is_correct else "daily_incorrect_answer"
         question = self.get_questions_by_ids([question_id], full_data=True)
@@ -546,7 +603,7 @@ class Database:
                     details["subject"] = subject.get('name')
             
             if 'chapter' in question:
-                chapter = self.pyqs['chapters'].get(question['chapter'])
+                chapter = self.get_chapter(question['chapter'])
                 if chapter:
                     details["chapter"] = chapter.get('name')
         

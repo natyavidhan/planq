@@ -154,8 +154,6 @@ def dashboard():
     tests = db.get_tests_by_user(session['user']['id'])
     activity = db.get_activities(session['user']['id'])
     heatmap_data = generate_heatmap_data(activity)
-    
-    # Get all exams for the extend streak modal
     exams = db.get_exams()
     
     return render_template("dashboard.html", tests=tests, activity=activity, heatmap_data=heatmap_data, exams=exams)
