@@ -177,6 +177,5 @@ def get_activities():
     per_page = request.args.get('per_page', 10, type=int)
     
     paginated_activities = db.get_paginated_activities(session['user']['id'], page, per_page)
-    print(paginated_activities)
     
     return jsonify(paginated_activities)

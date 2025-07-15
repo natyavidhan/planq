@@ -8,8 +8,6 @@ import os
 import uuid
 from datetime import datetime
 
-with open('conf.json', 'r') as f:
-    CONFIG = json.load(f)
 
 
 @lru_cache(maxsize=None)
@@ -41,6 +39,12 @@ class Database:
             "exams":     load_json_file("data/pyqs.exams.json"),
             "papers":    load_json_file("data/pyqs.papers.json"),
         }
+        
+        with open('data/conf.json', 'r') as f:
+            self.config = json.load(f)
+
+        with open('data/achievements.json', 'r') as f:
+            self.achievements = {item['_id']: item for item in json.load(f)}
 
     """
     User management methods
@@ -251,57 +255,7 @@ class Database:
         })
 
         return test_id
-    
-    def add_activity(self, user_id, action, details):
-        activity_data = {
-            "action": action,
-            "details": details,
-            "timestamp": datetime.now()
-        }
-        self.users['activities'].update_one(
-            {"_id": user_id},
-            {"$push": {"activities": activity_data}},
-            upsert=True
-        )
-
-    def get_activities(self, user_id):
-        user = self.users['activities'].find_one({"_id": user_id})
-        if user:
-            activities = user.get('activities', [])
-            return sorted(activities, key=lambda x: x.get('timestamp'), reverse=True)
-        return []
-    
-    def get_paginated_activities(self, user_id, page=1, per_page=10):
-        user = self.users['activities'].find_one({"_id": user_id})
-        if not user:
-            return {"activities": [], "page": 1, "total_pages": 0, "total": 0}
-        
-        activities = user.get('activities', [])
-        # Sort by timestamp descending
-        sorted_activities = sorted(activities, key=lambda x: x.get('timestamp'), reverse=True)
-
-        # print(sorted_activities)
-        
-        # Calculate pagination metrics
-        total = len(sorted_activities)
-        total_pages = (total + per_page - 1) // per_page  # Ceiling division
-        
-        # Ensure page is within valid range
-        page = max(1, min(page, total_pages)) if total_pages > 0 else 1
-        
-        # Extract requested page of activities
-        start_idx = (page - 1) * per_page
-        end_idx = start_idx + per_page
-        page_activities = sorted_activities[start_idx:end_idx]
-        
-        return {
-            "activities": page_activities,
-            "page": page,
-            "per_page": per_page,
-            "total_pages": total_pages,
-            "total": total
-        }
-    
+  
     def get_tests_by_user(self, user_id):
         tests = list(self.tests['tests'].find(
             {"created_by": user_id},
@@ -342,7 +296,7 @@ class Database:
             # Get marking scheme
             exam_id = test['exam']
             if exam_id not in exam_config_cache:
-                exam_config_cache[exam_id] = CONFIG.get(exam_id, {})
+                exam_config_cache[exam_id] = self.config.get(exam_id, {})
             marking_scheme = exam_config_cache[exam_id].get('marking_scheme', {})
             correct_mark = marking_scheme.get('correct', 1)
             if isinstance(correct_mark, dict):
@@ -445,7 +399,7 @@ class Database:
         if not test:
             return {"error": "Test not found"}
 
-        exam_config = CONFIG.get(test['exam'])
+        exam_config = self.config.get(test['exam'])
         if not exam_config:
             return {"error": "Invalid exam configuration"}
         
@@ -534,7 +488,77 @@ class Database:
             "feedback": feedback
         }
 
+    def tests_completed_today(self, user_id, date=None):
+        if date is None:
+            date = datetime.now().date()
 
+        completed_tests = self.tests['attempts'].count_documents({
+            "user_id": user_id,
+            "submitted_at": {
+                "$gte": datetime.combine(date, datetime.min.time()),
+                "$lt": datetime.combine(date, datetime.max.time())
+            }
+        })
+
+        return completed_tests
+
+    """
+    Activity logging methods
+    """
+    
+    def add_activity(self, user_id, action, details):
+        activity_data = {
+            "action": action,
+            "details": details,
+            "timestamp": datetime.now()
+        }
+        self.users['activities'].update_one(
+            {"_id": user_id},
+            {"$push": {"activities": activity_data}},
+            upsert=True
+        )
+
+    def get_activities(self, user_id):
+        user = self.users['activities'].find_one({"_id": user_id})
+        if user:
+            activities = user.get('activities', [])
+            return sorted(activities, key=lambda x: x.get('timestamp'), reverse=True)
+        return []
+    
+    def get_paginated_activities(self, user_id, page=1, per_page=10):
+        user = self.users['activities'].find_one({"_id": user_id})
+        if not user:
+            return {"activities": [], "page": 1, "total_pages": 0, "total": 0}
+        
+        activities = user.get('activities', [])
+        # Sort by timestamp descending
+        sorted_activities = sorted(activities, key=lambda x: x.get('timestamp'), reverse=True)
+
+        # print(sorted_activities)
+        
+        # Calculate pagination metrics
+        total = len(sorted_activities)
+        total_pages = (total + per_page - 1) // per_page  # Ceiling division
+        
+        # Ensure page is within valid range
+        page = max(1, min(page, total_pages)) if total_pages > 0 else 1
+        
+        # Extract requested page of activities
+        start_idx = (page - 1) * per_page
+        end_idx = start_idx + per_page
+        page_activities = sorted_activities[start_idx:end_idx]
+        
+        return {
+            "activities": page_activities,
+            "page": page,
+            "per_page": per_page,
+            "total_pages": total_pages,
+            "total": total
+        }
+  
+    """
+    Bookmark management methods
+    """
 
     def create_bookmark_bucket(self, user_id, bucket_name):
         """Create a new bookmark bucket for the user"""
@@ -614,3 +638,73 @@ class Database:
             return {}
         
         return data['bookmarks']
+
+    """
+    Achievement management methods
+    """
+
+    def unlock_achievement(self, user_id, achievement_id):
+        user_data = self.users['achievements'].find_one({"_id": user_id})
+        if user_data and achievement_id in user_data.get('unlocked', []):
+            return
+
+        self.users['achievements'].update_one(
+            {"_id": user_id},
+            {"$addToSet": {"unlocked": achievement_id}},
+            upsert=True
+        )
+
+        self.add_activity(user_id, "achievement_unlocked", {
+            "achievement_id": achievement_id
+        })
+
+    def get_achievements(self, user_id):
+        user_data = self.users['achievements'].find_one({"_id": user_id})
+        if not user_data:
+            return []
+
+        unlocked_ids = user_data.get('unlocked', [])
+        return [self.achievements[aid] for aid in unlocked_ids if aid in self.achievements]
+    
+    def check_streak_achievements(self, user_id, current_streak):
+        streak_achievements = [
+            ("first_step", 1),
+            ("consistency_is_key", 7),
+            ("marathoner", 30),
+            ("streak_beast", 100)
+        ]
+        for achievement_id, days_required in streak_achievements:
+            if current_streak >= days_required:
+                self.unlock_achievement(user_id, achievement_id)
+
+    def check_total_achievements(self, user_id, questions_solved, tests_completed, date=None):
+        if questions_solved >= 500:
+            self.unlock_achievement(user_id, "problem_crusher")
+        if tests_completed >= 10:
+            self.unlock_achievement(user_id, "exam_ready")
+
+        # Check for Iron Will (5 tests in 1 day)
+        if self.tests_completed_today(user_id, date) >= 5:
+            self.unlock_achievement(user_id, "iron_will")
+
+    def check_performance_achievements(self, user_id, percent_correct=None, avg_time_per_question=None, 
+                                    health_remaining=None, consecutive_correct=None, question_type=None):
+        if percent_correct == 100:
+            self.unlock_achievement(user_id, "perfectionist")
+        if avg_time_per_question and avg_time_per_question < 30:
+            self.unlock_achievement(user_id, "fast_learner")
+        if health_remaining and health_remaining <= 5:
+            self.unlock_achievement(user_id, "immortal_streak")
+        if consecutive_correct and consecutive_correct >= 10 and question_type == "numerical":
+            self.unlock_achievement(user_id, "precision_machine")
+
+    def check_time_based_achievements(self, user_id):
+        completed_at = datetime.now()
+        if completed_at.hour < 8:
+            self.unlock_achievement(user_id, "early_bird")
+        if completed_at.hour >= 22:
+            self.unlock_achievement(user_id, "night_owl")
+
+    def check_lucky_guess(self, user_id, question_level, time_taken):
+        if question_level == 3 and time_taken <= 5:
+            self.unlock_achievement(user_id, "lucky_guess")

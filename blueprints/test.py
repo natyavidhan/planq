@@ -8,8 +8,6 @@ test_bp = Blueprint('test', __name__, url_prefix='/test')
 
 db:Database = None
 
-conf = json.load(open('conf.json'))
-
 def init_blueprint(database):
     """Initialize the blueprint with the database instance"""
     global db
@@ -164,7 +162,7 @@ def test_analysis(test_id):
             subjects[sub_id] = subject_info
 
     # Get marking scheme from configuration
-    marking_scheme = conf[test['exam']]['marking_scheme']
+    marking_scheme = db.config[test['exam']]['marking_scheme']
 
     # Get all questions with chapter information
     questions = {}

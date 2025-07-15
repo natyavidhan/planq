@@ -1,0 +1,341 @@
+[
+  {
+    "_id": "first_step",
+    "name": "First Step",
+    "description": "Complete your first daily task",
+    "icon": "fa-shoe-prints",
+    "type": "streak",
+    "criteria": {
+      "streak_days": 1,
+      "questions_solved": null,
+      "chapters_mastered": null,
+      "tests_completed": null,
+      "avg_time_per_question": null,
+      "health_remaining": null,
+      "time_of_day": null,
+      "consecutive_correct": null,
+      "percent_correct": null
+    },
+    "reward_points": 50,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 1
+  },
+  {
+    "_id": "consistency_is_key",
+    "name": "Consistency is Key",
+    "description": "Maintain a streak for 7 days",
+    "icon": "fa-calendar-check",
+    "type": "streak",
+    "criteria": {
+      "streak_days": 7,
+      "questions_solved": null,
+      "chapters_mastered": null,
+      "tests_completed": null,
+      "avg_time_per_question": null,
+      "health_remaining": null,
+      "time_of_day": null,
+      "consecutive_correct": null,
+      "percent_correct": null
+    },
+    "reward_points": 100,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 1
+  },
+  {
+    "_id": "marathoner",
+    "name": "Marathoner",
+    "description": "Maintain a streak for 30 days",
+    "icon": "fa-running",
+    "type": "streak",
+    "criteria": {
+      "streak_days": 30,
+      "questions_solved": null,
+      "chapters_mastered": null,
+      "tests_completed": null,
+      "avg_time_per_question": null,
+      "health_remaining": null,
+      "time_of_day": null,
+      "consecutive_correct": null,
+      "percent_correct": null
+    },
+    "reward_points": 250,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 2
+  },
+  {
+    "_id": "streak_beast",
+    "name": "Streak Beast",
+    "description": "Reach 100 consecutive streak days",
+    "icon": "fa-fire-alt",
+    "type": "streak",
+    "criteria": {
+      "streak_days": 100,
+      "questions_solved": null,
+      "chapters_mastered": null,
+      "tests_completed": null,
+      "avg_time_per_question": null,
+      "health_remaining": null,
+      "time_of_day": null,
+      "consecutive_correct": null,
+      "percent_correct": null
+    },
+    "reward_points": 500,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 3
+  },
+  {
+    "_id": "problem_crusher",
+    "name": "Problem Crusher",
+    "description": "Solve 500 total questions",
+    "icon": "fa-hammer",
+    "type": "total",
+    "criteria": {
+      "streak_days": null,
+      "questions_solved": 500,
+      "chapters_mastered": null,
+      "tests_completed": null,
+      "avg_time_per_question": null,
+      "health_remaining": null,
+      "time_of_day": null,
+      "consecutive_correct": null,
+      "percent_correct": null
+    },
+    "reward_points": 200,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 1
+  },
+  {
+    "_id": "topic_master",
+    "name": "Topic Master",
+    "description": "Master all questions from one chapter (100% correct)",
+    "icon": "fa-book-open",
+    "type": "performance",
+    "criteria": {
+      "streak_days": null,
+      "questions_solved": null,
+      "chapters_mastered": 1,
+      "tests_completed": null,
+      "avg_time_per_question": null,
+      "health_remaining": null,
+      "time_of_day": null,
+      "consecutive_correct": null,
+      "percent_correct": 100
+    },
+    "reward_points": 300,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 2
+  },
+  {
+    "_id": "exam_ready",
+    "name": "Exam Ready",
+    "description": "Complete 10 full-length tests",
+    "icon": "fa-clipboard-list",
+    "type": "total",
+    "criteria": {
+      "streak_days": null,
+      "questions_solved": null,
+      "chapters_mastered": null,
+      "tests_completed": 10,
+      "avg_time_per_question": null,
+      "health_remaining": null,
+      "time_of_day": null,
+      "consecutive_correct": null,
+      "percent_correct": null
+    },
+    "reward_points": 400,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 2
+  },
+  {
+    "_id": "fast_learner",
+    "name": "Fast Learner",
+    "description": "Average < 30s per question over a full daily task",
+    "icon": "fa-bolt",
+    "type": "performance",
+    "criteria": {
+      "streak_days": null,
+      "questions_solved": null,
+      "chapters_mastered": null,
+      "tests_completed": null,
+      "avg_time_per_question": 30,
+      "health_remaining": null,
+      "time_of_day": null,
+      "consecutive_correct": null,
+      "percent_correct": null
+    },
+    "reward_points": 250,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 1
+  },
+  {
+    "_id": "perfectionist",
+    "name": "Perfectionist",
+    "description": "Score 100% in any daily task",
+    "icon": "fa-crown",
+    "type": "performance",
+    "criteria": {
+      "streak_days": null,
+      "questions_solved": null,
+      "chapters_mastered": null,
+      "tests_completed": null,
+      "avg_time_per_question": null,
+      "health_remaining": null,
+      "time_of_day": null,
+      "consecutive_correct": null,
+      "percent_correct": 100
+    },
+    "reward_points": 350,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 2
+  },
+  {
+    "_id": "early_bird",
+    "name": "Early Bird",
+    "description": "Complete daily task before 8 AM",
+    "icon": "fa-sun",
+    "type": "time",
+    "criteria": {
+      "streak_days": null,
+      "questions_solved": null,
+      "chapters_mastered": null,
+      "tests_completed": null,
+      "avg_time_per_question": null,
+      "health_remaining": null,
+      "time_of_day": "before_08_00",
+      "consecutive_correct": null,
+      "percent_correct": null
+    },
+    "reward_points": 150,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 1
+  },
+  {
+    "_id": "night_owl",
+    "name": "Night Owl",
+    "description": "Complete daily task after 10 PM",
+    "icon": "fa-moon",
+    "type": "time",
+    "criteria": {
+      "streak_days": null,
+      "questions_solved": null,
+      "chapters_mastered": null,
+      "tests_completed": null,
+      "avg_time_per_question": null,
+      "health_remaining": null,
+      "time_of_day": "after_22_00",
+      "consecutive_correct": null,
+      "percent_correct": null
+    },
+    "reward_points": 150,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 1
+  },
+  {
+    "_id": "speed_demon",
+    "name": "Speed Demon",
+    "description": "Finish a daily task in under 50% of allocated time",
+    "icon": "fa-tachometer-alt",
+    "type": "performance",
+    "criteria": {
+      "streak_days": null,
+      "questions_solved": null,
+      "chapters_mastered": null,
+      "tests_completed": null,
+      "avg_time_per_question": null,
+      "health_remaining": null,
+      "time_of_day": null,
+      "consecutive_correct": null,
+      "percent_correct": null,
+      "time_used_percent": 50
+    },
+    "reward_points": 200,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 1
+  },
+  {
+    "_id": "subject_specialist",
+    "name": "Subject Specialist",
+    "description": "Achieve 90%+ accuracy in any subject",
+    "icon": "fa-graduation-cap",
+    "type": "performance",
+    "criteria": {
+      "percent_correct": 90
+    },
+    "reward_points": 300,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 2
+  },
+  {
+    "_id": "lucky_guess",
+    "name": "Lucky Guess",
+    "description": "Correctly answer a hard question in under 5 seconds",
+    "icon": "fa-dice",
+    "type": "performance",
+    "criteria": {
+      "questions_solved": null,
+      "time_taken": 5,
+      "difficulty_level": 3
+    },
+    "reward_points": 100,
+    "date_achieved": null,
+    "is_secret": true,
+    "tier": 1
+  },
+  {
+    "_id": "iron_will",
+    "name": "Iron Will",
+    "description": "Attempt 5 tests in a single day",
+    "icon": "fa-dumbbell",
+    "type": "total",
+    "criteria": {
+      "tests_completed": 5,
+      "time_frame": "1_day"
+    },
+    "reward_points": 400,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 2
+  },
+  {
+    "_id": "immortal_streak",
+    "name": "Immortal Streak",
+    "description": "Survive a daily task with only <5% health left",
+    "icon": "fa-heart-broken",
+    "type": "performance",
+    "criteria": {
+      "health_remaining": 5
+    },
+    "reward_points": 300,
+    "date_achieved": null,
+    "is_secret": true,
+    "tier": 2
+  },
+  {
+    "_id": "precision_machine",
+    "name": "Precision Machine",
+    "description": "Get 10 numerical questions correct consecutively",
+    "icon": "fa-bullseye",
+    "type": "performance",
+    "criteria": {
+      "consecutive_correct": 10,
+      "question_type": "numerical"
+    },
+    "reward_points": 500,
+    "date_achieved": null,
+    "is_secret": false,
+    "tier": 3
+  }
+]
