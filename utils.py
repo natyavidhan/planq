@@ -1,5 +1,5 @@
 from flask import session, redirect, url_for
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from collections import defaultdict
 
 def auth_required(f):
@@ -14,7 +14,7 @@ def auth_required(f):
 def generate_heatmap_data(activities):
     """Generate heatmap data from user activities"""
     # Create a date range for the last year
-    end_date = datetime.now().date()
+    end_date = datetime.now(timezone.utc).date()
     start_date = end_date - timedelta(days=364)  # 52 weeks * 7 days
     
     # Count all activities per date for the heatmap

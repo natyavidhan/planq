@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, session
 from database import Database
-import json
 
 question_bp = Blueprint('question', __name__, url_prefix='/question')
 

@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, flash
 from database import Database
 from utils import auth_required
-import json
-from datetime import datetime
+from datetime import datetime, timezone
 from utils import generate_heatmap_data
 
 task_bp = Blueprint('daily_task', __name__, url_prefix='/daily-task')
@@ -79,7 +78,7 @@ def generate_task():
         print(all_question_ids)
         
         test_data = {
-            '_id': 'daily-' + datetime.now().strftime('%Y%m%d'),
+            '_id': 'daily-' + datetime.now(timezone.utc).strftime('%Y%m%d'),
             'title': f"Daily Task - {subject_data.get('name', 'Subject')} - {chapter_data.get('name', 'Chapter')}",
             'duration': time_limit,
             'questions': ques,
@@ -100,7 +99,7 @@ def generate_task():
         })
 
         test_data['health'] = 100
-        test_data['start_time'] = datetime.now().isoformat()
+        test_data['start_time'] = datetime.now(timezone.utc).isoformat()
         test_data['q_meta'] = {q: {"status": None, "time": None} for q in all_question_ids}
 
         session['daily_test'] = test_data

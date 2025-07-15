@@ -6,7 +6,7 @@ from functools import lru_cache
 import random
 import os
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 
 
@@ -205,7 +205,7 @@ class Database:
         test_data = {
             "_id": test_id,
             "created_by": user_id,
-            "created_at": datetime.now(),
+            "created_at": datetime.now(timezone.utc),
             "title": metadata['title'],
             "description": metadata['description'],
             "exam": metadata['exam'],
@@ -232,7 +232,7 @@ class Database:
         test_data = {
             "_id": test_id,
             "created_by": user_id,
-            "created_at": datetime.now(),
+            "created_at": datetime.now(timezone.utc),
             "title": metadata['title'],
             "exam": metadata['exam'],
             "duration": metadata['duration'],
@@ -469,7 +469,7 @@ class Database:
             "total_questions": len(question_ids),
             "time_spent": time_spent,
             "feedback": feedback,
-            "submitted_at": datetime.now()
+            "submitted_at": datetime.now(timezone.utc)
         }
 
         if question_timings:
@@ -489,20 +489,6 @@ class Database:
             "feedback": feedback
         }
 
-    def tests_completed_today(self, user_id, date=None):
-        if date is None:
-            date = datetime.now().date()
-
-        completed_tests = self.tests['attempts'].count_documents({
-            "user_id": user_id,
-            "submitted_at": {
-                "$gte": datetime.combine(date, datetime.min.time()),
-                "$lt": datetime.combine(date, datetime.max.time())
-            }
-        })
-
-        return completed_tests
-
     """
     Activity logging methods
     """
@@ -512,7 +498,7 @@ class Database:
             "_id": str(uuid.uuid4()),
             "action": action,
             "details": details,
-            "timestamp": datetime.now()
+            "timestamp": datetime.now(timezone.utc)
         }
         self.activities[user_id].insert_one(activity_data)
 
@@ -669,40 +655,86 @@ class Database:
         unlocked_ids = user_data.get('unlocked', [])
         return [self.achievements[aid] for aid in unlocked_ids if aid in self.achievements]
     
-    def check_streak_achievements(self, user_id, current_streak):
+    def check_streak_achievements(self, user_id):
         streak_achievements = [
             ("first_step", 1),
             ("consistency_is_key", 7),
             ("marathoner", 30),
             ("streak_beast", 100)
         ]
-        for achievement_id, days_required in streak_achievements:
-            if current_streak >= days_required:
-                self.unlock_achievement(user_id, achievement_id)
+        streak = 0
+        tasks = self.activities[user_id].find({"action": "daily_task_completed"}, {"timestamp": 1}).sort("timestamp", -1)
+        last_day = None
 
-    def check_total_achievements(self, user_id, questions_solved, tests_completed, date=None):
-        if questions_solved >= 500:
+        for task in tasks:
+            current_day = task['timestamp'].date()
+
+            if last_day is None:
+                streak = 1
+            else:
+                delta_days = (last_day - current_day).days
+
+                if delta_days == 1:
+                    streak += 1
+                elif delta_days > 1:
+                    break
+
+            last_day = current_day
+
+            if streak >= 100:
+                break
+            
+            for achievement_id, days_required in streak_achievements:
+                if streak >= days_required:
+                    self.unlock_achievement(user_id, achievement_id)
+
+    def check_total_achievements(self, user_id):
+        if self.activities[user_id].count_documents({
+            "action": "attempt_question",
+            "details.is_correct": True
+        }) >= 500:
             self.unlock_achievement(user_id, "problem_crusher")
-        if tests_completed >= 10:
+
+        if self.activities[user_id].count_documents({
+            "action": "test_completed"
+        }) >= 10:
             self.unlock_achievement(user_id, "exam_ready")
 
-        # Check for Iron Will (5 tests in 1 day)
-        if self.tests_completed_today(user_id, date) >= 5:
+        start_of_day = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        end_of_day = start_of_day + timedelta(days=1)
+
+        if self.activities[user_id].count_documents({
+            "action": "test_completed",
+            "timestamp": {"$gte": start_of_day, "$lt": end_of_day}
+        }) >= 5:
             self.unlock_achievement(user_id, "iron_will")
 
     def check_performance_achievements(self, user_id, percent_correct=None, avg_time_per_question=None, 
-                                    health_remaining=None, consecutive_correct=None, question_type=None):
+                                    health_remaining=None, q_type=None):
         if percent_correct == 100:
             self.unlock_achievement(user_id, "perfectionist")
+
         if avg_time_per_question and avg_time_per_question < 30:
             self.unlock_achievement(user_id, "fast_learner")
+
         if health_remaining and health_remaining <= 5:
             self.unlock_achievement(user_id, "immortal_streak")
-        if consecutive_correct and consecutive_correct >= 10 and question_type == "numerical":
-            self.unlock_achievement(user_id, "precision_machine")
+        
+        if q_type == "numerical":
+            last_activities = self.activities[user_id].find({"action": "attempt_question"}).sort("timestamp", -1)
+            consecutive_correct = 0
+            for activity in last_activities:
+                ques = self.get_question(activity['details']['question_id'])
+                if ques and ques.get('type') == 'numerical':
+                    if activity['details']['correct'] and consecutive_correct < 10:
+                        consecutive_correct += 1
+                    else:
+                        break
+            if consecutive_correct >= 10:
+                self.unlock_achievement(user_id, "precision_machine")
 
     def check_time_based_achievements(self, user_id):
-        completed_at = datetime.now()
+        completed_at = datetime.now(timezone.utc)
         if completed_at.hour < 8:
             self.unlock_achievement(user_id, "early_bird")
         if completed_at.hour >= 22:

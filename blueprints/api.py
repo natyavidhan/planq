@@ -1,8 +1,7 @@
-from flask import Blueprint, render_template, request, jsonify, session
+from flask import Blueprint, request, jsonify, session
 from database import Database
 from utils import auth_required
-import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -59,7 +58,7 @@ def add_bookmark(question_id):
 def daily_task_status():
     user_id = session['user']['id']
     
-    today_date = datetime.now().date().isoformat()
+    today_date = datetime.now(timezone.utc).date().isoformat()
     
     activities = db.get_activities(user_id)
     
