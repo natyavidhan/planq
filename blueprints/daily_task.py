@@ -100,6 +100,8 @@ def generate_task():
         test_data['health'] = 100
         test_data['start_time'] = ist_now().isoformat()
         test_data['q_meta'] = {q: {"status": None, "time": None} for q in all_question_ids}
+        test_data['correct_count'] = 0
+        test_data['incorrect_count'] = 0
 
         session['daily_test'] = test_data
 
@@ -149,8 +151,10 @@ def process_question_attempt(data, user_id):
     damage_done = 0
     if not is_correct:
         damage_done, health_remaining = apply_health_damage(test_data, question.get('level', 2))
+        test_data['incorrect_count'] += 1
     else:
         health_remaining = test_data.get('health', 100)
+        test_data['correct_count'] += 1
     
     test_data['q_meta'][question_id] = {
         'status': 'correct' if is_correct else 'incorrect',
@@ -177,14 +181,18 @@ def process_question_attempt(data, user_id):
 
 
 def process_task_completion(data, user_id):
-    correct_count = data.get('correct_count', 0)
-    incorrect_count = data.get('incorrect_count', 0)
+    # correct_count = data.get('correct_count', 0)
+    # incorrect_count = data.get('incorrect_count', 0)
     time_spent = data.get('time_spent', 0)
     question_timings = data.get('question_timings', {})
     health_remaining = data.get('health_remaining', 0)
     is_success = data.get('is_success', False)
+
+    correct_count = session['daily_test'].get('correct_count', 0)
+    incorrect_count = session['daily_test'].get('incorrect_count', 0)
     
-    total_questions = correct_count + incorrect_count
+    total_attempts = correct_count + incorrect_count
+    total_questions = session['daily_test'].get('total_questions', 0)
     
     db.add_activity(user_id, "daily_task_completed", {
         "correct_count": correct_count,
@@ -202,14 +210,13 @@ def process_task_completion(data, user_id):
     db.check_streak_achievements(user_id)
     
     # Check performance-related achievements
-    if total_questions > 0:
-        percent_incorrect = (incorrect_count / total_questions) * 100
-        print(incorrect_count)
+    if total_attempts > 0:
+        percent_correct = (correct_count / total_attempts) * 100
         avg_time_per_question = time_spent / total_questions if total_questions > 0 else 0
         
         db.check_performance_achievements(
             user_id,
-            percent_correct=100 - percent_incorrect,
+            percent_correct=percent_correct,
             avg_time_per_question=avg_time_per_question,
             health_remaining=health_remaining
         )

@@ -713,7 +713,7 @@ class Database:
 
     def check_performance_achievements(self, user_id, percent_correct=None, avg_time_per_question=None, 
                                     health_remaining=None, q_type=None):
-        if percent_correct == 100:
+        if percent_correct == 100.0:
             self.unlock_achievement(user_id, "perfectionist")
 
         if avg_time_per_question and avg_time_per_question < 30:
