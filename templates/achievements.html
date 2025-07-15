@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Achievements{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="achievements-container">
+        <div class="achievements-header">
+            <h1>Your Achievements</h1>
+            <div class="progress-container">
+                <div class="progress-stats">
+                    <span class="progress-text">{{ unlocked_count }} / {{ total_count }} unlocked</span>
+                    <span class="progress-percent">{{ (unlocked_count / total_count * 100) | round }}%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ (unlocked_count / total_count * 100) }}%;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="achievements-tabs">
+            <ul class="tabs-list">
+                <li class="tab active" data-tab="streak-tab">
+                    <i class="fas fa-fire"></i> Streak
+                </li>
+                <li class="tab" data-tab="total-tab">
+                    <i class="fas fa-chart-line"></i> Totals
+                </li>
+                <li class="tab" data-tab="performance-tab">
+                    <i class="fas fa-tachometer-alt"></i> Performance
+                </li>
+                <li class="tab" data-tab="time-tab">
+                    <i class="fas fa-clock"></i> Time
+                </li>
+            </ul>
+            
+            <div class="tab-content">
+                <!-- Streak Achievements -->
+                <div id="streak-tab" class="tab-pane active">
+                    <div class="achievements-grid">
+                        {% for achievement in streak_achievements %}
+                        <div class="achievement-card {% if achievement.unlocked %}unlocked{% else %}locked{% endif %}">
+                            <div class="achievement-icon">
+                                <i class="fas {{ achievement.icon }}"></i>
+                            </div>
+                            <div class="achievement-details">
+                                <h3 class="achievement-title">{{ achievement.name }}</h3>
+                                <p class="achievement-description">{{ achievement.description }}</p>
+                                <div class="achievement-meta">
+                                    <span class="achievement-tier">Tier {{ achievement.tier }}</span>
+                                    <span class="achievement-points">+{{ achievement.reward_points }} pts</span>
+                                </div>
+                            </div>
+                            {% if achievement.unlocked %}
+                            <div class="achievement-unlocked-badge">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            {% else %}
+                            <div class="achievement-locked-overlay">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Total Achievements -->
+                <div id="total-tab" class="tab-pane">
+                    <div class="achievements-grid">
+                        {% for achievement in total_achievements %}
+                        <div class="achievement-card {% if achievement.unlocked %}unlocked{% else %}locked{% endif %}">
+                            <div class="achievement-icon">
+                                <i class="fas {{ achievement.icon }}"></i>
+                            </div>
+                            <div class="achievement-details">
+                                <h3 class="achievement-title">{{ achievement.name }}</h3>
+                                <p class="achievement-description">{{ achievement.description }}</p>
+                                <div class="achievement-meta">
+                                    <span class="achievement-tier">Tier {{ achievement.tier }}</span>
+                                    <span class="achievement-points">+{{ achievement.reward_points }} pts</span>
+                                </div>
+                            </div>
+                            {% if achievement.unlocked %}
+                            <div class="achievement-unlocked-badge">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            {% else %}
+                            <div class="achievement-locked-overlay">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Performance Achievements -->
+                <div id="performance-tab" class="tab-pane">
+                    <div class="achievements-grid">
+                        {% for achievement in performance_achievements %}
+                        <div class="achievement-card {% if achievement.unlocked %}unlocked{% else %}locked{% endif %}">
+                            <div class="achievement-icon">
+                                <i class="fas {{ achievement.icon }}"></i>
+                            </div>
+                            <div class="achievement-details">
+                                <h3 class="achievement-title">{{ achievement.name }}</h3>
+                                <p class="achievement-description">{{ achievement.description }}</p>
+                                <div class="achievement-meta">
+                                    <span class="achievement-tier">Tier {{ achievement.tier }}</span>
+                                    <span class="achievement-points">+{{ achievement.reward_points }} pts</span>
+                                </div>
+                            </div>
+                            {% if achievement.unlocked %}
+                            <div class="achievement-unlocked-badge">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            {% else %}
+                            <div class="achievement-locked-overlay">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Time Achievements -->
+                <div id="time-tab" class="tab-pane">
+                    <div class="achievements-grid">
+                        {% for achievement in time_achievements %}
+                        <div class="achievement-card {% if achievement.unlocked %}unlocked{% else %}locked{% endif %}">
+                            <div class="achievement-icon">
+                                <i class="fas {{ achievement.icon }}"></i>
+                            </div>
+                            <div class="achievement-details">
+                                <h3 class="achievement-title">{{ achievement.name }}</h3>
+                                <p class="achievement-description">{{ achievement.description }}</p>
+                                <div class="achievement-meta">
+                                    <span class="achievement-tier">Tier {{ achievement.tier }}</span>
+                                    <span class="achievement-points">+{{ achievement.reward_points }} pts</span>
+                                </div>
+                            </div>
+                            {% if achievement.unlocked %}
+                            <div class="achievement-unlocked-badge">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            {% else %}
+                            <div class="achievement-locked-overlay">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab switching functionality
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-pane');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(tc => tc.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding content
+            tab.classList.add('active');
+            const tabId = tab.getAttribute('data-tab');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -17,6 +17,7 @@ from blueprints.test import init_blueprint as init_test_blueprint
 from blueprints.api import init_blueprint as init_api_blueprint
 from blueprints.bookmarks import init_blueprint as init_bookmarks_blueprint
 from blueprints.daily_task import init_blueprint as init_task_blueprint
+from blueprints.achievements import init_blueprint as init_achievements_blueprint
 
 load_dotenv()
 
@@ -33,6 +34,7 @@ app.register_blueprint(init_test_blueprint(db))
 app.register_blueprint(init_api_blueprint(db))
 app.register_blueprint(init_bookmarks_blueprint(db))
 app.register_blueprint(init_task_blueprint(db))
+app.register_blueprint(init_achievements_blueprint(db))
 
 # Custom filters for templates
 @app.template_filter('formatdate')

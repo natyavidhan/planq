@@ -726,7 +726,7 @@ class Database:
             for activity in last_activities:
                 ques = self.get_question(activity['details']['question_id'])
                 if ques and ques.get('type') == 'numerical':
-                    if activity['details']['correct'] and consecutive_correct < 10:
+                    if activity['details']['is_correct'] and consecutive_correct < 10:
                         consecutive_correct += 1
                     else:
                         break

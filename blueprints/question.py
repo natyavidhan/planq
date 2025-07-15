@@ -120,6 +120,19 @@ def attempt_question(question_id):
                 'time_taken': time_taken
             }
         )
+        
+        user_id = session['user']['id']
+        
+        # Check for lucky guess achievement
+        if is_correct and question.get('level', 1) == 3 and time_taken <= 5:
+            db.check_lucky_guess(user_id, question.get('level', 1), time_taken)
+            
+        # Check for numerical precision achievement
+        if is_correct and question_type == 'numerical':
+            db.check_performance_achievements(user_id, q_type='numerical')
+            
+        # Check total question achievements
+        db.check_total_achievements(user_id)
             
         return jsonify(response)
         

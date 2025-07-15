@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Destroy all heatmap days after today
+    // Destroy all heatmap days after today using IST
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(5, 30, 0, 0);
 
     document.querySelectorAll('.heatmap-day').forEach(day => {
         const dateStr = day.getAttribute('data-date');
         if (dateStr) {
             const cellDate = new Date(dateStr);
-            cellDate.setHours(0, 0, 0, 0);
+            cellDate.setUTCHours(0, 0, 0, 0);
             if (cellDate > today) {
                 day.style.display = 'none'; // or: day.remove();
             }

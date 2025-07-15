@@ -150,6 +150,9 @@ def generate_heatmap_data(activities):
             longest_streak = max(longest_streak, temp_streak)
             current_date = date
 
+    print(weeks)
+    print(months)
+
     return {
         'weeks': weeks,
         'months': months,

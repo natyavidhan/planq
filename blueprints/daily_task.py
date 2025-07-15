@@ -147,6 +147,7 @@ def process_question_attempt(data, user_id):
     })
 
     test_data = session.get('daily_test', {})
+    damage_done = 0
     if not is_correct:
         damage_done, health_remaining = apply_health_damage(test_data, question.get('level', 2))
     else:
@@ -157,6 +158,14 @@ def process_question_attempt(data, user_id):
         'time': time_taken
     }
     session['daily_test'] = test_data
+
+    # Check for lucky guess achievement
+    if is_correct and question.get('level', 1) == 3 and time_taken <= 5:
+        db.check_lucky_guess(user_id, question.get('level', 1), time_taken)
+        
+    # Check for numerical precision achievement
+    if is_correct and question.get('type') == 'numerical':
+        db.check_performance_achievements(user_id, q_type='numerical')
 
     return jsonify({
         'success': True,
@@ -169,17 +178,48 @@ def process_question_attempt(data, user_id):
 
 
 def process_task_completion(data, user_id):
+    correct_count = data.get('correct_count', 0)
+    incorrect_count = data.get('incorrect_count', 0)
+    time_spent = data.get('time_spent', 0)
+    question_timings = data.get('question_timings', {})
+    health_remaining = data.get('health_remaining', 0)
+    is_success = data.get('is_success', False)
+    
+    total_questions = correct_count + incorrect_count
+    
     db.add_activity(user_id, "daily_task_completed", {
-        "correct_count": data.get('correct_count', 0),
-        "incorrect_count": data.get('incorrect_count', 0),
-        "time_spent": data.get('time_spent', 0),
-        "question_timings": data.get('question_timings', {}),
-        "health_remaining": data.get('health_remaining', 0),
-        "is_success": data.get('is_success', False)
+        "correct_count": correct_count,
+        "incorrect_count": incorrect_count,
+        "time_spent": time_spent,
+        "question_timings": question_timings,
+        "health_remaining": health_remaining,
+        "is_success": is_success
     })
 
     activities = db.get_activities(user_id)
     heatmap_data = generate_heatmap_data(activities)
+    
+    # Check streak-related achievements
+    db.check_streak_achievements(user_id)
+    
+    # Check performance-related achievements
+    if total_questions > 0:
+        percent_correct = (correct_count / total_questions) * 100
+        avg_time_per_question = time_spent / total_questions if total_questions > 0 else 0
+        
+        db.check_performance_achievements(
+            user_id,
+            percent_correct=percent_correct,
+            avg_time_per_question=avg_time_per_question,
+            health_remaining=health_remaining
+        )
+    
+    # Check time-based achievements
+    db.check_time_based_achievements(user_id)
+    
+    # Check total achievements
+    db.check_total_achievements(user_id)
+    
     return jsonify({
         'success': True,
         'current_streak': heatmap_data['current_streak'],

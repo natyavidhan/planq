@@ -117,6 +117,19 @@ def submit_test():
         "attempt_id": result['attempt_id']
     })
     
+    # Check for achievements related to test completion
+    user_id = session['user']['id']
+    db.check_total_achievements(user_id)  # Check "exam_ready" and "iron_will" achievements
+    
+    # Calculate percentage correct for perfectionist achievement
+    if result['total_questions'] > 0:
+        percent_correct = (result['score'] / result['total_questions']) * 100
+        if percent_correct == 100:
+            db.check_performance_achievements(user_id, percent_correct=100)
+            
+    # Check for time-based achievements
+    db.check_time_based_achievements(user_id)
+    
     return jsonify({'attemptId': result['attempt_id']}), 200
 
 @test_bp.route('/<test_id>/analysis')
