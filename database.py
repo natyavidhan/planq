@@ -29,6 +29,7 @@ class Database:
     def __init__(self):
         self.client = MongoClient(os.getenv("MONGO_URI"), maxPoolSize=20)
         self.users = self.client['userdata']
+        self.activities = self.client['activities']
         # self.pyqs = self.client['pyqs']
         self.tests = self.client['tests']
 
@@ -508,46 +509,48 @@ class Database:
     
     def add_activity(self, user_id, action, details):
         activity_data = {
+            "_id": str(uuid.uuid4()),
             "action": action,
             "details": details,
             "timestamp": datetime.now()
         }
-        self.users['activities'].update_one(
-            {"_id": user_id},
-            {"$push": {"activities": activity_data}},
-            upsert=True
-        )
+        self.activities[user_id].insert_one(activity_data)
 
     def get_activities(self, user_id):
-        user = self.users['activities'].find_one({"_id": user_id})
-        if user:
-            activities = user.get('activities', [])
+        if user_id in self.activities.list_collection_names():
+            activities = list(self.activities[user_id].find({}))
             return sorted(activities, key=lambda x: x.get('timestamp'), reverse=True)
+        
         return []
     
     def get_paginated_activities(self, user_id, page=1, per_page=10):
-        user = self.users['activities'].find_one({"_id": user_id})
-        if not user:
-            return {"activities": [], "page": 1, "total_pages": 0, "total": 0}
-        
-        activities = user.get('activities', [])
-        # Sort by timestamp descending
-        sorted_activities = sorted(activities, key=lambda x: x.get('timestamp'), reverse=True)
+        if user_id not in self.activities.list_collection_names():
+            return {
+                "activities": [],
+                "page": 1,
+                "per_page": per_page,
+                "total_pages": 0,
+                "total": 0
+            }
 
-        # print(sorted_activities)
-        
-        # Calculate pagination metrics
-        total = len(sorted_activities)
+        collection = self.activities[user_id]
+        total = collection.count_documents({})
         total_pages = (total + per_page - 1) // per_page  # Ceiling division
-        
-        # Ensure page is within valid range
+
+        # Clamp page number
         page = max(1, min(page, total_pages)) if total_pages > 0 else 1
-        
-        # Extract requested page of activities
-        start_idx = (page - 1) * per_page
-        end_idx = start_idx + per_page
-        page_activities = sorted_activities[start_idx:end_idx]
-        
+        skip_count = (page - 1) * per_page
+
+        # Fetch only the required page
+        cursor = (
+            collection.find({})
+            .sort("timestamp", -1)  # Sort newest first (optional)
+            .skip(skip_count)
+            .limit(per_page)
+        )
+
+        page_activities = list(cursor)
+
         return {
             "activities": page_activities,
             "page": page,

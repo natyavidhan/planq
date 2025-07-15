@@ -162,8 +162,6 @@ def dashboard():
     paginated_activities = db.get_paginated_activities(session['user']['id'], page, per_page)
     
     exams = db.get_exams()
-
-    print(paginated_activities)
     
     return render_template("dashboard.html", 
                           tests=tests, 
