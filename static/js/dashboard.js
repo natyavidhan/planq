@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Destroy all heatmap days after today using IST
+    // Destroy all heatmap days after today
     const today = new Date();
-    today.setUTCHours(5, 30, 0, 0);
+    today.setHours(0, 0, 0, 0);
 
     document.querySelectorAll('.heatmap-day').forEach(day => {
         const dateStr = day.getAttribute('data-date');
         if (dateStr) {
             const cellDate = new Date(dateStr);
-            cellDate.setUTCHours(0, 0, 0, 0);
+            cellDate.setHours(0, 0, 0, 0);
             if (cellDate > today) {
                 day.style.display = 'none'; // or: day.remove();
             }
@@ -733,15 +733,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
             // Only format if it's a valid date
             if (!isNaN(timestamp.getTime())) {
-                formattedDate = timestamp.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                }) + ' at ' + timestamp.toLocaleTimeString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                });
+                formattedDate = timestamp.toLocaleString();
             }
         }
         

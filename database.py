@@ -7,8 +7,9 @@ import random
 import os
 import uuid
 from datetime import datetime, timedelta, timezone
+import pytz
 
-
+from utils import ist_now
 
 @lru_cache(maxsize=None)
 def load_json_file(path, brotli_compressed=False):
@@ -58,7 +59,8 @@ class Database:
         user = {
             "_id": str(uuid.uuid4()),
             "email": email,
-            "username": email.split("@")[0] + str(random.randint(10000, 99999))
+            "username": email.split("@")[0] + str(random.randint(10000, 99999)),
+            "created_at": ist_now()
         }
         self.users['users'].insert_one(user)
         return user
@@ -205,7 +207,7 @@ class Database:
         test_data = {
             "_id": test_id,
             "created_by": user_id,
-            "created_at": datetime.now(timezone.utc),
+            "created_at": ist_now(),
             "title": metadata['title'],
             "description": metadata['description'],
             "exam": metadata['exam'],
@@ -232,7 +234,7 @@ class Database:
         test_data = {
             "_id": test_id,
             "created_by": user_id,
-            "created_at": datetime.now(timezone.utc),
+            "created_at": ist_now(),
             "title": metadata['title'],
             "exam": metadata['exam'],
             "duration": metadata['duration'],
@@ -469,7 +471,7 @@ class Database:
             "total_questions": len(question_ids),
             "time_spent": time_spent,
             "feedback": feedback,
-            "submitted_at": datetime.now(timezone.utc)
+            "submitted_at": ist_now()
         }
 
         if question_timings:
@@ -498,7 +500,7 @@ class Database:
             "_id": str(uuid.uuid4()),
             "action": action,
             "details": details,
-            "timestamp": datetime.now(timezone.utc)
+            "timestamp": ist_now()
         }
         self.activities[user_id].insert_one(activity_data)
 
@@ -700,7 +702,7 @@ class Database:
         }) >= 10:
             self.unlock_achievement(user_id, "exam_ready")
 
-        start_of_day = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        start_of_day = ist_now().replace(hour=0, minute=0, second=0, microsecond=0)
         end_of_day = start_of_day + timedelta(days=1)
 
         if self.activities[user_id].count_documents({
@@ -734,7 +736,7 @@ class Database:
                 self.unlock_achievement(user_id, "precision_machine")
 
     def check_time_based_achievements(self, user_id):
-        completed_at = datetime.now(timezone.utc)
+        completed_at = ist_now()
         if completed_at.hour < 8:
             self.unlock_achievement(user_id, "early_bird")
         if completed_at.hour >= 22:

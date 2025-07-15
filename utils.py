@@ -1,6 +1,11 @@
 from flask import session, redirect, url_for
 from datetime import datetime, timedelta, timezone
 from collections import defaultdict
+import pytz
+
+def ist_now() -> datetime:
+    dt = datetime.now(pytz.timezone('Asia/Kolkata')).replace(tzinfo=None)
+    return dt
 
 def auth_required(f):
     def decorated_function(*args, **kwargs):
@@ -12,9 +17,8 @@ def auth_required(f):
 
 
 def generate_heatmap_data(activities):
-    """Generate heatmap data from user activities"""
     # Create a date range for the last year
-    end_date = datetime.now(timezone.utc).date()
+    end_date = ist_now().date()
     start_date = end_date - timedelta(days=364)  # 52 weeks * 7 days
     
     # Count all activities per date for the heatmap
@@ -149,9 +153,6 @@ def generate_heatmap_data(activities):
                 
             longest_streak = max(longest_streak, temp_streak)
             current_date = date
-
-    print(weeks)
-    print(months)
 
     return {
         'weeks': weeks,

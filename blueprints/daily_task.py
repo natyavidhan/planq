@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, flash
 from database import Database
-from utils import auth_required
+from utils import auth_required, generate_heatmap_data, ist_now
 from datetime import datetime, timezone
-from utils import generate_heatmap_data
 
 task_bp = Blueprint('daily_task', __name__, url_prefix='/daily-task')
 
@@ -78,7 +77,7 @@ def generate_task():
         print(all_question_ids)
         
         test_data = {
-            '_id': 'daily-' + datetime.now(timezone.utc).strftime('%Y%m%d'),
+            '_id': 'daily-' + ist_now().strftime('%Y%m%d'),
             'title': f"Daily Task - {subject_data.get('name', 'Subject')} - {chapter_data.get('name', 'Chapter')}",
             'duration': time_limit,
             'questions': ques,
@@ -99,7 +98,7 @@ def generate_task():
         })
 
         test_data['health'] = 100
-        test_data['start_time'] = datetime.now(timezone.utc).isoformat()
+        test_data['start_time'] = ist_now().isoformat()
         test_data['q_meta'] = {q: {"status": None, "time": None} for q in all_question_ids}
 
         session['daily_test'] = test_data
@@ -204,12 +203,13 @@ def process_task_completion(data, user_id):
     
     # Check performance-related achievements
     if total_questions > 0:
-        percent_correct = (correct_count / total_questions) * 100
+        percent_incorrect = (incorrect_count / total_questions) * 100
+        print(incorrect_count)
         avg_time_per_question = time_spent / total_questions if total_questions > 0 else 0
         
         db.check_performance_achievements(
             user_id,
-            percent_correct=percent_correct,
+            percent_correct=100 - percent_incorrect,
             avg_time_per_question=avg_time_per_question,
             health_remaining=health_remaining
         )
