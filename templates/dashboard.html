@@ -111,6 +111,8 @@
                                 <i class="fas fa-heart-broken"></i>
                                 {% endif %}
                             </div>
+                        {% elif item.action == "achievement_unlocked" %}
+                            <div class="activity-icon"><i class="fas {{ac[item.details.achievement_id]['icon']}}"></i></div>
                         {% else %}
                             <div class="activity-icon"><i class="fas fa-bell"></i></div>
                         {% endif %}
@@ -166,6 +168,10 @@
                                             </span>
                                         </div>
                                     </div>
+                                {% elif item.action == "achievement_unlocked" %}
+                                <div class="activity-header-content">
+                                    <span>Unlocked achievement: <strong>{{ ac[item.details.achievement_id]['name'] }}</strong></span>
+                                </div>
                                 {% else %}
                                     {{ item.action }}
                                 {% endif %}
@@ -317,6 +323,8 @@
                                 </div>
                             {% elif item.action == "daily_task_started" %}
                                 <div class="activity-icon"><i class="fas fa-play"></i></div>
+                            {% elif item.action == "achievement_unlocked" %}
+                                <div class="activity-icon"><i class="fas {{ac[item.details.achievement_id]['icon']}}"></i></div>
                             {% else %}
                                 <div class="activity-icon"><i class="fas fa-bell"></i></div>
                             {% endif %}
@@ -368,6 +376,10 @@
                                                 <i class="fas fa-list-ol"></i> {{ item.details.count }} questions
                                             </span>
                                         </div>
+                                    </div>
+                                    {% elif item.action == "achievement_unlocked" %}
+                                    <div class="activity-header-content">
+                                        <span>Unlocked achievement: <strong>{{ ac[item.details.achievement_id]['name'] }}</strong></span>
                                     </div>
                                     {% else %}
                                         {{ item.action }}

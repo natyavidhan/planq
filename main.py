@@ -172,7 +172,8 @@ def dashboard():
                           heatmap_data=heatmap_data, 
                           exams=exams,
                           current_page=page,
-                          total_activities=len(all_activities))
+                          total_activities=len(all_activities),
+                          ac=db.achievements)
 
 
 @app.context_processor

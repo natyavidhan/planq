@@ -41,7 +41,6 @@
     <meta property="twitter:image" content="/static/assets/logo.png" />
 
     <link rel="stylesheet" href="/static/css/styles.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/achievements.css') }}">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
         MathJax = {
@@ -74,15 +73,13 @@
                     <a href="/bookmarks" class="nav-link {% if request.path == '/bookmarks/' %}active{% endif %}">
                         <i class="fas fa-bookmark"></i> Bookmarks
                     </a>
+                    <a href="/achievements" class="nav-link {% if request.path == '/achievements/' %}active{% endif %}">
+                        <i class="fas fa-trophy"></i> Achievements
+                    </a>
                 </div>
                 {% endif %}
             </div>
             
-            <!-- Center: Search -->
-            {% if is_authenticated %}
-            <div class="navbar-center">
-            </div>
-            {% endif %}
             
             <!-- Right: User Menu -->
             <div class="navbar-right">
