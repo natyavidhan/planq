@@ -5,6 +5,9 @@
 <div class="home">
     <div class="title-bar">
         <h2>Welcome, {{user['username']}} <span class="badge">Pro</span></h2>
+        <button id="practice-button" class="practice-button" style="display: none;">
+            <i class="fas fa-dumbbell"></i> Practice
+        </button>
     </div>
     
     <!-- Activity Heatmap -->
@@ -103,7 +106,7 @@
                                 <i class="fas fa-times"></i>
                                 {% endif %}
                             </div>
-                        {% elif item.action == "daily_task_completed" %}
+                        {% elif item.action == "practice_completed" %}
                             <div class="activity-icon {% if item.details.is_success %}correct{% else %}incorrect{% endif %}">
                                 {% if item.details.is_success %}
                                 <i class="fas fa-fire"></i>
@@ -138,17 +141,13 @@
                                             <i class="fas fa-times-circle"></i> Incorrect
                                         {% endif %}
                                     </div>
-                                {% elif item.action == "daily_task_completed" %}
+                                {% elif item.action == "practice_completed" %}
                                     <div class="activity-header-content">
-                                        <span>Completed daily task</span>
-                                        <div class="daily-task-stats">
-                                            {% if item.details.is_success %}
-                                                <div class="daily-task-badge success">
+                                        <span>Completed practice session</span>
+                                        <div class="practice-session-stats">
+                                            {% if item.details.streak_extended %}
+                                                <div class="practice-session-badge success">
                                                     <i class="fas fa-fire"></i> Streak Extended
-                                                </div>
-                                            {% else %}
-                                                <div class="daily-task-badge failed">
-                                                    <i class="fas fa-heart-broken"></i> Streak Broken
                                                 </div>
                                             {% endif %}
                                             
@@ -159,9 +158,9 @@
                                         </div>
                                     </div>
                                 
-                                {% elif item.action == "daily_task_started" %}
+                                {% elif item.action == "practice_started" %}
                                     <div class="activity-header-content">
-                                        <span>Started daily task: <strong>{{ item.details.exam }} - {{ item.details.subject }}</strong></span>
+                                        <span>Started practice session: <strong>{{ item.details.exam }} - {{ item.details.subject }} - {{ item.details.chapter }}</strong></span>
                                         <div class="daily-task-info">
                                             <span class="task-badge">
                                                 <i class="fas fa-list-ol"></i> {{ item.details.count }} questions
@@ -313,7 +312,7 @@
                                     <i class="fas fa-times"></i>
                                     {% endif %}
                                 </div>
-                            {% elif item.action == "daily_task_completed" %}
+                            {% elif item.action == "practice_completed" %}
                                 <div class="activity-icon {% if item.details.is_success %}correct{% else %}incorrect{% endif %}">
                                     {% if item.details.is_success %}
                                     <i class="fas fa-fire"></i>
@@ -321,7 +320,7 @@
                                     <i class="fas fa-heart-broken"></i>
                                     {% endif %}
                                 </div>
-                            {% elif item.action == "daily_task_started" %}
+                            {% elif item.action == "practice_started" %}
                                 <div class="activity-icon"><i class="fas fa-play"></i></div>
                             {% elif item.action == "achievement_unlocked" %}
                                 <div class="activity-icon"><i class="fas {{ac[item.details.achievement_id]['icon']}}"></i></div>
@@ -348,17 +347,13 @@
                                                 <i class="fas fa-times-circle"></i> Incorrect
                                             {% endif %}
                                         </div>
-                                    {% elif item.action == "daily_task_completed" %}
+                                    {% elif item.action == "practice_completed" %}
                                     <div class="activity-header-content">
-                                        <span>Completed daily task</span>
-                                        <div class="daily-task-stats">
-                                            {% if item.details.is_success %}
-                                                <div class="daily-task-badge success">
+                                        <span>Completed practice session</span>
+                                        <div class="practice-session-stats">
+                                            {% if item.details.streak_extended %}
+                                                <div class="practice-session-badge success">
                                                     <i class="fas fa-fire"></i> Streak Extended
-                                                </div>
-                                            {% else %}
-                                                <div class="daily-task-badge failed">
-                                                    <i class="fas fa-heart-broken"></i> Streak Broken
                                                 </div>
                                             {% endif %}
                                             
@@ -368,9 +363,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {% elif item.action == "daily_task_started" %}
+                                    {% elif item.action == "practice_started" %}
                                     <div class="activity-header-content">
-                                        <span>Started daily task: <strong>{{ item.details.exam }} - {{ item.details.subject }}</strong></span>
+                                        <span>Started practice session: <strong>{{ item.details.exam }} - {{ item.details.subject }} - {{ item.details.chapter }}</strong></span>
                                         <div class="daily-task-info">
                                             <span class="task-badge">
                                                 <i class="fas fa-list-ol"></i> {{ item.details.count }} questions

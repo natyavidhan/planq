@@ -75,18 +75,17 @@ def daily_task_status():
             elif 'T' in activity['timestamp']:
                 activity_date = activity['timestamp'].split('T')[0]
             else:
-                activity_date = activity['timestamp']
-                
-            # If this is a daily task completion from today
-            if activity_date == today_date and activity.get('action') == 'daily_task_completed':
+                activity_date = datetime.strptime(activity['timestamp'], '%Y-%m-%d').date().isoformat()
+
+            if activity_date == today_date and activity.get('action') == 'practice_completed':
                 completed_today = True
                 break
+
         except (ValueError, AttributeError):
             continue
-    
+            
     return jsonify({
-        'completed_today': completed_today,
-        'today_date': today_date
+        "completed_today": completed_today
     }), 200
 
 

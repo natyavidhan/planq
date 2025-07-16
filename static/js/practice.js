@@ -715,19 +715,39 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
+            console.log("Practice completion response:", data); // Debug logging
+            
             // Update success screen based on streak extension
             if (data.streak_extended) {
+                console.log("Streak extended! Updating UI...");
                 document.getElementById('success-title').textContent = 'Streak Extended!';
-                document.getElementById('streak-animation').style.display = 'block';
-                document.getElementById('final-streak-count').textContent = data.current_streak;
-                // Create confetti for streak extension
-                createConfetti();
-            } else if (data.is_first_practice_of_day) {
-                document.getElementById('success-title').textContent = 'Practice Complete!';
-                document.getElementById('streak-animation').style.display = 'none';
+                
+                // Make sure the streak animation element is visible
+                const streakAnimation = document.getElementById('streak-animation');
+                if (streakAnimation) {
+                    streakAnimation.style.display = 'block';
+                    
+                    // Update the streak count if the element exists
+                    const finalStreakCount = document.getElementById('final-streak-count');
+                    if (finalStreakCount) {
+                        finalStreakCount.textContent = data.current_streak;
+                    } else {
+                        console.error("Element 'final-streak-count' not found");
+                    }
+                    
+                    // Create extra confetti for celebration
+                    createConfetti();
+                } else {
+                    console.error("Element 'streak-animation' not found");
+                }
             } else {
+                console.log("Streak not extended. Regular completion.");
                 document.getElementById('success-title').textContent = 'Practice Complete!';
-                document.getElementById('streak-animation').style.display = 'none';
+                
+                const streakAnimation = document.getElementById('streak-animation');
+                if (streakAnimation) {
+                    streakAnimation.style.display = 'none';
+                }
             }
         })
         .catch(error => {

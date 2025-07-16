@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const extendedDiv = document.getElementById('extended');
         const notExtendedDiv = document.getElementById('not-extended');
         const extendButton = document.querySelector('.extend');
+        const practiceButton = document.getElementById('practice-button');
         
         const isExtended = isTodayExtended();
         
@@ -200,10 +201,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if (extendedDiv) extendedDiv.style.display = '';
             if (notExtendedDiv) notExtendedDiv.style.display = 'none';
             if (extendButton) extendButton.style.display = 'none';
+            if (practiceButton) practiceButton.style.display = '';
         } else {
             if (extendedDiv) extendedDiv.style.display = 'none';
             if (notExtendedDiv) notExtendedDiv.style.display = '';
             if (extendButton) extendButton.style.display = '';
+            if (practiceButton) practiceButton.style.display = 'none';
         }
     }
 
@@ -212,11 +215,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Daily task modal functionality
     const extendStreakModal = document.getElementById('extend-streak-modal');
-    const extendButton = document.querySelector('.extend'); // Define extendButton here
+    const extendButton = document.querySelector('.extend');
+    const practiceButton = document.getElementById('practice-button');
 
     // Show modal when extend button is clicked
     if (extendButton) {
         extendButton.addEventListener('click', function () {
+            document.querySelector('#extend-streak-modal .modal-header h3').innerHTML = '<i class="fas fa-calendar-plus"></i> Daily Task';
+            extendStreakModal.style.display = 'block';
+            // Fetch exams when modal is opened
+            fetchExams();
+        });
+    }
+
+    // Show modal when practice button is clicked
+    if (practiceButton) {
+        practiceButton.addEventListener('click', function () {
+            document.querySelector('#extend-streak-modal .modal-header h3').innerHTML = '<i class="fas fa-dumbbell"></i> Practice Session';
             extendStreakModal.style.display = 'block';
             // Fetch exams when modal is opened
             fetchExams();
@@ -641,14 +656,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     iconHtml = '<div class="activity-icon incorrect"><i class="fas fa-times"></i></div>';
                 }
                 break;
-            case 'daily_task_completed':
+            case 'practice_completed':
                 if (item.details.is_success) {
                     iconHtml = '<div class="activity-icon correct"><i class="fas fa-fire"></i></div>';
                 } else {
                     iconHtml = '<div class="activity-icon incorrect"><i class="fas fa-heart-broken"></i></div>';
                 }
                 break;
-            case 'daily_task_started':
+            case 'practice_started':
                 iconHtml = '<div class="activity-icon"><i class="fas fa-play"></i></div>';
                 break;
             default:
@@ -701,11 +716,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                     </div>`;
                 break;
-            case 'daily_task_started':
+            case 'practice_started':
                 contentHtml = `
                     <div class="activity-header">
                         <div class="activity-header-content">
-                            <span>Started daily task: <strong>${item.details.exam} - ${item.details.subject}</strong></span>
+                            <span>Started practice session: <strong>${item.details.exam} - ${item.details.subject} - ${item.details.chapter}</strong></span>
                             <div class="daily-task-info">
                                 <span class="task-badge">
                                     <i class="fas fa-list-ol"></i> ${item.details.count} questions

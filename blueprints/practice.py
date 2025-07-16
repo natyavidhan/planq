@@ -94,7 +94,8 @@ def generate_task():
         db.add_activity(session['user']['id'], "practice_started", {
             "exam": exam_data.get('name', exam_id),
             "subject": subject_data.get('name', subject_id),
-            "chapter": chapter_id,
+            "chapter": chapter_data.get('name', chapter_id),
+            "chapter_id": chapter_id,
             "count": question_count
         })
 
@@ -195,13 +196,44 @@ def process_task_completion(data, user_id):
     total_attempts = correct_count + incorrect_count
     total_questions = session['practice_test'].get('total_questions', 0)
 
+    # Check if this is the first practice completed today
+    today_date = ist_now().date().isoformat()
+    activities = db.get_activities(user_id)
+    
+    is_first_practice_of_day = True
+    for activity in activities:
+        if not activity.get('timestamp'):
+            continue
+        
+        try:
+            if isinstance(activity['timestamp'], datetime):
+                activity_date = activity['timestamp'].date().isoformat()
+            elif 'T' in activity['timestamp']:
+                activity_date = activity['timestamp'].split('T')[0]
+            else:
+                activity_date = datetime.strptime(activity['timestamp'], '%Y-%m-%d').date().isoformat()
+            
+            # If we find any previous practice completed today, this is not the first one
+            if activity_date == today_date and activity.get('action') == 'practice_completed':
+                print(f"Found previous practice completion today: {activity}")
+                is_first_practice_of_day = False
+                break
+                
+        except (ValueError, AttributeError) as e:
+            print(f"Error parsing timestamp: {e}")
+            continue
+
+    print(f"Is first practice of day: {is_first_practice_of_day}")
+    
+    # Add the practice_completed activity with streak_extended flag
     db.add_activity(user_id, "practice_completed", {
         "correct_count": correct_count,
         "incorrect_count": incorrect_count,
         "time_spent": time_spent,
         "question_timings": question_timings,
         "health_remaining": health_remaining,
-        "is_success": is_success
+        "is_success": is_success,
+        "streak_extended": is_first_practice_of_day  # Include in the activity details
     })
 
     activities = db.get_activities(user_id)
@@ -228,11 +260,16 @@ def process_task_completion(data, user_id):
     # Check total achievements
     db.check_total_achievements(user_id)
     
-    return jsonify({
+    response_data = {
         'success': True,
         'current_streak': heatmap_data['current_streak'],
-        'longest_streak': heatmap_data['longest_streak']
-    })
+        'longest_streak': heatmap_data['longest_streak'],
+        'is_first_practice_of_day': is_first_practice_of_day,
+        'streak_extended': is_first_practice_of_day  # If it's first practice, streak is extended
+    }
+    
+    print(f"Sending response: {response_data}")
+    return jsonify(response_data)
 
 
 def render_daily_task_page():
