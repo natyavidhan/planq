@@ -9,7 +9,7 @@ import uuid
 from datetime import datetime, timedelta, timezone
 import pytz
 
-from utils import ist_now
+from utils import ist_now, generate_ch_difficulty
 
 @lru_cache(maxsize=None)
 def load_json_file(path, brotli_compressed=False):
@@ -31,7 +31,7 @@ class Database:
         self.client = MongoClient(os.getenv("MONGO_URI"), maxPoolSize=20)
         self.users = self.client['userdata']
         self.activities = self.client['activities']
-        # self.pyqs = self.client['pyqs']
+        self.sr = self.client['sr_data']
         self.tests = self.client['tests']
 
         self.pyqs = {
@@ -47,6 +47,8 @@ class Database:
 
         with open('data/achievements.json', 'r') as f:
             self.achievements = {item['_id']: item for item in json.load(f)}
+
+        self.difficulty = generate_ch_difficulty(self.pyqs['chapters'], self.pyqs['questions'])
 
     """
     User management methods
@@ -666,11 +668,14 @@ class Database:
             ("streak_beast", 100)
         ]
         streak = 0
-        tasks = self.activities[user_id].find({"action": "daily_task_completed"}, {"timestamp": 1}).sort("timestamp", -1)
+        practices = self.activities[user_id].find({
+            "action": "practice_completed", 
+            "details.streak_extended": True
+        }, {"timestamp": 1}).sort("timestamp", -1)
         last_day = None
 
-        for task in tasks:
-            current_day = task['timestamp'].date()
+        for practice in practices:
+            current_day = practice['timestamp'].date()
 
             if last_day is None:
                 streak = 1

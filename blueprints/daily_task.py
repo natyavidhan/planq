@@ -3,7 +3,7 @@ from database import Database
 from utils import auth_required, generate_heatmap_data, ist_now
 from datetime import datetime, timezone
 
-task_bp = Blueprint('daily_task', __name__, url_prefix='/daily-task')
+practice_bp = Blueprint('practice', __name__, url_prefix='/practice')
 
 db:Database = None
 
@@ -11,7 +11,7 @@ def init_blueprint(database):
     """Initialize the blueprint with the database instance"""
     global db
     db = database
-    return task_bp
+    return practice_bp
 
 
 def validate_answer(question, user_answer):
@@ -51,11 +51,11 @@ def apply_health_damage(test_data, question_level):
     test_data['health'] = new_health
 
     # Update session
-    session['daily_test'] = test_data
+    session['practice_test'] = test_data
     return damage, round(new_health, 2)
 
 @auth_required
-@task_bp.route("/generate")
+@practice_bp.route("/generate")
 def generate_task():
         exam_id = request.args.get('exam')
         subject_id = request.args.get('subject')
@@ -77,8 +77,8 @@ def generate_task():
         print(all_question_ids)
         
         test_data = {
-            '_id': 'daily-' + ist_now().strftime('%Y%m%d'),
-            'title': f"Daily Task - {subject_data.get('name', 'Subject')} - {chapter_data.get('name', 'Chapter')}",
+            '_id': 'practice-' + ist_now().strftime('%Y%m%d'),
+            'title': f"Practice - {subject_data.get('name', 'Subject')} - {chapter_data.get('name', 'Chapter')}",
             'duration': time_limit,
             'questions': ques,
             'total_questions': len(all_question_ids),
@@ -90,8 +90,8 @@ def generate_task():
         
         exam_data = db.get_exam(exam_id)
 
-        # Add activity for starting daily task
-        db.add_activity(session['user']['id'], "daily_task_started", {
+        # Add activity for starting practice
+        db.add_activity(session['user']['id'], "practice_started", {
             "exam": exam_data.get('name', exam_id),
             "subject": subject_data.get('name', subject_id),
             "chapter": chapter_id,
@@ -104,14 +104,14 @@ def generate_task():
         test_data['correct_count'] = 0
         test_data['incorrect_count'] = 0
 
-        session['daily_test'] = test_data
+        session['practice_test'] = test_data
 
-        return redirect(url_for('daily_task.daily_task'))
+        return redirect(url_for('practice.practice'))
 
 
 @auth_required
-@task_bp.route("/", methods=["GET", "POST"])
-def daily_task():
+@practice_bp.route("/", methods=["GET", "POST"])
+def practice():
     if 'user' not in session:
         return redirect(url_for("home"))
     
@@ -148,7 +148,7 @@ def process_question_attempt(data, user_id):
         'time_taken': time_taken
     })
 
-    test_data = session.get('daily_test', {})
+    test_data = session.get('practice_test', {})
     damage_done = 0
     if not is_correct:
         damage_done, health_remaining = apply_health_damage(test_data, question.get('level', 2))
@@ -161,7 +161,7 @@ def process_question_attempt(data, user_id):
         'status': 'correct' if is_correct else 'incorrect',
         'time': time_taken
     }
-    session['daily_test'] = test_data
+    session['practice_test'] = test_data
 
     # Check for lucky guess achievement
     if is_correct and question.get('level', 1) == 3 and time_taken <= 5:
@@ -189,13 +189,13 @@ def process_task_completion(data, user_id):
     health_remaining = data.get('health_remaining', 0)
     is_success = data.get('is_success', False)
 
-    correct_count = session['daily_test'].get('correct_count', 0)
-    incorrect_count = session['daily_test'].get('incorrect_count', 0)
+    correct_count = session['practice_test'].get('correct_count', 0)
+    incorrect_count = session['practice_test'].get('incorrect_count', 0)
     
     total_attempts = correct_count + incorrect_count
-    total_questions = session['daily_test'].get('total_questions', 0)
-    
-    db.add_activity(user_id, "daily_task_completed", {
+    total_questions = session['practice_test'].get('total_questions', 0)
+
+    db.add_activity(user_id, "practice_completed", {
         "correct_count": correct_count,
         "incorrect_count": incorrect_count,
         "time_spent": time_spent,
@@ -237,12 +237,12 @@ def process_task_completion(data, user_id):
 
 def render_daily_task_page():
     # GET request handling
-    test_data = session.get('daily_test')
+    test_data = session.get('practice_test')
     if not test_data:
-        return redirect(url_for('dashboard'))  # Redirect if no active daily test
-    
+        return redirect(url_for('dashboard'))  # Redirect if no active practice test
+
     if test_data['health'] <= 0:
-        flash("Your health is too low to continue the daily task. Please restart the test.")
+        flash("Your health is too low to continue the practice test. Please restart the test.")
         return redirect(url_for('dashboard'))
 
     # Fetch exam and subject metadata
@@ -280,9 +280,9 @@ def render_daily_task_page():
     heatmap_data = generate_heatmap_data(activities)
     streak_count = heatmap_data['current_streak']
 
-    # Render the daily task template
+    # Render the practice template
     return render_template(
-        'daily_task.html',
+        'practice.html',
         test=test_data,
         streak_count=streak_count,
         exam=exam_data,

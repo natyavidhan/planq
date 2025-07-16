@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
-{% block title %}Daily Task - {{ test.title }}{% endblock %}
+{% block title %}{{ test.title }}{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="/static/css/daily_task.css">
+<link rel="stylesheet" href="/static/css/practice.css">
 <div class="daily-task-container">
     <!-- Health bar and timer header -->
     <div class="task-header">
         <div class="task-info">
             <div class="task-badge">
-                <i class="fas fa-calendar-day"></i>
-                <span>Daily Task</span>
+                <i class="fas fa-dumbbell"></i>
+                <span>Practice Session</span>
             </div>
             <h2 class="task-title">{{ test.title }}</h2>
         </div>
@@ -38,13 +38,13 @@
         </div>
     </div>
 
-    <!-- Start screen (shown before task begins) -->
+    <!-- Start screen (shown before practice begins) -->
     <div id="start-screen" class="start-screen">
         <div class="start-content">
             <div class="start-icon">
-                <i class="fas fa-tasks"></i>
+                <i class="fas fa-dumbbell"></i>
             </div>
-            <h2>Ready for Today's Challenge?</h2>
+            <h2>Ready to Practice?</h2>
             <div class="task-details">
                 <div class="detail-item">
                     <i class="fas fa-book"></i>
@@ -63,7 +63,7 @@
                 <i class="fas fa-heart"></i> You start with 100% health. Wrong answers will reduce your health based on question difficulty.
             </p>
             <button id="start-task-btn" class="start-btn">
-                <i class="fas fa-play"></i> Start Daily Task
+                <i class="fas fa-play"></i> Start Practice
             </button>
         </div>
     </div>
@@ -98,7 +98,7 @@
         <div class="task-sidebar">
             <div class="task-progress">
                 <div class="progress-header">
-                    <h4>Daily Progress</h4>
+                    <h4>Practice Progress</h4>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
@@ -155,7 +155,7 @@
                 <i class="fas fa-redo"></i>
             </div>
             <h2>Almost There!</h2>
-            <p>You have some incorrect answers, but your streak is still alive.</p>
+            <p>You have some incorrect answers, but you can retry them.</p>
             <div class="health-display">
                 <i class="fas fa-heart"></i>
                 <span id="retry-health">75%</span> Health Remaining
@@ -182,14 +182,14 @@
             <div class="fail-icon">
                 <i class="fas fa-heartbeat broken-heart"></i>
             </div>
-            <h2>Streak Broken</h2>
-            <p>You've lost all your health points. Your streak has been reset.</p>
+            <h2>Practice Failed</h2>
+            <p>You've lost all your health points. Better luck next time!</p>
             <div class="streak-broken">
-                <i class="fas fa-fire-alt broken-fire"></i>
-                <span>0 day streak</span>
+                <i class="fas fa-dumbbell broken-fire"></i>
+                <span>Practice incomplete</span>
             </div>
             <button id="restart-btn" class="restart-btn">
-                <i class="fas fa-sync"></i> Restart Daily Task
+                <i class="fas fa-sync"></i> Restart Practice
             </button>
             <a href="/dashboard" class="dashboard-btn">
                 <i class="fas fa-home"></i> Back to Dashboard
@@ -197,16 +197,16 @@
         </div>
     </div>
 
-    <!-- Success screen (shown when task completed successfully) -->
+    <!-- Success screen (shown when practice completed successfully) -->
     <div id="success-screen" class="success-screen" style="display: none;">
         <div class="success-content">
             <div class="success-icon">
                 <i class="fas fa-check-circle"></i>
             </div>
-            <h2>Streak Extended!</h2>
+            <h2 id="success-title">Practice Complete!</h2>
             <div class="confetti-container" id="confetti-container"></div>
             
-            <div class="streak-animation">
+            <div class="streak-animation" id="streak-animation" style="display: none;">
                 <div class="streak-counter-large">
                     <i class="fas fa-fire"></i>
                     <span id="final-streak-count">{{ streak_count + 1 }}</span> day streak
@@ -237,5 +237,5 @@
 const testData = {{ test|tojson|safe }};
 const streakCount = {{ streak_count }};
 </script>
-<script src="/static/js/daily_task.js"></script>
+<script src="/static/js/practice.js"></script>
 {% endblock %}

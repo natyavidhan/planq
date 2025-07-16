@@ -15,7 +15,6 @@ def auth_required(f):
     decorated_function.__name__ = f.__name__
     return decorated_function
 
-
 def generate_heatmap_data(activities):
     # Create a date range for the last year
     end_date = ist_now().date()
@@ -52,8 +51,8 @@ def generate_heatmap_data(activities):
             if start_date <= activity_date <= end_date:
                 activity_counts[activity_date] += 1
                 
-                # Add to daily task dates if it's a completed daily task
-                if activity.get('action') == 'daily_task_completed':
+                # Add to daily task dates if it's a completed practice that extended streak
+                if activity.get('action') == 'practice_completed' and activity.get('details', {}).get('streak_extended', False):
                     daily_task_dates.add(activity_date)
     
     # Generate weeks data
@@ -160,3 +159,15 @@ def generate_heatmap_data(activities):
         'current_streak': current_streak,
         'longest_streak': longest_streak
     }
+
+def generate_ch_difficulty(chapters, questions):
+    difficulty = {}
+    for ch in chapters:
+        ques = [q['level'] for q in questions.values() if q['chapter'] == ch and q['level'] not in (None, 'N/A')]
+        avg_level = sum(ques) / len(ques) if ques else 0
+        difficulty[ch] = {
+            'name': chapters[ch]['name'],
+            'average_level': round(avg_level, 2),
+            'question_count': len(ques)
+        }
+    return difficulty

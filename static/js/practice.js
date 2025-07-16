@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update the submitAnswer function to use server-provided health and damage values
     function submitAnswer(questionId, answer, timeTaken) {
         // AJAX request to submit the answer and get validation
-        fetch('/daily-task', {
+        fetch('/practice', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -595,7 +595,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add event listener to restart button
         document.getElementById('restart-btn').addEventListener('click', () => {
-            window.location.href = '/daily-task/generate?exam=' + testData.exam + '&subject=' + testData.subject + '&chapter=' + testData.chapter + '&count=' + questionsOrder.length + '&time=' + testData.duration;
+            window.location.href = '/practice/generate?exam=' + testData.exam + '&subject=' + testData.subject + '&chapter=' + testData.chapter + '&count=' + questionsOrder.length + '&time=' + testData.duration;
         });
     }
     
@@ -699,7 +699,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // AJAX request to submit completion with timing data
-        fetch('/daily-task', {
+        fetch('/practice', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -714,6 +714,22 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         })
         .then(response => response.json())
+        .then(data => {
+            // Update success screen based on streak extension
+            if (data.streak_extended) {
+                document.getElementById('success-title').textContent = 'Streak Extended!';
+                document.getElementById('streak-animation').style.display = 'block';
+                document.getElementById('final-streak-count').textContent = data.current_streak;
+                // Create confetti for streak extension
+                createConfetti();
+            } else if (data.is_first_practice_of_day) {
+                document.getElementById('success-title').textContent = 'Practice Complete!';
+                document.getElementById('streak-animation').style.display = 'none';
+            } else {
+                document.getElementById('success-title').textContent = 'Practice Complete!';
+                document.getElementById('streak-animation').style.display = 'none';
+            }
+        })
         .catch(error => {
             console.error('Error submitting completion:', error);
         });
