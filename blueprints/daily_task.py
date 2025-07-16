@@ -84,6 +84,7 @@ def generate_task():
             'total_questions': len(all_question_ids),
             'exam': exam_id,
             'subject': subject_id,
+            'chapter': chapter_id,
         }
 
         

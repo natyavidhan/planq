@@ -114,6 +114,7 @@ class Database:
         return self.pyqs['subjects'].get(subject_id, None)
     
     def get_chapter(self, chapter_id):
+        print(chapter_id)
         chapter = self.pyqs['chapters'].get(chapter_id, None)
         questions = self.get_questions(chapter_id)
         chapter['questions'] = questions

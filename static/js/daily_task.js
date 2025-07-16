@@ -393,59 +393,9 @@ document.addEventListener('DOMContentLoaded', function() {
             updateUI();
             updateFeedbackArea(questionId, data.damage_done || 0);
             
-            // Auto advance to next question if this is the last attempt or answer is correct
-            if (isCorrect || questionAttempts[questionId] >= 2) {
-                setTimeout(() => {
-                    if (currentQuestionIndex < questionsOrder.length - 1) {
-                        currentQuestionIndex++;
-                        updateUI();
-                    }
-                }, 1500);
-            }
-        })
-        .catch(error => {
-            console.error('Error submitting answer:', error);
-        });
-    }
-    
-    // Update submitAnswer to handle the validation response
-    function submitAnswer(questionId, answer, timeTaken) {
-        // AJAX request to submit the answer and get validation
-        fetch('/daily-task', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                question_id: questionId,
-                user_answer: answer,
-                time_taken: timeTaken
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                console.error('Error:', data.error);
-                return;
-            }
-            
-            // Now update the UI based on server's validation
-            const question = questionsById[questionId];
-            const isCorrect = data.is_correct;
-            
-            // Update question status
-            question.correct = isCorrect;
-            questionStatus[questionId] = isCorrect ? 'correct' : 'incorrect';
-            
-            // Use health value from server instead of calculating locally
-            health = data.health_remaining;
-            
-            // Update the UI to show the result with server-provided values
-            updateUI();
-            updateFeedbackArea(questionId, data.damage_done || 0);
-            
-            // Auto advance to next question if this is the last attempt or answer is correct
-            if (isCorrect || questionAttempts[questionId] >= 2) {
+            // Only auto advance if this is the last attempt and answer is INCORRECT
+            // Remove auto-advancing on correct answers
+            if (!isCorrect && questionAttempts[questionId] >= 2) {
                 setTimeout(() => {
                     if (currentQuestionIndex < questionsOrder.length - 1) {
                         currentQuestionIndex++;
@@ -645,7 +595,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add event listener to restart button
         document.getElementById('restart-btn').addEventListener('click', () => {
-            window.location.href = '/daily-task/generate?exam=' + testData.exam + '&subject=' + currentSubjectId + '&count=' + questionsOrder.length + '&time=' + testData.duration;
+            window.location.href = '/daily-task/generate?exam=' + testData.exam + '&subject=' + testData.subject + '&chapter=' + testData.chapter + '&count=' + questionsOrder.length + '&time=' + testData.duration;
         });
     }
     

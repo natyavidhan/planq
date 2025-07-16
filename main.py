@@ -145,8 +145,8 @@ def logout():
     return redirect(url_for("home"))
 
 
-@auth_required
 @app.route("/dashboard")
+@auth_required
 def dashboard():
     user = db.get_user("_id", session['user']['id'])
     if not user:
