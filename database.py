@@ -504,6 +504,7 @@ class Database:
             "timestamp": ist_now()
         }
         self.activities[user_id].insert_one(activity_data)
+        return activity_data
 
     def get_activities(self, user_id):
         if user_id in self.activities.list_collection_names():

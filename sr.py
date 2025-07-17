@@ -1,4 +1,4 @@
-from utils import generate_ch_difficulty
+from utils import generate_ch_difficulty, ist_now
 from database import Database
 import math
 
@@ -13,7 +13,7 @@ class SR:
 
         self.ch_data = {}
 
-        for ch, diff in self.difficulty:
+        for ch, diff in self.difficulty.items():
             level = diff['average_level']
             decay_rate = 1 + 0.1*(level - 1)
             revision_threshold = min(25, max(5, 0.15*diff['question_count']))
@@ -63,11 +63,12 @@ class SR:
             
     def calculate_interval(self, chapter_id, last_interval, ef, quality):
         if quality <= 1.5:
-            return last_interval * (ef - self.ch_data[chapter_id]['penalty'])
+            interval = last_interval * (ef - self.ch_data[chapter_id]['penalty'])
         elif quality >= 2.5:
-            return last_interval * (ef + self.ch_data[chapter_id]['bonus'])
+            interval = last_interval * (ef + self.ch_data[chapter_id]['bonus'])
         else:
-            return last_interval * ef
+            interval = last_interval * ef
+        return max(1, round(interval))
         
     def calculate_retention(self, last_revision, interval, chapter_id):
         retention = math.exp((-self.ch_data[chapter_id]['dr']*last_revision)/interval)
@@ -75,4 +76,32 @@ class SR:
     
     def calculate_ease_factor(self, ef_old, quality):
         ef_new = ef_old + (0.1-(3-quality) * (0.08 + (3-quality) * 0.02))
-        return ef_new
+        return max(1.3, min(2.5, ef_new))
+    
+    def update_progress(self, user_id, chapter_id, practice_data):
+        if self.ch_data[chapter_id]['rt'] > len(practice_data):
+            return
+        quality = 0
+        for question in practice_data:
+            quality += (self.calculate_quality(question['status'], question['time']) / len(practice_data))
+
+        data = self.sr_db[user_id].find_one({"_id": chapter_id})
+        if not data:
+            default = self.ch_data[chapter_id]
+            data = {
+                "_id": chapter_id,
+                "ef": self.calculate_ease_factor(default['ef'], quality),
+                "last_revision": ist_now(),
+                "interval": 6,
+                "solved": []
+            }
+        else:
+            ef = data['ef']
+            data['ef'] = self.calculate_ease_factor(ef, quality)
+            interval = data['interval']
+            data['interval'] = self.calculate_interval(chapter_id, interval, data['ef'], quality)
+
+            data['last_revision'] = ist_now()
+        data['solved'].extend([i['_id'] for i in practice_data])
+        self.sr_db[user_id].update_one({"_id": chapter_id}, {"$set": data}, upsert=True)
+        
