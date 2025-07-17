@@ -8,6 +8,7 @@ import os
 import uuid
 from datetime import datetime, timedelta, timezone
 import pytz
+import time
 
 from utils import ist_now
 
@@ -28,6 +29,7 @@ def load_json_file(path, brotli_compressed=False):
 
 class Database:
     def __init__(self):
+        _start = time.time()
         self.client = MongoClient(os.getenv("MONGO_URI"), maxPoolSize=20)
         self.users = self.client['userdata']
         self.activities = self.client['activities']
@@ -47,6 +49,8 @@ class Database:
 
         with open('data/achievements.json', 'r') as f:
             self.achievements = {item['_id']: item for item in json.load(f)}
+            
+        print(f"Database initialized in {time.time() - _start:.2f} seconds")
 
     """
     User management methods

@@ -7,6 +7,7 @@ import secrets
 from urllib.parse import urlencode
 from datetime import datetime
 
+from sr import SR
 from config import CONFIG
 from database import Database
 from utils import auth_required, generate_heatmap_data
@@ -26,6 +27,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 app.config['OAUTH2_PROVIDERS'] = CONFIG
 
 db = Database()
+sr = SR(db)
 
 # Register blueprints
 app.register_blueprint(init_search_blueprint(db))
@@ -33,7 +35,7 @@ app.register_blueprint(init_question_blueprint(db))
 app.register_blueprint(init_test_blueprint(db))
 app.register_blueprint(init_api_blueprint(db))
 app.register_blueprint(init_bookmarks_blueprint(db))
-app.register_blueprint(init_practice_blueprint(db))
+app.register_blueprint(init_practice_blueprint(db, sr))
 app.register_blueprint(init_achievements_blueprint(db))
 
 # Custom filters for templates
