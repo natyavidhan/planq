@@ -44,7 +44,7 @@ class SR:
 
         self.sr_db = self.db.client["sr"]
 
-        print(f"Spaced Repetition initialized in {time.time()-_start:.2f} seconds")
+        print(f"Spaced Repetition Module initialized in {time.time()-_start:.2f} seconds")
 
     def calculate_quality(self, status, time_taken):
         if (time_taken < 5000 and status == False) or status == None:
@@ -77,33 +77,32 @@ class SR:
         return max(1.3, min(2.5, ef_new))
 
     def update_progress(self, user_id, chapter_id, practice_data):
-        if self.ch_data[chapter_id]["rt"] > len(practice_data):
+        if self.ch_data[chapter_id]["rt"] > len(set(i['details']['question_id'] for i in practice_data)):
             return
-        quality = 0
-        for question in practice_data:
-            question = question['details']
-            quality += self.calculate_quality(
-                question["is_correct"], question["time_taken"]
-            ) / len(practice_data)
+        
+        total = sum(
+            self.calculate_quality(q['details']["is_correct"], q['details']["time_taken"])
+            for q in practice_data
+        )
+        quality = total / len(practice_data)
 
         data = self.sr_db[user_id].find_one({"_id": chapter_id})
+        now = ist_now()
         if not data:
             default = self.ch_data[chapter_id]
             data = {
                 "_id": chapter_id,
                 "ef": self.calculate_ease_factor(default["ef"], quality),
-                "last_revision": ist_now(),
+                "last_revision": now,
                 "interval": 6,
-                "solved": [],
+                "attempted": [],
             }
         else:
-            ef = data["ef"]
-            data["ef"] = self.calculate_ease_factor(ef, quality)
-            interval = data["interval"]
+            data["ef"] = self.calculate_ease_factor(data["ef"], quality)
             data["interval"] = self.calculate_interval(
-                chapter_id, interval, data["ef"], quality
+                chapter_id, data['interval'], data["ef"], quality
             )
+            data["last_revision"] = now
 
-            data["last_revision"] = ist_now()
-        data["solved"].extend([i["_id"] for i in practice_data])
+        data["attempted"].extend([i["_id"] for i in practice_data])
         self.sr_db[user_id].update_one({"_id": chapter_id}, {"$set": data}, upsert=True)

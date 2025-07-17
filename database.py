@@ -50,6 +50,12 @@ class Database:
         with open('data/achievements.json', 'r') as f:
             self.achievements = {item['_id']: item for item in json.load(f)}
             
+        self.weights = {
+            "easy": 0.4,
+            "med": 0.4,
+            "hard": 0.2,
+        }
+            
         print(f"Database initialized in {time.time() - _start:.2f} seconds")
 
     """
@@ -185,26 +191,96 @@ class Database:
                 and q.get('chapter') in chapters
             ]
 
-            # Separate MCQs and Numericals
-
-            if ratio:
-                mcqs = [q['_id'] for q in filtered_questions if q.get('type') == 'singleCorrect']
-                numericals = [q['_id'] for q in filtered_questions if q.get('type') == 'numerical']
+            # Apply both type ratio and difficulty weights
+            if isinstance(ratio, (int, float)) and 0 <= ratio <= 1:
+                # First separate by question type (MCQ vs numerical)
+                mcqs = [q for q in filtered_questions if q.get('type') == 'singleCorrect']
+                numericals = [q for q in filtered_questions if q.get('type') == 'numerical']
+                
                 # Determine number of each type
                 num_mcqs = int(ques_per_subject * ratio)
                 num_numericals = ques_per_subject - num_mcqs
-
-                # Randomly sample without replacement
-                selected_mcqs = random.sample(mcqs, min(len(mcqs), num_mcqs))
-                selected_numericals = random.sample(numericals, min(len(numericals), num_numericals))
-
-                test[subject_id].extend(selected_mcqs + selected_numericals)
+                
+                # Apply difficulty weights to MCQs
+                if mcqs:
+                    # Group MCQs by difficulty level
+                    mcqs_by_level = {
+                        1: [q for q in mcqs if q.get('level', 2) == 1],  # Easy
+                        2: [q for q in mcqs if q.get('level', 2) == 2],  # Medium
+                        3: [q for q in mcqs if q.get('level', 2) == 3]   # Hard
+                    }
+                    
+                    # Calculate number of questions to select from each difficulty level
+                    mcq_selected = self._select_by_difficulty(mcqs_by_level, num_mcqs)
+                    test[subject_id].extend([q['_id'] for q in mcq_selected])
+                
+                # Apply difficulty weights to Numericals
+                if numericals:
+                    # Group numericals by difficulty level
+                    numericals_by_level = {
+                        1: [q for q in numericals if q.get('level', 2) == 1],  # Easy
+                        2: [q for q in numericals if q.get('level', 2) == 2],  # Medium
+                        3: [q for q in numericals if q.get('level', 2) == 3]   # Hard
+                    }
+                    
+                    # Calculate number of questions to select from each difficulty level
+                    numerical_selected = self._select_by_difficulty(numericals_by_level, num_numericals)
+                    test[subject_id].extend([q['_id'] for q in numerical_selected])
             else:
-                # Randomly sample questions without replacement
-                selected_questions = random.sample(filtered_questions, min(len(filtered_questions), ques_per_subject))
+                # Apply only difficulty weights
+                questions_by_level = {
+                    1: [q for q in filtered_questions if q.get('level', 2) == 1],  # Easy
+                    2: [q for q in filtered_questions if q.get('level', 2) == 2],  # Medium
+                    3: [q for q in filtered_questions if q.get('level', 2) == 3]   # Hard
+                }
+                
+                selected_questions = self._select_by_difficulty(questions_by_level, ques_per_subject)
                 test[subject_id].extend([q['_id'] for q in selected_questions])
 
         return test
+    
+    def _select_by_difficulty(self, questions_by_level, total_count):
+        level_to_weight = {
+            1: "easy",
+            2: "med",
+            3: "hard"
+        }
+
+        # Calculate target counts
+        total_weight = sum(self.weights.values())
+        target_counts = {
+            lvl: int(total_count * (self.weights[level_to_weight[lvl]] / total_weight))
+            for lvl in list(level_to_weight.keys())
+        }
+
+        # Adjust last level for remainder
+        allocated = sum(target_counts.values())
+        if allocated < total_count:
+            target_counts[list(level_to_weight.keys())[-1]] += total_count - allocated
+
+        # Select questions per level
+        selected_questions = []
+        for lvl in list(level_to_weight.keys()):
+            pool = questions_by_level[lvl]
+            count = min(len(pool), target_counts[lvl])
+            if count > 0:
+                selected_questions.extend(random.sample(pool, count))
+
+        # Fallback: fill remaining from lower levels
+        deficit = total_count - len(selected_questions)
+        if deficit > 0:
+            for lvl in reversed(list(level_to_weight.keys())):  # Hard → Medium → Easy
+                pool = [q for q in questions_by_level[lvl] if q not in selected_questions]
+                if pool:
+                    take = min(deficit, len(pool))
+                    selected_questions.extend(random.sample(pool, take))
+                    deficit -= take
+                if deficit == 0:
+                    break
+
+        return selected_questions
+
+
     
     def add_test(self, user_id, metadata, questions):
         test_id = str(uuid.uuid4())
