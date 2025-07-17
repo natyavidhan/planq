@@ -9,7 +9,7 @@ import uuid
 from datetime import datetime, timedelta, timezone
 import pytz
 
-from utils import ist_now, generate_ch_difficulty
+from utils import ist_now
 
 @lru_cache(maxsize=None)
 def load_json_file(path, brotli_compressed=False):
@@ -47,8 +47,6 @@ class Database:
 
         with open('data/achievements.json', 'r') as f:
             self.achievements = {item['_id']: item for item in json.load(f)}
-
-        self.difficulty = generate_ch_difficulty(self.pyqs['chapters'], self.pyqs['questions'])
 
     """
     User management methods
