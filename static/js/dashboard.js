@@ -311,6 +311,87 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Add new event listener for chapter selection to fetch SR data
+    chapterFilter.addEventListener('change', function () {
+        const chapterId = this.value;
+        const warningDiv = document.getElementById('thresholdWarning');
+        
+        if (chapterId) {
+            fetchSRData(chapterId);
+        } else {
+            // Reset to default values if no chapter selected
+            document.getElementById('questionCount').value = 5;
+            document.getElementById('timeLimit').value = 30;
+            if (warningDiv) {
+                warningDiv.style.display = 'none';
+            }
+        }
+    });
+
+    // Add event listener to question count input to check threshold
+    document.getElementById('questionCount').addEventListener('input', function() {
+        checkQuestionThreshold();
+    });
+
+    // Add event listeners to the number input buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('.number-input button')) {
+            // Small delay to ensure the input value has been updated
+            setTimeout(checkQuestionThreshold, 10);
+        }
+    });
+
+    // Also listen for change events on the question count input
+    document.getElementById('questionCount').addEventListener('change', function() {
+        checkQuestionThreshold();
+    });
+
+    function fetchSRData(chapterId) {
+        fetch(`/api/practice/sr/${chapterId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Pre-fill the inputs with recommended values
+                const questionCountInput = document.getElementById('questionCount');
+                const timeLimitInput = document.getElementById('timeLimit');
+                
+                questionCountInput.value = data.questions;
+                timeLimitInput.value = Math.ceil(data.time / 60000); // Convert ms to minutes
+                
+                // Store the threshold for warning checks
+                questionCountInput.dataset.threshold = data.questions;
+                
+                // Check if current value is below threshold
+                checkQuestionThreshold();
+            })
+            .catch(error => {
+                console.error('Error fetching SR data:', error);
+                // Fall back to defaults
+                document.getElementById('questionCount').value = 5;
+                document.getElementById('timeLimit').value = 30;
+            });
+    }
+
+    function checkQuestionThreshold() {
+        const questionCountInput = document.getElementById('questionCount');
+        const warningDiv = document.getElementById('thresholdWarning');
+        
+        if (!questionCountInput || !warningDiv) return;
+        
+        const threshold = parseInt(questionCountInput.dataset.threshold);
+        const currentValue = parseInt(questionCountInput.value);
+        
+        // Only show warning if we have a threshold set and current value is below it
+        if (threshold && !isNaN(threshold) && !isNaN(currentValue) && currentValue < threshold) {
+            warningDiv.style.display = 'block';
+            warningDiv.innerHTML = `
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Warning: Questions below ${threshold} won't count as a revision for this chapter.</span>
+            `;
+        } else {
+            warningDiv.style.display = 'none';
+        }
+    }
+
     function fetchSubjects(examId) {
         // Show loading state
         subjectFilter.innerHTML = '<option value="">Loading...</option>';

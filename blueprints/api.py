@@ -1,15 +1,17 @@
 from flask import Blueprint, request, jsonify, session
 from database import Database
+from sr import SR
 from utils import auth_required, ist_now
 from datetime import datetime, timezone
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
 db:Database = None
+sr:SR = None
 
-def init_blueprint(database):
-    """Initialize the blueprint with the database instance"""
-    global db
+def init_blueprint(database, spaced_repetition):
+    global db, sr
+    sr = spaced_repetition
     db = database
     return api_bp
 
@@ -177,3 +179,24 @@ def get_activities():
     paginated_activities = db.get_paginated_activities(session['user']['id'], page, per_page)
     
     return jsonify(paginated_activities)
+
+@api_bp.route('/practice/sr/<chapter_id>', methods=['GET'])
+def get_sr_practice(chapter_id):
+    try:
+        if chapter_id not in sr.ch_data:
+            return jsonify({"error": "Chapter not found"}), 404
+            
+        ques = sr.ch_data[chapter_id]['rt']
+        time = 0
+        levels = [ques*0.4, ques*0.4, ques*0.2]
+        for i, level in enumerate(['easy', 'med', 'hard']):
+            time += round(sr.meta[level]['avg_time'] * levels[i])
+        
+        return jsonify({
+            "questions": int(ques),
+            "time": int(time),
+            "chapter_name": sr.ch_data[chapter_id]['name']
+        })
+    except Exception as e:
+        print(f"Error fetching SR data for chapter {chapter_id}: {str(e)}")
+        return jsonify({"error": "Failed to fetch SR data"}), 500

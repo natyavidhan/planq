@@ -77,6 +77,10 @@ def generate_task():
     question_count = int(request.args.get("count", 10))
     time_limit = int(request.args.get("time", 30))
 
+    # Check if question count meets SR threshold for this chapter
+    sr_threshold = sr.ch_data.get(chapter_id, {}).get('rt', 5)
+    is_revision_eligible = question_count >= sr_threshold
+
     ques = db.generate_test(
         exam_id=exam_id,
         subjects={subject_id: [chapter_id]},
@@ -101,6 +105,8 @@ def generate_task():
         "exam": exam_id,
         "subject": subject_id,
         "chapter": chapter_id,
+        "is_revision_eligible": is_revision_eligible,
+        "sr_threshold": sr_threshold,
     }
 
     exam_data = db.get_exam(exam_id)
@@ -115,6 +121,7 @@ def generate_task():
             "chapter": chapter_data.get("name", chapter_id),
             "chapter_id": chapter_id,
             "count": question_count,
+            "is_revision_eligible": is_revision_eligible,
         },
     )
 
@@ -261,6 +268,16 @@ def process_task_completion(data, user_id):
         except (ValueError, AttributeError) as e:
             continue
 
+    # Only update SR progress if revision eligible
+    test_data = session.get("practice_test", {})
+    if test_data.get("is_revision_eligible", False):
+        sr.update_progress(
+            user_id,
+            test_data["chapter"],
+            session["solved"],
+        )
+    
+    # Add activity with revision status
     db.add_activity(
         user_id,
         "practice_completed",
@@ -271,14 +288,10 @@ def process_task_completion(data, user_id):
             "question_timings": question_timings,
             "health_remaining": health_remaining,
             "is_success": is_success,
-            "streak_extended": is_first_practice_of_day,  # Include in the activity details
+            "streak_extended": is_first_practice_of_day,
+            "is_revision_eligible": test_data.get("is_revision_eligible", False),
+            "sr_threshold": test_data.get("sr_threshold", 5),
         },
-    )
-    
-    sr.update_progress(
-        user_id,
-        session["practice_test"]["chapter"],
-        session["solved"],
     )
 
     activities = db.get_activities(user_id)

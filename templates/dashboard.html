@@ -561,22 +561,28 @@
                     <div class="option-group">
                         <label>Questions:</label>
                         <div class="number-input">
-                            <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                            <button type="button" onclick="decrementQuestions()">-</button>
                             <input type="number" min="5" max="30" value="5" id="questionCount">
-                            <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                            <button type="button" onclick="incrementQuestions()">+</button>
                         </div>
                     </div>
                     
                     <div class="option-group">
                         <label>Time (minutes):</label>
                         <div class="number-input">
-                            <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                            <button type="button" onclick="decrementTime()">-</button>
                             <input type="number" min="5" max="120" value="30" id="timeLimit">
-                            <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                            <button type="button" onclick="incrementTime()">+</button>
                         </div>
                     </div>
                 </div>
                 
+                <!-- Add threshold warning message -->
+                <div id="thresholdWarning" class="threshold-warning" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Warning message will appear here</span>
+                </div>
+
                 <div class="form-actions">
                     <button id="startDailyTask" class="btn btn-primary">Start</button>
                 </div>
@@ -584,5 +590,44 @@
         </div>
     </div>
 </div>
+<script>
+    function decrementQuestions() {
+        const input = document.getElementById('questionCount');
+        const currentValue = parseInt(input.value);
+        const minValue = parseInt(input.min);
+        if (currentValue > minValue) {
+            input.value = currentValue - 1;
+            checkQuestionThreshold();
+        }
+    }
+
+    function incrementQuestions() {
+        const input = document.getElementById('questionCount');
+        const currentValue = parseInt(input.value);
+        const maxValue = parseInt(input.max);
+        if (currentValue < maxValue) {
+            input.value = currentValue + 1;
+            checkQuestionThreshold();
+        }
+    }
+
+    function decrementTime() {
+        const input = document.getElementById('timeLimit');
+        const currentValue = parseInt(input.value);
+        const minValue = parseInt(input.min);
+        if (currentValue > minValue) {
+            input.value = currentValue - 1;
+        }
+    }
+
+    function incrementTime() {
+        const input = document.getElementById('timeLimit');
+        const currentValue = parseInt(input.value);
+        const maxValue = parseInt(input.max);
+        if (currentValue < maxValue) {
+            input.value = currentValue + 1;
+        }
+    }
+</script>
 <script src="/static/js/dashboard.js"></script>
 {% endblock %}
