@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update the submitAnswer function to use server-provided health and damage values
     function submitAnswer(questionId, answer, timeTaken) {
         // AJAX request to submit the answer and get validation
-        fetch('/practice', {
+        fetch('/practice/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -699,7 +699,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // AJAX request to submit completion with timing data
-        fetch('/practice', {
+        fetch('/practice/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

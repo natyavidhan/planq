@@ -268,14 +268,12 @@ def process_task_completion(data, user_id):
         except (ValueError, AttributeError) as e:
             continue
 
-    # Only update SR progress if revision eligible
     test_data = session.get("practice_test", {})
-    if test_data.get("is_revision_eligible", False):
-        sr.update_progress(
-            user_id,
-            test_data["chapter"],
-            session["solved"],
-        )
+    sr.update_progress(
+        user_id,
+        test_data["chapter"],
+        session["solved"],
+    )
     
     # Add activity with revision status
     db.add_activity(
@@ -328,11 +326,9 @@ def process_task_completion(data, user_id):
         "streak_extended": is_first_practice_of_day,  # If it's first practice, streak is extended
     }
     
-    # Clean up all session keys created during practice
-    if "practice_test" in session:
-        session.pop("practice_test")
-    if "solved" in session:
-        session.pop("solved")
+    for key in ["practice_test", "solved"]:
+        session.pop(key, None)
+    session.modified = True
     
     return jsonify(response_data)
 

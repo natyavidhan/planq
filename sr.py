@@ -2,7 +2,7 @@ from utils import generate_ch_difficulty, ist_now
 from database import Database
 import math
 import time
-
+from datetime import datetime, timedelta
 
 class SR:
     def __init__(self, db: Database):
@@ -19,7 +19,7 @@ class SR:
         for ch, diff in self.difficulty.items():
             level = diff["average_level"]
             decay_rate = 1 + 0.1 * (level - 1)
-            revision_threshold = min(25, max(5, 0.15 * diff["question_count"]))
+            revision_threshold = round(min(25, max(5, 0.15 * diff["question_count"])))
             ease_factor = 2.5 - (0.3 * (level - 1))
             penalty = 0.1 + 0.05 * (level - 1)
             bonus = 0.05 + 0.03 * (level - 1)
@@ -75,9 +75,14 @@ class SR:
     def calculate_ease_factor(self, ef_old, quality):
         ef_new = ef_old + (0.1 - (3 - quality) * (0.08 + (3 - quality) * 0.02))
         return max(1.3, min(2.5, ef_new))
+    
+    def calculate_delta(self, last_revision: datetime, interval):
+        delta = ((last_revision + timedelta(days=interval)) - ist_now()).days
+        return delta
 
     def update_progress(self, user_id, chapter_id, practice_data):
         if self.ch_data[chapter_id]["rt"] > len(set(i['details']['question_id'] for i in practice_data)):
+            print("Not enough questions attempted for chapter:", chapter_id)
             return
         
         total = sum(
@@ -96,8 +101,11 @@ class SR:
                 "last_revision": now,
                 "interval": 6,
                 "attempted": [],
+                "delta": 0
             }
         else:
+            delta = self.calculate_delta(data["last_revision"], data["interval"])
+            data["delta"] = delta
             data["ef"] = self.calculate_ease_factor(data["ef"], quality)
             data["interval"] = self.calculate_interval(
                 chapter_id, data['interval'], data["ef"], quality
