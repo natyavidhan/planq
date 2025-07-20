@@ -258,24 +258,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Fetch exams from API instead of using server-rendered data
     function fetchExams() {
-        // Show loading state
-        examFilter.innerHTML = '<option value="">Loading...</option>';
+        return new Promise((resolve, reject) => {
+            // Show loading state
+            const examFilter = document.getElementById('examFilter');
+            examFilter.innerHTML = '<option value="">Loading...</option>';
 
-        fetch('/api/exams')
-            .then(response => response.json())
-            .then(data => {
-                let options = '<option value="">Select Exam</option>';
-                if (data.exams && Array.isArray(data.exams)) {
-                    data.exams.forEach(exam => {
-                        options += `<option value="${exam._id}">${exam.name}</option>`;
-                    });
-                }
-                examFilter.innerHTML = options;
-            })
-            .catch(error => {
-                console.error('Error fetching exams:', error);
-                examFilter.innerHTML = '<option value="">Error loading exams</option>';
-            });
+            fetch('/api/exams')
+                .then(response => response.json())
+                .then(data => {
+                    let options = '<option value="">Select Exam</option>';
+                    if (data.exams && Array.isArray(data.exams)) {
+                        data.exams.forEach(exam => {
+                            options += `<option value="${exam._id}">${exam.name}</option>`;
+                        });
+                    }
+                    examFilter.innerHTML = options;
+                    resolve();
+                })
+                .catch(error => {
+                    console.error('Error fetching exams:', error);
+                    examFilter.innerHTML = '<option value="">Error loading exams</option>';
+                    reject(error);
+                });
+        });
     }
 
     examFilter.addEventListener('change', function () {
@@ -347,10 +352,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function fetchSRData(chapterId) {
-        fetch(`/api/practice/sr/${chapterId}`)
-            .then(response => response.json())
-            .then(data => {
-                // Pre-fill the inputs with recommended values
+        fetch(`/api/practice/sr/${chapterId}`).then(response => response.json()).then(data => {
                 const questionCountInput = document.getElementById('questionCount');
                 const timeLimitInput = document.getElementById('timeLimit');
                 
@@ -844,5 +846,64 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             </div>
         `;
+    }
+
+    // Practice Chapter button functionality
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('practice-chapter-btn') || e.target.closest('.practice-chapter-btn')) {
+            const btn = e.target.classList.contains('practice-chapter-btn') ? e.target : e.target.closest('.practice-chapter-btn');
+            const chapterId = btn.getAttribute('data-chapter');
+            const examName = btn.getAttribute('data-exam');
+            const subjectName = btn.getAttribute('data-subject');
+            
+            if (chapterId) {
+                // Find the exam and subject IDs from the practice modal
+                // We'll need to open the modal and pre-select the options
+                openPracticeModal(examName, subjectName, chapterId);
+            }
+        }
+    });
+
+    function openPracticeModal(examName, subjectName, chapterId) {
+        const extendStreakModal = document.getElementById('extend-streak-modal');
+        const modalTitle = document.querySelector('#extend-streak-modal .modal-header h3');
+        
+        // Update modal title
+        modalTitle.innerHTML = '<i class="fas fa-brain"></i> Practice Chapter';
+        
+        // Show the modal
+        extendStreakModal.style.display = 'block';
+        
+        // Fetch exams and pre-select the appropriate ones
+        fetchExams().then(() => {
+            // Try to find and select the exam
+            const examSelect = document.getElementById('examFilter');
+            for (let option of examSelect.options) {
+                if (option.text === examName) {
+                    examSelect.value = option.value;
+                    examSelect.dispatchEvent(new Event('change'));
+                    
+                    // Wait a bit for subjects to load, then select subject
+                    setTimeout(() => {
+                        const subjectSelect = document.getElementById('subjectFilter');
+                        for (let option of subjectSelect.options) {
+                            if (option.text === subjectName) {
+                                subjectSelect.value = option.value;
+                                subjectSelect.dispatchEvent(new Event('change'));
+                                
+                                // Wait for chapters to load, then select chapter
+                                setTimeout(() => {
+                                    const chapterSelect = document.getElementById('chapterFilter');
+                                    chapterSelect.value = chapterId;
+                                    chapterSelect.dispatchEvent(new Event('change'));
+                                }, 500);
+                                break;
+                            }
+                        }
+                    }, 500);
+                    break;
+                }
+            }
+        });
     }
 });

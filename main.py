@@ -167,6 +167,27 @@ def dashboard():
     
     exams = db.get_exams()
     
+    sr_chapters = sr.get_chapters(session['user']['id'], sort=True, limit=5)
+    new_sr_chapters = []
+    for chapter in sr_chapters:
+        ch = db.get_chapter(chapter['_id'])
+        exam = db.get_exam(ch['exam'])['name']
+        sub = db.get_subject(ch['subject'])['name']
+        
+        ques = sr.unique_questions_solved(session['user']['id'], chapter['_id'])
+
+        new_sr_chapters.append({
+            'chapter_id': chapter['_id'],
+            'ef': chapter['ef'],
+            'last_revision': chapter['last_revision'],
+            'interval': chapter['interval'],
+            'delta': chapter['delta'],
+            'exam': exam,
+            'subject': sub,
+            'title': ch['name'],
+            'questions': len(ques),
+        })
+    
     return render_template("dashboard.html", 
                           tests=tests, 
                           activity=all_activities[:6],
@@ -175,7 +196,8 @@ def dashboard():
                           exams=exams,
                           current_page=page,
                           total_activities=len(all_activities),
-                          ac=db.achievements)
+                          ac=db.achievements,
+                          sr_chapters=new_sr_chapters)
 
 
 @app.context_processor
