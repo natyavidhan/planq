@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% block title %}{{ subject.name }} - Chapters{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/track.css">
+
+<div class="exam-container">
+    <!-- Header Section -->
+    <div class="exam-header">
+        <div class="breadcrumb">
+            <a href="/track" class="breadcrumb-item">
+                <i class="fas fa-home"></i> Track Progress
+            </a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="/track/{{ exam._id }}" class="breadcrumb-item">{{ exam.name }}</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-item active">{{ subject.name }}</span>
+        </div>
+        
+        <div class="exam-title-section">
+            <h1 class="exam-title">{{ subject.name }}</h1>
+            <div class="exam-stats">
+                <div class="stat-badge">
+                    <i class="fas fa-book-open"></i>
+                    <span>{{ chapters|length }} Chapter{{ 's' if chapters|length != 1 else '' }}</span>
+                </div>
+                <div class="stat-badge">
+                    <i class="fas fa-question-circle"></i>
+                    <span>{{ total_questions }} Total Questions</span>
+                </div>
+                <div class="stat-badge">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>{{ exam.name }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chapters Grid -->
+    <div class="subjects-section">
+        <h2 class="section-title">
+            <i class="fas fa-book"></i>
+            Chapters
+        </h2>
+        
+        {% if chapters and chapters|length > 0 %}
+            <div class="chapters-grid">
+                {% for chapter in chapters %}
+                    <div class="chapter-card">
+                        <div class="chapter-icon">
+                            <i class="fas fa-bookmark"></i>
+                        </div>
+                        <div class="chapter-content">
+                            <h3 class="chapter-name">{{ chapter.name }}</h3>
+                            <p class="chapter-description">
+                                Practice with {{ chapter.question_count or '0' }} question{{ 's' if chapter.question_count != 1 else '' }} 
+                                from this chapter
+                            </p>
+                            <div class="chapter-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">{{ chapter.question_count or '0' }}</span>
+                                    <span class="stat-label">Questions</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value difficulty-{{ (chapter.difficulty or 'Mixed')|lower }}">{{ chapter.difficulty or 'Mixed' }}</span>
+                                    <span class="stat-label">Difficulty</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chapter-actions">
+                            {% if chapter.question_count and chapter.question_count > 0 %}
+                                <button class="chapter-practice-btn" 
+                                        data-exam="{{ exam._id }}" 
+                                        data-subject="{{ subject._id }}" 
+                                        data-chapter="{{ chapter._id }}"
+                                        data-chapter-name="{{ chapter.name }}">
+                                    <i class="fas fa-play"></i>
+                                    Practice Now
+                                </button>
+                            {% else %}
+                                <button class="chapter-practice-btn disabled" disabled>
+                                    <i class="fas fa-ban"></i>
+                                    No Questions
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>No Chapters Found</h3>
+                <p>This subject doesn't have any chapters configured yet.</p>
+                <a href="/track/{{ exam._id }}" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Subjects
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Practice Modal -->
+<div id="practice-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-dumbbell"></i> Start Practice Session</h3>
+            <span class="modal-close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="practice-form">
+                <div class="practice-chapter-info">
+                    <h4 id="selected-chapter-name">Chapter Name</h4>
+                    <p>Configure your practice session below</p>
+                </div>
+                
+                <div class="practice-options">
+                    <div class="option-group">
+                        <label>Number of Questions:</label>
+                        <div class="number-input">
+                            <button type="button" onclick="decrementQuestions()">-</button>
+                            <input type="number" min="5" max="30" value="10" id="questionCount">
+                            <button type="button" onclick="incrementQuestions()">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label>Time Limit (minutes):</label>
+                        <div class="number-input">
+                            <button type="button" onclick="decrementTime()">-</button>
+                            <input type="number" min="5" max="120" value="30" id="timeLimit">
+                            <button type="button" onclick="incrementTime()">+</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="thresholdWarning" class="threshold-warning" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Practice at least <span id="threshold-count">5</span> questions to contribute to spaced repetition!</span>
+                </div>
+
+                <div class="form-actions">
+                    <button id="startPractice" class="btn btn-primary">
+                        <i class="fas fa-play"></i> Start Practice
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedChapterData = {};
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Practice button handlers
+    document.querySelectorAll('.chapter-practice-btn').forEach(btn => {
+        if (!btn.disabled) {
+            btn.addEventListener('click', function() {
+                selectedChapterData = {
+                    exam: this.dataset.exam,
+                    subject: this.dataset.subject,
+                    chapter: this.dataset.chapter,
+                    name: this.dataset.chapterName
+                };
+                
+                document.getElementById('selected-chapter-name').textContent = selectedChapterData.name;
+                document.getElementById('practice-modal').style.display = 'block';
+                
+                // Reset form values
+                document.getElementById('questionCount').value = 10;
+                document.getElementById('timeLimit').value = 30;
+                checkQuestionThreshold();
+            });
+        }
+    });
+
+    // Modal close handlers
+    document.querySelectorAll('.modal-close').forEach(closeBtn => {
+        closeBtn.addEventListener('click', function() {
+            this.closest('.modal').style.display = 'none';
+        });
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = 'none';
+        }
+    });
+
+    // Start practice button
+    document.getElementById('startPractice').addEventListener('click', function() {
+        const questionCount = document.getElementById('questionCount').value;
+        const timeLimit = document.getElementById('timeLimit').value;
+        
+        if (selectedChapterData.chapter) {
+            const url = `/practice/generate?exam=${selectedChapterData.exam}&subject=${selectedChapterData.subject}&chapter=${selectedChapterData.chapter}&count=${questionCount}&time=${timeLimit}`;
+            window.location.href = url;
+        }
+    });
+
+    // Question count input handler
+    document.getElementById('questionCount').addEventListener('input', checkQuestionThreshold);
+});
+
+function decrementQuestions() {
+    const input = document.getElementById('questionCount');
+    const currentValue = parseInt(input.value);
+    const minValue = parseInt(input.min);
+    if (currentValue > minValue) {
+        input.value = currentValue - 1;
+        checkQuestionThreshold();
+    }
+}
+
+function incrementQuestions() {
+    const input = document.getElementById('questionCount');
+    const currentValue = parseInt(input.value);
+    const maxValue = parseInt(input.max);
+    if (currentValue < maxValue) {
+        input.value = currentValue + 1;
+        checkQuestionThreshold();
+    }
+}
+
+function decrementTime() {
+    const input = document.getElementById('timeLimit');
+    const currentValue = parseInt(input.value);
+    const minValue = parseInt(input.min);
+    if (currentValue > minValue) {
+        input.value = currentValue - 1;
+    }
+}
+
+function incrementTime() {
+    const input = document.getElementById('timeLimit');
+    const currentValue = parseInt(input.value);
+    const maxValue = parseInt(input.max);
+    if (currentValue < maxValue) {
+        input.value = currentValue + 1;
+    }
+}
+
+function checkQuestionThreshold() {
+    const questionCount = parseInt(document.getElementById('questionCount').value);
+    const warningDiv = document.getElementById('thresholdWarning');
+    const threshold = 5; // Default threshold, you can make this dynamic if needed
+    
+    if (questionCount < threshold) {
+        warningDiv.style.display = 'block';
+        document.getElementById('threshold-count').textContent = threshold;
+    } else {
+        warningDiv.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}
