@@ -16,7 +16,17 @@ def init_blueprint(database):
 def search_page():
     """Frontend route for the search page"""
     query = request.args.get('query', '')
-    return render_template('search.html', query=query)
+    
+    # Get filter parameters from URL
+    exam_id = request.args.get('exam', '')
+    subject_id = request.args.get('subject', '')
+    chapter_id = request.args.get('chapter', '')
+    
+    return render_template('search.html', 
+                         query=query,
+                         initial_exam=exam_id,
+                         initial_subject=subject_id,
+                         initial_chapter=chapter_id)
 
 @search_bp.route('/filters', methods=['GET'])
 def filters_api():

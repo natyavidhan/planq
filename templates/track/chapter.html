@@ -177,10 +177,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('selected-chapter-name').textContent = selectedChapterData.name;
                 document.getElementById('practice-modal').style.display = 'block';
                 
-                // Reset form values
-                document.getElementById('questionCount').value = 10;
-                document.getElementById('timeLimit').value = 30;
-                checkQuestionThreshold();
+                // Fetch SR data for this chapter to pre-fill inputs
+                fetchSRData(selectedChapterData.chapter);
             });
         }
     });
@@ -212,6 +210,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Question count input handler
     document.getElementById('questionCount').addEventListener('input', checkQuestionThreshold);
+    
+    // Add event listeners to the number input buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('#practice-modal .number-input button')) {
+            // Small delay to ensure the input value has been updated
+            setTimeout(checkQuestionThreshold, 10);
+        }
+    });
+
+    // Also listen for change events on the question count input
+    document.getElementById('questionCount').addEventListener('change', function() {
+        checkQuestionThreshold();
+    });
 });
 
 function decrementQuestions() {
@@ -253,16 +264,65 @@ function incrementTime() {
 }
 
 function checkQuestionThreshold() {
-    const questionCount = parseInt(document.getElementById('questionCount').value);
+    const questionCountInput = document.getElementById('questionCount');
     const warningDiv = document.getElementById('thresholdWarning');
-    const threshold = 5; // Default threshold, you can make this dynamic if needed
     
-    if (questionCount < threshold) {
+    if (!questionCountInput || !warningDiv) return;
+    
+    const threshold = parseInt(questionCountInput.dataset.threshold);
+    const currentValue = parseInt(questionCountInput.value);
+    
+    // Only show warning if we have a threshold set and current value is below it
+    if (threshold && !isNaN(threshold) && !isNaN(currentValue) && currentValue < threshold) {
         warningDiv.style.display = 'block';
+        warningDiv.innerHTML = `
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Practice at least ${threshold} questions to contribute to spaced repetition!</span>
+        `;
         document.getElementById('threshold-count').textContent = threshold;
+    } else if (!threshold || isNaN(threshold)) {
+        // Fall back to default threshold check
+        const defaultThreshold = 5;
+        if (currentValue < defaultThreshold) {
+            warningDiv.style.display = 'block';
+            warningDiv.innerHTML = `
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Practice at least ${defaultThreshold} questions to contribute to spaced repetition!</span>
+            `;
+            document.getElementById('threshold-count').textContent = defaultThreshold;
+        } else {
+            warningDiv.style.display = 'none';
+        }
     } else {
         warningDiv.style.display = 'none';
     }
+}
+
+function fetchSRData(chapterId) {
+    fetch(`/api/practice/sr/${chapterId}`)
+        .then(response => response.json())
+        .then(data => {
+            const questionCountInput = document.getElementById('questionCount');
+            const timeLimitInput = document.getElementById('timeLimit');
+            
+            questionCountInput.value = data.questions;
+            timeLimitInput.value = Math.ceil(data.time / 60000); // Convert ms to minutes
+            
+            // Store the threshold for warning checks
+            questionCountInput.dataset.threshold = data.questions;
+            
+            // Check if current value is below threshold
+            checkQuestionThreshold();
+        })
+        .catch(error => {
+            console.error('Error fetching SR data:', error);
+            // Fall back to defaults and clear threshold
+            const questionCountInput = document.getElementById('questionCount');
+            questionCountInput.value = 10;
+            questionCountInput.dataset.threshold = '';
+            document.getElementById('timeLimit').value = 30;
+            checkQuestionThreshold();
+        });
 }
 </script>
 {% endblock %}

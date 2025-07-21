@@ -36,7 +36,7 @@
             <div class="filters-container">
                 <div class="filter-group">
                     <label>Exam:</label>
-                    <select id="examFilter" class="form-select">
+                    <select id="examFilter" class="form-select" data-initial="{{ initial_exam }}">
                         <option value="">Select Exam</option>
                         <option value="b3b5a8d8-f409-4e01-8fd4-043d3055db5e">JEE Main</option>
                         <option value="6d34f7cd-c80e-4a42-8c35-2b167f459c06">JEE Advanced</option>
@@ -52,14 +52,14 @@
                 
                 <div class="filter-group">
                     <label>Subject:</label>
-                    <select id="subjectFilter" class="form-select" disabled>
+                    <select id="subjectFilter" class="form-select" data-initial="{{ initial_subject }}" disabled>
                         <option value="">Select Subject</option>
                     </select>
                 </div>
                 
                 <div class="filter-group">
                     <label>Chapter:</label>
-                    <select id="chapterFilter" class="form-select" disabled>
+                    <select id="chapterFilter" class="form-select" data-initial="{{ initial_chapter }}" disabled>
                         <option value="">Select Chapter</option>
                     </select>
                 </div>
