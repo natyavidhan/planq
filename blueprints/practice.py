@@ -18,12 +18,12 @@ practice_bp = Blueprint("practice", __name__, url_prefix="/practice")
 db: Database = None
 sr: SR = None
 
+
 def init_blueprint(database, spaced_repetition):
     global db, sr
     db = database
     sr = spaced_repetition
     return practice_bp
-
 
 
 def validate_answer(question, user_answer):
@@ -78,7 +78,7 @@ def generate_task():
     time_limit = int(request.args.get("time", 30))
 
     # Check if question count meets SR threshold for this chapter
-    sr_threshold = sr.ch_data.get(chapter_id, {}).get('rt', 5)
+    sr_threshold = sr.ch_data.get(chapter_id, {}).get("rt", 5)
     is_revision_eligible = question_count >= sr_threshold
 
     ques = db.generate_test(
@@ -184,7 +184,7 @@ def process_question_attempt(data, user_id):
         session["solved"] = []
 
     session["solved"].append(activity)
-        
+
     test_data = session.get("practice_test", {})
     damage_done = 0
     if not is_correct:
@@ -274,7 +274,7 @@ def process_task_completion(data, user_id):
         test_data["chapter"],
         session["solved"],
     )
-    
+
     # Add activity with revision status
     db.add_activity(
         user_id,
@@ -325,11 +325,11 @@ def process_task_completion(data, user_id):
         "is_first_practice_of_day": is_first_practice_of_day,
         "streak_extended": is_first_practice_of_day,  # If it's first practice, streak is extended
     }
-    
+
     for key in ["practice_test", "solved"]:
         session.pop(key, None)
     session.modified = True
-    
+
     return jsonify(response_data)
 
 

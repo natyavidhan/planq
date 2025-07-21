@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}
+  {{ exam.name }} - Subjects
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/track.css">
+
+<div class="exam-container">
+    <!-- Header Section -->
+    <div class="exam-header">
+        <div class="breadcrumb">
+            <a href="/track" class="breadcrumb-item">
+                <i class="fas fa-home"></i> Track Progress
+            </a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-item active">{{ exam.name }}</span>
+        </div>
+        
+        <div class="exam-title-section">
+            <h1 class="exam-title">{{ exam.name }}</h1>
+            <div class="exam-stats">
+                <div class="stat-badge">
+                    <i class="fas fa-book"></i>
+                    <span>{{ subjects|length }} Subject{{ 's' if subjects|length != 1 else '' }}</span>
+                </div>
+                <div class="stat-badge">
+                    <i class="fas fa-list"></i>
+                    <span>{{ total_chapters }} Total Chapters</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subjects Grid -->
+    <div class="subjects-section">
+        <h2 class="section-title">
+            <i class="fas fa-graduation-cap"></i>
+            Subjects
+        </h2>
+        
+        {% if subjects and subjects|length > 0 %}
+            <div class="subjects-grid">
+                {% for subject in subjects %}
+                    <div class="subject-card">
+                        <div class="subject-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="subject-content">
+                            <h3 class="subject-name">{{ subject.name }}</h3>
+                            <p class="subject-description">
+                                Explore {{ subject.chapters|length }} chapter{{ 's' if subject.chapters|length != 1 else '' }} 
+                                in {{ subject.name }}
+                            </p>
+                            <div class="subject-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">{{ subject.chapters|length }}</span>
+                                    <span class="stat-label">Chapters</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">{{ subject.question_count or '0' }}</span>
+                                    <span class="stat-label">Questions</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="subject-actions">
+                            <a href="/track/{{ exam._id }}/{{ subject._id }}" class="subject-btn">
+                                <i class="fas fa-arrow-right"></i>
+                                View Chapters
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>No Subjects Found</h3>
+                <p>This exam doesn't have any subjects configured yet.</p>
+                <a href="/track" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Exams
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
