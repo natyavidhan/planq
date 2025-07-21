@@ -68,14 +68,22 @@
                         </div>
                         <div class="chapter-actions">
                             {% if chapter.question_count and chapter.question_count > 0 %}
-                                <button class="chapter-practice-btn" 
-                                        data-exam="{{ exam._id }}" 
-                                        data-subject="{{ subject._id }}" 
-                                        data-chapter="{{ chapter._id }}"
-                                        data-chapter-name="{{ chapter.name }}">
-                                    <i class="fas fa-play"></i>
-                                    Practice Now
-                                </button>
+                                <div class="chapter-action-buttons">
+                                    <button class="chapter-practice-btn" 
+                                            data-exam="{{ exam._id }}" 
+                                            data-subject="{{ subject._id }}" 
+                                            data-chapter="{{ chapter._id }}"
+                                            data-chapter-name="{{ chapter.name }}">
+                                        <i class="fas fa-play"></i>
+                                        Practice Now
+                                    </button>
+                                    <button onclick="window.location.href='/search?exam={{ exam._id }}&subject={{ subject._id }}&chapter={{ chapter._id }}'"
+                                       class="chapter-view-btn" 
+                                       title="View all questions in this chapter">
+                                        <i class="fas fa-eye"></i>
+                                        View Questions
+                                    </button>
+                                </div>
                             {% else %}
                                 <button class="chapter-practice-btn disabled" disabled>
                                     <i class="fas fa-ban"></i>
