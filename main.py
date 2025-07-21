@@ -10,7 +10,7 @@ from datetime import datetime
 from sr import SR
 from config import CONFIG
 from database import Database
-from utils import auth_required, generate_heatmap_data
+from utils import auth_required, generate_heatmap_data, ist_now
 
 from blueprints.search import init_blueprint as init_search_blueprint
 from blueprints.question import init_blueprint as init_question_blueprint
@@ -186,6 +186,7 @@ def dashboard():
             'subject': sub,
             'title': ch['name'],
             'questions': len(ques),
+            'next': chapter['interval'] - (ist_now() - chapter['last_revision']).days
         })
     
     return render_template("dashboard.html", 

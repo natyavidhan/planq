@@ -113,8 +113,8 @@
                             
                             <div class="ease-progress">
                                 <div class="ease-label">
-                                    <span>Ease Factor</span>
-                                    <span class="ease-value">{{ "%.1f"|format(chapter.ef) }}</span>
+                                    <span>Ease</span>
+                                    <span class="ease-value">{{ ((chapter.ef - 1.3) / (2.5 - 1.3) * 100)|round }}%</span>
                                 </div>
                                 <div class="ease-bar">
                                     <div class="ease-fill" style="width: {{ ((chapter.ef - 1.3) / (2.5 - 1.3) * 100)|round }}%;"></div>
@@ -122,7 +122,7 @@
                             </div>
                             
                             <div class="next-practice">
-                                {% set days_until_next = chapter.interval - chapter.delta %}
+                                {% set days_until_next = chapter.next %}
                                 {% if days_until_next <= 0 %}
                                     <div class="practice-status overdue">
                                         <i class="fas fa-exclamation-circle"></i>
@@ -164,6 +164,21 @@
                 <p>No chapter progress data available. Start practicing to see your spaced repetition progress!</p>
             </div>
         {% endif %}
+    </div>
+
+    <div class="actions">
+        <a href="/search" class="action-btn">
+            <i class="fas fa-search"></i>
+            <h5 class="action-title">Search 47k+ Questions</h5>
+        </a>
+        <a href="/test/generate" class="action-btn">
+            <i class="fas fa-clipboard-list"></i>
+            <h5 class="action-title">Generate Personalized Tests</h5>
+        </a>
+        <a href="/ai" class="action-btn">
+            <i class="fas fa-robot"></i>
+            <h5 class="action-title">Ask Doubts to PlanqAI</h5>
+        </a>
     </div>
 
     <div class="activity">
@@ -346,21 +361,6 @@
                 <p>You haven't created any tests yet. Generate your first personalized test below!</p>
             </div>
         {% endif %}
-    </div>
-    
-    <div class="actions">
-        <a href="/search" class="action-btn">
-            <i class="fas fa-search"></i>
-            <h5 class="action-title">Search 47k+ Questions</h5>
-        </a>
-        <a href="/test/generate" class="action-btn">
-            <i class="fas fa-clipboard-list"></i>
-            <h5 class="action-title">Generate Personalized Tests</h5>
-        </a>
-        <a href="/ai" class="action-btn">
-            <i class="fas fa-robot"></i>
-            <h5 class="action-title">Ask Doubts to PlanqAI</h5>
-        </a>
     </div>
 </div>
 
