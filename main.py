@@ -169,27 +169,34 @@ def dashboard():
     
     exams = db.get_exams()
     
-    sr_chapters = sr.get_chapters(session['user']['id'], sort=True, limit=5)
+    sr_chapters = sr.get_chapters(session['user']['id'])
     new_sr_chapters = []
     for chapter in sr_chapters:
-        ch = db.get_chapter(chapter['_id'])
-        exam = db.get_exam(ch['exam'])['name']
-        sub = db.get_subject(ch['subject'])['name']
-        
-        ques = sr.unique_questions_solved(session['user']['id'], chapter['_id'])
-
         new_sr_chapters.append({
             'chapter_id': chapter['_id'],
             'ef': chapter['ef'],
             'last_revision': chapter['last_revision'],
             'interval': chapter['interval'],
             'delta': chapter['delta'],
-            'exam': exam,
-            'subject': sub,
-            'title': ch['name'],
-            'questions': len(ques),
             'next': chapter['interval'] - (ist_now() - chapter['last_revision']).days
         })
+        
+    new_sr_chapters.sort(key=lambda x: x['next'])
+    new_sr_chapters = new_sr_chapters[:4]
+    
+    for chapter in new_sr_chapters:
+        chapter['next'] = max(0, chapter['next'])
+        
+        ch = db.get_chapter(chapter['chapter_id'])
+        exam = db.get_exam(ch['exam'])['name']
+        sub = db.get_subject(ch['subject'])['name']
+        
+        ques = sr.unique_questions_solved(session['user']['id'], chapter['chapter_id'])
+        chapter['exam'] = exam
+        chapter['subject'] = sub
+        chapter['title'] = ch['name']
+        chapter['questions'] = len(ques)
+        
     
     return render_template("dashboard.html", 
                           tests=tests, 

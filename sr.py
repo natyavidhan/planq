@@ -115,13 +115,8 @@ class SR:
         data["attempted"].extend([i["_id"] for i in practice_data])
         self.sr_db[user_id].update_one({"_id": chapter_id}, {"$set": data}, upsert=True)
 
-    def get_chapters(self, user_id, sort=False, limit=None):
-        chapters = self.sr_db[user_id].find({}, {"_id": 1, "ef": 1, "last_revision": 1, "interval": 1, "delta": 1})
-        if sort:
-            chapters = chapters.sort("last_revision", -1)
-        if limit:
-            chapters = chapters.limit(limit)
-        chapters = list(chapters)
+    def get_chapters(self, user_id):
+        chapters = list(self.sr_db[user_id].find({}, {"_id": 1, "ef": 1, "last_revision": 1, "interval": 1, "delta": 1}))
         return chapters
     
     def unique_questions_solved(self, user_id, chapter_id):

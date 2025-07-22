@@ -46,15 +46,8 @@
             <div class="chapters-grid">
                 {% for chapter in chapters %}
                     <div class="chapter-card">
-                        <div class="chapter-icon">
-                            <i class="fas fa-bookmark"></i>
-                        </div>
                         <div class="chapter-content">
                             <h3 class="chapter-name">{{ chapter.name }}</h3>
-                            <p class="chapter-description">
-                                Practice with {{ chapter.question_count or '0' }} question{{ 's' if chapter.question_count != 1 else '' }} 
-                                from this chapter
-                            </p>
                             <div class="chapter-stats">
                                 <div class="stat-item">
                                     <span class="stat-value">{{ chapter.question_count or '0' }}</span>
