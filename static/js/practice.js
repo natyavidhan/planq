@@ -616,10 +616,63 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('task-content').style.display = 'none';
         
         // Show success screen
-        document.getElementById('success-screen').style.display = 'block';
-        
-        // Update final health
-        document.getElementById('final-health').textContent = `${Math.round(health)}%`;
+        const successScreen = document.getElementById('success-screen');
+        const finalHealth = document.getElementById('final-health');
+        const successTitle = document.getElementById('success-title');
+        const pointsContainer = document.getElementById('points-breakdown-container');
+
+        // Clear previous points
+        pointsContainer.innerHTML = '';
+
+        // Animate points breakdown
+        if (data.points) {
+            Object.entries(data.points).forEach(([reason, value], index) => {
+                if (value > 0) {
+                    setTimeout(() => {
+                        const pointItem = document.createElement('div');
+                        pointItem.className = 'point-item';
+                        pointItem.innerHTML = `
+                            <span class="reason">${reason}</span>
+                            <span class="value">${value} XP</span>
+                        `;
+                        pointsContainer.appendChild(pointItem);
+                    }, index * 200); // Stagger the animation
+                }
+            });
+        }
+
+        successScreen.style.display = 'flex';
+        finalHealth.textContent = `${Math.round(health)}%`;
+
+        if (data.streak_extended) {
+            successTitle.textContent = 'Streak Extended!';
+            
+            // Make sure the streak animation element is visible
+            const streakAnimation = document.getElementById('streak-animation');
+            if (streakAnimation) {
+                streakAnimation.style.display = 'block';
+                
+                // Update the streak count if the element exists
+                const finalStreakCount = document.getElementById('final-streak-count');
+                if (finalStreakCount) {
+                    finalStreakCount.textContent = data.current_streak;
+                } else {
+                    console.error("Element 'final-streak-count' not found");
+                }
+                
+                // Create extra confetti for celebration
+                createConfetti();
+            } else {
+                console.error("Element 'streak-animation' not found");
+            }
+        } else {
+            successTitle.textContent = 'Practice Complete!';
+            
+            const streakAnimation = document.getElementById('streak-animation');
+            if (streakAnimation) {
+                streakAnimation.style.display = 'none';
+            }
+        }
         
         // Create confetti
         createConfetti();

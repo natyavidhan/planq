@@ -60,6 +60,12 @@ class Database:
             "hard": 0.2,
         }
 
+        self.exp_mul = {
+            "easy": 1,
+            "med": 1.5,
+            "hard": 2,
+        }
+
         print(f"Database initialized in {time.time() - _start:.2f} seconds")
 
     """
@@ -566,6 +572,7 @@ class Database:
 
         score = 0
         feedback = []
+        points = 0
 
         for q_id, user_answer in answers.items():
             question = questions_lookup.get(str(q_id))
@@ -591,6 +598,9 @@ class Database:
 
             marks = pos_mark if is_correct else (neg_mark if negative_marking else 0)
             score += marks
+            
+            if is_correct:
+                points += 10*self.exp_mul[question.get("level", "easy")] if question.get("type") == "singleCorrect" else 12*self.exp_mul[question.get("level", "easy")]
 
             # Append feedback
             feedback_item = {
@@ -626,6 +636,8 @@ class Database:
         self.tests["tests"].update_one(
             {"_id": test_id}, {"$push": {"attempts": attempt_id}}
         )
+        
+        self.add_experience(user_id, points)
 
         return {
             "attempt_id": attempt_id,
@@ -781,6 +793,9 @@ class Database:
         self.add_activity(
             user_id, "achievement_unlocked", {"achievement_id": achievement_id}
         )
+        
+        points = self.achievements[achievement_id].get("reward_points", 0)
+        self.add_experience(user_id, points)
 
     def get_achievements(self, user_id):
         user_data = self.users["achievements"].find_one({"_id": user_id})
@@ -902,3 +917,18 @@ class Database:
     def check_lucky_guess(self, user_id, question_level, time_taken):
         if question_level == 3 and time_taken <= 5:
             self.unlock_achievement(user_id, "lucky_guess")
+
+    """
+    Experience points Methods
+    """
+    
+    def add_experience(self, user_id, points):
+        user = self.users["users"].find_one({"_id": user_id})
+        if 'points' not in user:
+            user['points'] = 0
+        user['points'] += points
+        self.users["users"].update_one({"_id": user_id}, {"$set": {"points": user['points']}})
+        
+    def get_experience(self, user_id):
+        user = self.users["users"].find_one({"_id": user_id})
+        return user.get('points', 0)

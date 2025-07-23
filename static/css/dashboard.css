@@ -738,6 +738,10 @@
 }
 
 .chapter-actions {
+    display: flex;
+    /* two buttons horizontal */
+    flex-direction: column;
+    gap: 0.5rem;
     margin-top: auto;
 }
 

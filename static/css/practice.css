@@ -1339,153 +1339,53 @@
 
 .success-content {
     position: relative;
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-}
-
-.success-icon {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(to right bottom, #22c55e, #4ade80);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-}
-
-.success-icon i {
-    font-size: 2.5rem;
-    color: white;
-}
-
-.streak-animation {
-    margin: 2.5rem 0;
-    position: relative;
-    z-index: 20;
-}
-
-.streak-counter-large {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: #FF8A4C;
-    margin-bottom: 1.5rem;
-}
-
-.streak-counter-large i {
-    font-size: 1.75rem;
-}
-
-.streak-counter-large span {
-    font-size: 1.75rem;
-}
-
-.streak-progress {
-    margin: 1.5rem 0 2.5rem;
-    width: 100%;
-    max-width: 350px;
-    margin: 0 auto;
-}
-
-.streak-bar {
-    height: 10px;
-    background-color: rgba(255, 138, 76, 0.1);
-    border-radius: 5px;
-    overflow: hidden;
-    position: relative;
-}
-
-.streak-fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    background: linear-gradient(to right, #FF8A4C, #FFA94D);
-    border-radius: 5px;
-    width: 0;
-    animation: fillStreak 1.5s forwards ease-out;
-}
-
-.score-display {
+    z-index: 2;
+    text-align: center;
+    padding: 3rem 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
-    margin: 2.5rem 0;
-    position: relative;
-    z-index: 20;
+    gap: 1rem;
 }
 
-.score-label {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-}
-
-.score-value {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #3b82f6;
-}
-
-.modal-footer {
-    margin-top: 2rem;
+.points-breakdown-container {
     display: flex;
-    justify-content: center;
-}
-
-.return-btn {
-    background-color: var(--bg-tertiary);
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
-    padding: 0.75rem 2rem;
-    border-radius: var(--radius-md);
-    font-weight: 500;
-    font-size: 1rem;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
     gap: 0.5rem;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    min-width: 200px;
-}
-
-.return-btn:hover {
-    border-color: var(--text-secondary);
-    color: var(--text-primary);
-    transform: translateY(-1px);
-}
-
-/* Fix confetti container positioning */
-.confetti-container {
-    position: absolute;
-    top: 0;
-    left: 0;
+    margin: 1rem 0;
     width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 10;
-    overflow: hidden;
+    max-width: 300px;
 }
 
-@keyframes modalFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-30px) scale(0.95);
-    }
+.point-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    opacity: 0;
+    transform: scale(0.5) translateY(20px);
+    animation: popIn 0.5s forwards;
+}
+
+.point-item .reason {
+    color: var(--text-secondary);
+}
+
+.point-item .value {
+    font-weight: 700;
+    color: var(--accent-primary);
+}
+
+.point-item .value::before {
+    content: '+';
+}
+
+@keyframes popIn {
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: scale(1) translateY(0);
     }
-}
-
-@keyframes fillStreak {
-    from { width: 0; }
-    to { width: 100%; }
 }

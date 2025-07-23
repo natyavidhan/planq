@@ -209,6 +209,16 @@ def process_question_attempt(data, user_id):
     # Check for numerical precision achievement
     if is_correct and question.get("type") == "numerical":
         db.check_performance_achievements(user_id, q_type="numerical")
+        points =  12*db.exp_mul[question.get("level", 2)]
+        
+    if is_correct and question.get("type") == "mcq":
+        points = 10*db.exp_mul[question.get("level", 2)]
+    
+    if "points" not in session:
+        session["points"] = 0
+    
+    session["points"] += points
+    db.add_experience(user_id, points)
 
     return jsonify(
         {
@@ -274,7 +284,9 @@ def process_task_completion(data, user_id):
         test_data["chapter"],
         session["solved"],
     )
-
+    
+    
+    
     # Add activity with revision status
     db.add_activity(
         user_id,
@@ -318,18 +330,34 @@ def process_task_completion(data, user_id):
 
     # Check total achievements
     db.check_total_achievements(user_id)
+    
+    points = {
+        "Completed Task": 50 if is_success else 0,
+        "100% Health": 20 if health_remaining >= 100 else 0,
+        "<10% Health": 10 if health_remaining < 10 else 0,
+        "Finished before 50% Time": 20 if time_spent <= test_data["duration"] / 2 else 0,
+        "Streak Extended": 10 if is_first_practice_of_day and heatmap_data["current_streak"] >= 1 else 0,
+    }
+    
+    for achievement, point in points.items():
+        if point > 0:
+            db.add_experience(user_id, point)
+    
+    points['Questions Solved'] = session.get("points", 0)
 
     response_data = {
         "success": True,
         "current_streak": heatmap_data["current_streak"],
         "longest_streak": heatmap_data["longest_streak"],
         "is_first_practice_of_day": is_first_practice_of_day,
-        "streak_extended": is_first_practice_of_day,  # If it's first practice, streak is extended
+        "streak_extended": is_first_practice_of_day,
+        "points": points,
     }
 
     for key in ["practice_test", "solved"]:
         session.pop(key, None)
     session.modified = True
+    
 
     return jsonify(response_data)
 

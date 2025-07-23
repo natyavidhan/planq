@@ -167,3 +167,8 @@ def chapter_detail(exam_id, subject_id, chapter_id):
         timedelta=timedelta,
         ist_now=ist_now
     )
+
+@track_bp.route("/chapter/<chapter_id>")
+def chapter_redirect(chapter_id):
+    chapter = db.get_chapter(chapter_id)
+    return redirect(url_for("track.chapter_detail", exam_id=chapter["exam"], subject_id=chapter["subject"], chapter_id=chapter["_id"]))
