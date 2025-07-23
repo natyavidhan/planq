@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% block title %}{{ chapter.name }} - Analysis{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/track.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/date-fns"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+<div class="exam-container">
+    <!-- Header Section -->
+    <div class="exam-header">
+        <div class="breadcrumb">
+            <a href="/track" class="breadcrumb-item">
+                <i class="fas fa-home"></i> Track Progress
+            </a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="/track/{{ exam._id }}" class="breadcrumb-item">{{ exam.name }}</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="/track/{{ exam._id }}/{{ subject._id }}" class="breadcrumb-item">{{ subject.name }}</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-item active">{{ chapter.name }}</span>
+        </div>
+        
+        <div class="exam-title-section">
+            <h1 class="exam-title">{{ chapter.name }}</h1>
+            <div class="exam-stats">
+                <div class="stat-badge">
+                    <i class="fas fa-book"></i>
+                    <span>{{ questions|length }} Total Questions</span>
+                </div>
+                <div class="stat-badge">
+                    <i class="fas fa-clock"></i>
+                    <span>{{ individual_attempts|length }} Questions Attempted</span>
+                </div>
+                {% if sr_data %}
+                <div class="stat-badge">
+                    <i class="fas fa-calendar"></i>
+                    <span>Last Practice: {{ sr_data.last_revision.strftime('%b %d, %Y') }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Chapter Overview Cards -->
+    <div class="chapter-overview">
+        <div class="overview-grid">
+            <!-- Performance Summary Card -->
+            <div class="overview-card performance-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-target"></i> Performance Summary</h3>
+                </div>
+                <div class="card-content">
+                    <div class="performance-stats">
+                        <div class="stat-row">
+                            <div class="stat-item">
+                                <span class="stat-label">Questions Attempted</span>
+                                <span class="stat-value">{{ individual_attempts|length }} / {{ questions|length }}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Accuracy</span>
+                                <span class="stat-value accuracy-{{ 'high' if accuracy_data.accuracy >= 70 else 'medium' if accuracy_data.accuracy >= 40 else 'low' }}">
+                                    {{ accuracy_data.accuracy|round }}%
+                                </span>
+                            </div>
+                        </div>
+                        {% if sr_data %}
+                        <div class="ease-stat">
+                            <span class="stat-label">Ease Factor</span>
+                            <span class="stat-value">{{ "%.2f"|format(sr_data.ef) }}</span>
+                            <div class="ease-bar">
+                                <div class="ease-fill" style="width: {{ ((sr_data.ef - 1.3) / (2.5 - 1.3) * 100)|round }}%"></div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revision Schedule Card -->
+            <div class="overview-card revision-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-calendar-alt"></i> Revision Schedule</h3>
+                </div>
+                <div class="card-content">
+                    {% if sr_data %}
+                        <div class="revision-stats">
+                            <div class="revision-item">
+                                <span class="revision-label">Last Revision</span>
+                                <span class="revision-value">{{ sr_data.last_revision.strftime('%b %d, %Y') }}</span>
+                                <span class="revision-time">{{ sr_data.last_revision.strftime('%I:%M %p') }}</span>
+                            </div>
+                            <div class="revision-item">
+                                <span class="revision-label">Next Revision</span>
+                                {% set next_revision = (sr_data.last_revision + timedelta(days=sr_data.interval)) %}
+                                <span class="revision-value">{{ next_revision.strftime('%b %d, %Y') }}</span>
+                                <span class="revision-time">{{ next_revision.strftime('%I:%M %p') }}</span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="no-revision-data">
+                            <i class="fas fa-info-circle"></i>
+                            <p>No revision schedule available. Complete a practice session to start spaced repetition.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Retention Graph Card -->
+            <div class="overview-card retention-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-area"></i> Memory Retention</h3>
+                </div>
+                <div class="card-content">
+                    {% if sr_data and ch_data %}
+                        <div class="retention-chart-container">
+                            <canvas id="retentionChart" width="300" height="200"></canvas>
+                        </div>
+                        <div class="retention-info">
+                            {% set days_since = (ist_now() - sr_data.last_revision).days %}
+                            {% set current_retention = (math.exp((-ch_data.dr * days_since) / sr_data.interval) * 100)|round %}
+                            <div class="current-retention">
+                                <span class="retention-label">Current Retention</span>
+                                <span class="retention-value retention-{{ 'high' if current_retention >= 70 else 'medium' if current_retention >= 40 else 'low' }}">
+                                    {{ current_retention }}%
+                                </span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="no-retention-data">
+                            <i class="fas fa-chart-area"></i>
+                            <p>Retention data will be available after completing practice sessions.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Over Time Chart -->
+    {% if attempts %}
+    <div class="chart-section">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3><i class="fas fa-chart-line"></i> Progress Over Time</h3>
+            </div>
+            <div class="chart-container">
+                <canvas id="progressChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Time Performance Chart -->
+    <div class="chart-section">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3><i class="fas fa-stopwatch"></i> Time Performance</h3>
+            </div>
+            <div class="chart-container">
+                <canvas id="timeChart"></canvas>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Individual Question Analysis -->
+    <div class="questions-section">
+        <h2 class="section-title">
+            <i class="fas fa-list"></i>
+            Question Analysis
+        </h2>
+        
+        {% if attempts %}
+            <div class="questions-grid">
+                {% for question_id, question_attempts in individual_attempts.items() %}
+                    {% set question = questions|selectattr('_id', 'equalto', question_id)|first %}
+                    {% if question %}
+                        <div class="question-analysis-card">
+                            <div class="question-header">
+                                <div class="question-title">
+                                    <span class="question-id">Q{{ loop.index }}</span>
+                                    <span class="question-level level-{{ question.level }}">
+                                        {% if question.level == 1 %}Easy{% elif question.level == 3 %}Hard{% else %}Medium{% endif %}
+                                    </span>
+                                </div>
+                                <div class="question-stats">
+                                    <span class="attempts-count">{{ question_attempts|length }} attempt{{ 's' if question_attempts|length != 1 else '' }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="question-content">
+                                <div class="question-text">
+                                    {{ question.question|safe }}
+                                </div>
+                                
+                                <div class="attempts-timeline">
+                                    {% for attempt in question_attempts|sort(attribute='timestamp') %}
+                                        <div class="attempt-item {{ 'correct' if attempt.is_correct else 'incorrect' }}">
+                                            <div class="attempt-icon">
+                                                <i class="fas fa-{{ 'check' if attempt.is_correct else 'times' }}"></i>
+                                            </div>
+                                            <div class="attempt-details">
+                                                <span class="attempt-time">{{ "%.1f"|format(attempt.time_taken / 1000) }}s</span>
+                                                <span class="attempt-date">{{ attempt.timestamp.split('T')[0] }}</span>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                
+                                <div class="question-summary">
+                                    {% set correct_count = question_attempts|selectattr('is_correct')|list|length %}
+                                    {% set total_count = question_attempts|length %}
+                                    {% set accuracy = (correct_count / total_count * 100)|round %}
+                                    
+                                    <div class="summary-stat">
+                                        <span class="stat-label">Accuracy</span>
+                                        <span class="stat-value accuracy-{{ 'high' if accuracy >= 70 else 'medium' if accuracy >= 40 else 'low' }}">
+                                            {{ accuracy }}%
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="question-actions">
+                                <a href="/question/{{ question._id }}" class="question-action-btn">
+                                    <i class="fas fa-eye"></i>
+                                    View Question
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h3>No Questions Attempted</h3>
+                <p>Start practicing this chapter to see detailed question analysis.</p>
+                <button class="start-practice-btn" 
+                        data-exam="{{ exam._id }}" 
+                        data-subject="{{ subject._id }}" 
+                        data-chapter="{{ chapter._id }}"
+                        data-chapter-name="{{ chapter.name }}">
+                    <i class="fas fa-play"></i>
+                    Start Practicing
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if attempts %}
+<script>
+    // Pass data from Flask to JavaScript
+    const chapterData = {
+        attempts: {{ attempts|tojson }},
+        sr_data: {{ sr_data|tojson }},
+        ch_data: {{ ch_data|tojson }}
+    };
+</script>
+<script src="/static/js/chapter_detail.js"></script>
+{% endif %}
+{% endblock %}

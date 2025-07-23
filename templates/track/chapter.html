@@ -71,10 +71,19 @@
                                         Practice Now
                                     </button>
                                     <button onclick="window.location.href='/search?exam={{ exam._id }}&subject={{ subject._id }}&chapter={{ chapter._id }}'"
-                                       class="chapter-view-btn" 
-                                       title="View all questions in this chapter">
+                                            class="chapter-view-btn" 
+                                            title="View all questions in this chapter">
                                         <i class="fas fa-eye"></i>
                                         View Questions
+                                    </button>
+                                    <button onclick="window.location.href='/track/{{ exam._id }}/{{ subject._id }}/{{ chapter._id }}'"
+                                            class="chapter-review-btn" 
+                                            data-exam="{{ exam._id }}" 
+                                            data-subject="{{ subject._id }}" 
+                                            data-chapter="{{ chapter._id }}"
+                                            data-chapter-name="{{ chapter.name }}">
+                                        <i class="fas fa-redo"></i>
+                                        Review
                                     </button>
                                 </div>
                             {% else %}

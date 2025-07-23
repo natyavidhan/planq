@@ -289,6 +289,7 @@ def process_task_completion(data, user_id):
             "streak_extended": is_first_practice_of_day,
             "is_revision_eligible": test_data.get("is_revision_eligible", False),
             "sr_threshold": test_data.get("sr_threshold", 5),
+            "chapter": test_data.get("chapter"),
         },
     )
 

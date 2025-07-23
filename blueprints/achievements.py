@@ -12,8 +12,8 @@ def init_blueprint(database):
     db = database
     return achievements_bp
 
-@achievements_bp.route('/', methods=['GET'])
 @auth_required
+@achievements_bp.route('/', methods=['GET'])
 def achievements_page():
     """Display user achievements"""
     user_id = session['user']['id']
@@ -45,8 +45,8 @@ def achievements_page():
         total_count=len(all_achievements)
     )
 
-@achievements_bp.route('/check', methods=['POST'])
 @auth_required
+@achievements_bp.route('/check', methods=['POST'])
 def check_achievements():
     """Manually check for new achievements"""
     user_id = session['user']['id']

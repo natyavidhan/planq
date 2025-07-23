@@ -32,31 +32,31 @@ def get_exam_pyqs(exam_id):
     pyqs = db.get_pyqs(exam_id)
     return jsonify({"pyqs": pyqs}), 200
 
-@api_bp.route('/bookmarks/check/<question_id>', methods=['GET'])
 @auth_required
+@api_bp.route('/bookmarks/check/<question_id>', methods=['GET'])
 def check_bookmark(question_id):
     user_id = session.get('user').get('id')
     is_bookmarked = db.check_bookmark(user_id, question_id)
     return jsonify({"bookmarked": is_bookmarked[0], "bucket": is_bookmarked[1]}), 200
 
-@api_bp.route('/bookmarks/bucket/create', methods=['POST'])
 @auth_required
+@api_bp.route('/bookmarks/bucket/create', methods=['POST'])
 def create_bookmark_bucket():
     user_id = session.get('user').get('id')
     bucket_name = request.json.get('name')
     bucket_id = db.create_bookmark_bucket(user_id, bucket_name)
     return jsonify({"message": "Bucket created successfully", "bucket_id": bucket_id}), 201
 
-@api_bp.route('/bookmarks/add/<question_id>', methods=['POST'])
 @auth_required
+@api_bp.route('/bookmarks/add/<question_id>', methods=['POST'])
 def add_bookmark(question_id):
     user_id = session.get('user').get('id')
     bucket_id = request.json.get('bucket')
     db.add_bookmark(user_id, question_id, bucket_id)
     return jsonify({"message": "Question added to bookmarks"}), 201
 
-@api_bp.route('/daily-task/status', methods=['GET'])
 @auth_required
+@api_bp.route('/daily-task/status', methods=['GET'])
 def daily_task_status():
     user_id = session['user']['id']
 
@@ -170,8 +170,8 @@ def search_api():
         return jsonify({"error": "Failed to fetch search results", "details": str(e)}), 500
     
 
-@api_bp.route('/activities')
 @auth_required
+@api_bp.route('/activities')
 def get_activities():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)

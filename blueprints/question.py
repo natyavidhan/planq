@@ -35,8 +35,11 @@ def question_page(question_id):
             'level': question.get('level')
         }
         
-        buckets = db.get_user_buckets(session['user']['id'])
-        buckets = [{'_id': str(bucket), 'name': data['name']} for bucket, data in buckets.items()]
+        if 'user' in session:
+            buckets = db.get_user_buckets(session['user']['id'])
+            buckets = [{'_id': str(bucket), 'name': data['name']} for bucket, data in buckets.items()]
+        else:
+            buckets = []
         return render_template('question.html', question=public_question, bookmarks=buckets)
 
     except Exception as e:
@@ -109,30 +112,31 @@ def attempt_question(question_id):
         elif question_type == 'numerical':
             response['correct_answer'] = question.get('correct_value', '')
 
-        db.add_activity(
-            user_id=session['user']['id'],
-            action='attempt_question',
-            details={
-                'question_id': question_id,
-                'is_correct': is_correct,
-                'user_answer': user_answer,
-                'correct_answer': response['correct_answer'],
-                'time_taken': time_taken
-            }
-        )
-        
-        user_id = session['user']['id']
-        
-        # Check for lucky guess achievement
-        if is_correct and question.get('level', 1) == 3 and time_taken <= 5:
-            db.check_lucky_guess(user_id, question.get('level', 1), time_taken)
+        if 'user' in session:
+            db.add_activity(
+                user_id=session['user']['id'],
+                action='attempt_question',
+                details={
+                    'question_id': question_id,
+                    'is_correct': is_correct,
+                    'user_answer': user_answer,
+                    'correct_answer': response['correct_answer'],
+                    'time_taken': time_taken
+                }
+            )
             
-        # Check for numerical precision achievement
-        if is_correct and question_type == 'numerical':
-            db.check_performance_achievements(user_id, q_type='numerical')
+            user_id = session['user']['id']
             
-        # Check total question achievements
-        db.check_total_achievements(user_id)
+            # Check for lucky guess achievement
+            if is_correct and question.get('level', 1) == 3 and time_taken <= 5:
+                db.check_lucky_guess(user_id, question.get('level', 1), time_taken)
+                
+            # Check for numerical precision achievement
+            if is_correct and question_type == 'numerical':
+                db.check_performance_achievements(user_id, q_type='numerical')
+                
+            # Check total question achievements
+            db.check_total_achievements(user_id)
             
         return jsonify(response)
         

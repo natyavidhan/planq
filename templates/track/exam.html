@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}
-  {{ exam.name }} - Subjects
-{% endblock %}
+{% block title %}{{ exam.name }} - Track Progress{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="/static/css/track.css">
 
@@ -24,8 +22,12 @@
                     <span>{{ subjects|length }} Subject{{ 's' if subjects|length != 1 else '' }}</span>
                 </div>
                 <div class="stat-badge">
-                    <i class="fas fa-list"></i>
+                    <i class="fas fa-bookmark"></i>
                     <span>{{ total_chapters }} Total Chapters</span>
+                </div>
+                <div class="stat-badge">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>{{ exam.name }}</span>
                 </div>
             </div>
         </div>
@@ -34,7 +36,7 @@
     <!-- Subjects Grid -->
     <div class="subjects-section">
         <h2 class="section-title">
-            <i class="fas fa-graduation-cap"></i>
+            <i class="fas fa-book-open"></i>
             Subjects
         </h2>
         
@@ -43,13 +45,13 @@
                 {% for subject in subjects %}
                     <div class="subject-card">
                         <div class="subject-icon">
-                            <i class="fas fa-book-open"></i>
+                            <i class="fas fa-flask"></i>
                         </div>
                         <div class="subject-content">
                             <h3 class="subject-name">{{ subject.name }}</h3>
                             <p class="subject-description">
                                 Explore {{ subject.chapters|length }} chapter{{ 's' if subject.chapters|length != 1 else '' }} 
-                                in {{ subject.name }}
+                                with {{ subject.question_count or '0' }} question{{ 's' if subject.question_count != 1 else '' }}
                             </p>
                             <div class="subject-stats">
                                 <div class="stat-item">
@@ -74,7 +76,7 @@
         {% else %}
             <div class="empty-state">
                 <div class="empty-icon">
-                    <i class="fas fa-graduation-cap"></i>
+                    <i class="fas fa-book-open"></i>
                 </div>
                 <h3>No Subjects Found</h3>
                 <p>This exam doesn't have any subjects configured yet.</p>

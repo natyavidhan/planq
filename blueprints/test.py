@@ -12,8 +12,8 @@ def init_blueprint(database):
     db = database
     return test_bp
 
-@test_bp.route('/generate', methods=['GET', 'POST'])
 @auth_required
+@test_bp.route('/generate', methods=['GET', 'POST'])
 def generate_test():
     if request.method == 'POST':
         exam_id = request.form.get('exam')
@@ -75,8 +75,8 @@ def generate_test():
     exams = db.get_exams()
     return render_template('generate_test.html', exams=exams)
 
-@test_bp.route('/<test_id>', methods=['GET'])
 @auth_required
+@test_bp.route('/<test_id>', methods=['GET'])
 def attempt_test(test_id):
     test = db.get_test_optimized(test_id)
     if not test:
@@ -85,8 +85,8 @@ def attempt_test(test_id):
     
     return render_template('attempt_test.html', test=test)
 
-@test_bp.route('/submit', methods=['POST'])
 @auth_required
+@test_bp.route('/submit', methods=['POST'])
 def submit_test():
     data = request.json
     test_id = data.get('testId')
@@ -132,8 +132,8 @@ def submit_test():
     
     return jsonify({'attemptId': result['attempt_id']}), 200
 
-@test_bp.route('/<test_id>/analysis')
 @auth_required
+@test_bp.route('/<test_id>/analysis')
 def test_analysis(test_id):
     """Show analysis of all attempts for a test"""
     test = db.get_test(test_id)
