@@ -45,6 +45,68 @@
     align-items: center;
 }
 
+.title-bar.profile-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+    padding: 2rem;
+}
+
+.profile-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.profile-username {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.profile-progress-charts {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.profile-header .exam-chart-card {
+    flex: 1;
+    min-width: 220px;
+    max-width: 300px;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.profile-header .exam-chart-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.profile-header .chart-container {
+    height: 150px;
+    position: relative;
+}
+
+.profile-header .stat-badge {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.profile-header .stat-badge i {
+    color: var(--accent-primary);
+    margin-right: 0.5rem;
+}
+
 .title-bar .badge {
     display: inline-block;
     padding: 0.4rem 0.8rem;
@@ -57,6 +119,11 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     box-shadow: 0 2px 8px rgba(107, 138, 253, 0.3);
+}
+
+.profile-stats {
+    display: flex;
+    gap: 1rem;
 }
 
 /* === HEATMAP === */
@@ -242,12 +309,12 @@
 
 /* === DAY PROGRESS CIRCLE === */
 .heatmap-header {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--spacing-lg);
-    gap: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
 }
 
 .day-progress-container {
@@ -287,6 +354,49 @@
     position: relative;
 }
 
+.streak-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--bg-tertiary);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-md);
+    width: 100%;
+    max-width: 250px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.streak-icon {
+    font-size: 2rem;
+}
+
+.current-streak-icon {
+    color: #f97316; /* Orange */
+}
+
+.longest-streak-icon {
+    color: #facc15; /* Yellow */
+}
+
+.streak-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.streak-number {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+}
+
+.streak-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
 .day-progress-time {
     font-size: 1rem;
     font-weight: 700;
@@ -296,28 +406,12 @@
 }
 
 .day-progress-label {
-    font-size: 0.65rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-weight: 600;
     margin-top: 2px;
-}
-
-.day-progress-text {
-    font-size: 0.8rem;
-    color: var(--text-tertiary);
-    text-align: center;
-    white-space: nowrap;
-}
-
-.streak-number {
-    font-size: 4rem;
-    font-weight: 700;
-    color: var(--accent-primary);
-    line-height: 1;
-    margin-bottom: 0.25rem;
-    text-shadow: 0 2px 4px rgba(107, 138, 253, 0.2);
 }
 
 /* === GRID POSITIONING === */
@@ -363,6 +457,95 @@
 
 .section-title i {
     color: var(--accent-primary);
+}
+
+/* === EXAM PROGRESS CHARTS (for profile page) === */
+.exam-progress-section {
+    display: none; /* This section is now integrated into the title bar */
+}
+
+.exam-charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.exam-chart-card {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    text-align: center;
+}
+
+.exam-chart-title {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.exam-chart-card .chart-container {
+    height: 250px;
+    position: relative;
+}
+
+/* === ACHIEVEMENTS GRID (for profile page) === */
+.achievements-section {
+    grid-column: 1 / -1;
+    grid-row: 5;
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.achievement-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+}
+
+.achievement-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    border-color: #FFD700;
+}
+
+.achievement-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
+    color: #FFD700;
+    font-size: 1.5rem;
+}
+
+.achievement-details {
+    flex: 1;
+}
+
+.achievement-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+}
+
+.achievement-unlocked {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
 }
 
 /* === CHAPTER CARDS === */

@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile_user.username }}'s Profile{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/dashboard.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="home">
+    <div class="title-bar profile-header">
+        <div class="profile-info">
+            <h2 class="profile-username">{{ profile_user.username }}'s Profile</h2>
+            <div class="profile-stats">
+                 <div class="stat-badge">
+                    <i class="fas fa-question-circle"></i>
+                    <span>{{ total_unique_questions }} Questions Solved</span>
+                </div>
+            </div>
+        </div>
+        <div class="profile-progress-charts">
+            {% if progress_by_exam %}
+                {% for exam_id, exam_data in progress_by_exam.items() %}
+                    <div class="exam-chart-card">
+                        <h4 class="exam-chart-title">{{ exam_data.name }}</h4>
+                        <div class="chart-container">
+                            <canvas id="chart-{{ exam_id }}" 
+                                    data-labels="{{ exam_data.subjects.values()|map(attribute='name')|list|join(',') }}"
+                                    data-solved="{{ exam_data.subjects.values()|map(attribute='solved')|list }}"
+                                    data-total="{{ exam_data.subjects.values()|map(attribute='total')|list }}">
+                            </canvas>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <p>No exam progress to show yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Activity Heatmap -->
+    <div class="heatmap-container">
+        <div class="heatmap-wrapper">
+            <div class="heatmap-container-inner">
+                <!-- Month labels -->
+                <div class="heatmap-months">
+                    {% for month in heatmap_data.months %}
+                    <div class="month-label">{{ month.name }}</div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Heatmap grid -->
+                <div class="heatmap-grid">
+                    <!-- Day labels column -->
+                    <div class="heatmap-days-column">
+                        <div class="day-label">Mon</div>
+                        <div class="day-label">Tue</div>
+                        <div class="day-label">Wed</div>
+                        <div class="day-label">Thu</div>
+                        <div class="day-label">Fri</div>
+                        <div class="day-label">Sat</div>
+                        <div class="day-label">Sun</div>
+                    </div>
+                    
+                    <!-- Activity weeks -->
+                    <div class="heatmap-weeks">
+                        {% for week in heatmap_data.weeks %}
+                        <div class="heatmap-week">
+                            {% for day in week %}
+                            <div class="heatmap-day level-{{ day.level }}" 
+                                 data-date="{{ day.date }}" 
+                                 data-count="{{ day.count }}">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Legend -->
+                <div class="heatmap-legend">
+                    <span class="legend-text">Less</span>
+                    <div class="legend-squares">
+                        <div class="legend-item level-0" title="No activity"></div>
+                        <div class="legend-item level-1" title="1-2 activities"></div>
+                        <div class="legend-item level-2" title="3-5 activities"></div>
+                        <div class="legend-item level-3" title="6-10 activities"></div>
+                        <div class="legend-item level-4" title="11+ activities"></div>
+                    </div>
+                    <span class="legend-text">More</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="heatmap-header">
+            <div class="streak-card">
+                <i class="fas fa-fire streak-icon current-streak-icon"></i>
+                <div class="streak-info">
+                    <div class="streak-number">{{ heatmap_data.current_streak or 0 }}</div>
+                    <div class="streak-label">Current Streak</div>
+                </div>
+            </div>
+            <div class="streak-card">
+                <i class="fas fa-trophy streak-icon longest-streak-icon"></i>
+                <div class="streak-info">
+                    <div class="streak-number">{{ heatmap_data.longest_streak or 0 }}</div>
+                    <div class="streak-label">Longest Streak</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievements Section -->
+    <div class="achievements-section recent-chapters">
+        <h3 class="section-title"><i class="fas fa-trophy"></i> Achievements</h3>
+        {% if unlocked_achievements and unlocked_achievements|length > 0 %}
+            <div class="achievements-grid">
+                {% for achievement in unlocked_achievements %}
+                    <div class="achievement-card" title="{{ ac[achievement._id].description }}">
+                        <div class="achievement-icon">
+                            <i class="fas {{ ac[achievement._id].icon }}"></i>
+                        </div>
+                        <div class="achievement-details">
+                            <div class="achievement-name">{{ ac[achievement._id].name }}</div>
+                            <div class="achievement-unlocked">Unlocked on {{ achievement.unlocked_at|formatdate }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-trophy"></i></div>
+                <p>This user has not unlocked any achievements yet.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Recent Activity Section -->
+    <div class="activity" style="grid-column: 1 / -1;">
+        <h3 class="section-title"><i class="fas fa-chart-line"></i> Recent Activity</h3>
+        {% if activities and activities|length > 0 %}
+            <div class="activity-list">
+                {% for item in activities %}
+                    <div class="activity-item">
+                        {% if item.action == "test_created" %}
+                            <div class="activity-icon"><i class="fas fa-plus-circle"></i></div>
+                        {% elif item.action == "test_completed" %}
+                            <div class="activity-icon"><i class="fas fa-check-circle"></i></div>
+                        {% elif item.action == "test_started" %}
+                            <div class="activity-icon"><i class="fas fa-play-circle"></i></div>
+                        {% elif item.action == "practice_completed" %}
+                            <div class="activity-icon {% if item.details.is_success %}correct{% else %}incorrect{% endif %}">
+                                {% if item.details.is_success %}
+                                <i class="fas fa-fire"></i>
+                                {% else %}
+                                <i class="fas fa-heart-broken"></i>
+                                {% endif %}
+                            </div>
+                        {% elif item.action == "achievement_unlocked" %}
+                            <div class="activity-icon achievement"><i class="fas {{ac[item.details.achievement_id]['icon']}}"></i></div>
+                        {% else %}
+                            <div class="activity-icon"><i class="fas fa-bell"></i></div>
+                        {% endif %}
+                        <div class="activity-content">
+                            <div class="activity-header">
+                                {% if item.action == "test_created" %}
+                                    <span>Created a new test: <strong>{{ item.details.title }}</strong></span>
+                                {% elif item.action == "test_completed" %}
+                                    <div class="activity-header-content">
+                                        <span>Completed test: <strong>{{ item.details.title }}</strong></span>
+                                        <div class="activity-score">
+                                            {{ item.details.score }}
+                                        </div>
+                                    </div>
+                                {% elif item.action == "test_started" %}
+                                    <span>Started test: <strong>{{ item.details.title }}</strong></span>
+                                {% elif item.action == "practice_completed" %}
+                                    <div class="activity-header-content">
+                                        <span>Completed practice session</span>
+                                        <div class="practice-session-stats">
+                                            {% if item.details.streak_extended %}
+                                                <div class="practice-session-badge success">
+                                                    <i class="fas fa-fire"></i> Streak Extended
+                                                </div>
+                                            {% endif %}
+                                            <div class="health-badge {% if item.details.health_remaining > 70 %}high{% elif item.details.health_remaining > 30 %}medium{% else %}low{% endif %}">
+                                                <i class="fas fa-heart"></i> {{ item.details.health_remaining|round|int }}%
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% elif item.action == "achievement_unlocked" %}
+                                <div class="activity-header-content">
+                                    <span>Unlocked achievement: <strong>{{ ac[item.details.achievement_id]['name'] }}</strong></span>
+                                </div>
+                                {% else %}
+                                    {{ item.action }}
+                                {% endif %}
+                            </div>
+                            <div class="activity-time">
+                                <i class="far fa-clock"></i> {{ item.timestamp|formatdatetime }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-history"></i></div>
+                <p>No public activity to show.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Tooltip for heatmap -->
+<div id="heatmap-tooltip" class="heatmap-tooltip"></div>
+
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}

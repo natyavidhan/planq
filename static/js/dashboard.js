@@ -101,6 +101,60 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+        // Doughnut charts for exam progress on profile page
+        document.querySelectorAll('.exam-chart-card canvas').forEach(canvas => {
+            console.log('Initializing doughnut chart for canvas:', canvas.dataset);
+            let labels = canvas.dataset.labels;
+            // split from string to array
+            labels = labels.split(',');
+            const solvedData = JSON.parse(canvas.dataset.solved);
+            const totalData = JSON.parse(canvas.dataset.total);
+
+            new Chart(canvas.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                label: 'Solved',
+                data: solvedData,
+                backgroundColor: [
+                    'rgba(107, 138, 253, 0.8)',
+                    'rgba(34, 197, 94, 0.8)',
+                    'rgba(239, 68, 68, 0.8)',
+                    'rgba(234, 179, 8, 0.8)',
+                ],
+                borderWidth: 0,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                    boxWidth: 12,
+                    padding: 15,
+                    color: 'white'
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                    label: function(context) {
+                        const label = context.label || '';
+                        const solved = context.raw;
+                        const total = totalData[context.dataIndex];
+                        const percentage = total > 0 ? (solved / total * 100).toFixed(1) : 0;
+                        return `${label}: ${solved} / ${total} (${percentage}%)`;
+                    }
+                    }
+                }
+                },
+                cutout: '60%'
+            }
+            });
+        });
+
     // Modal functionality
     const activityModal = document.getElementById('activity-modal');
     const testsModal = document.getElementById('tests-modal');

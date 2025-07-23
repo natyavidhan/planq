@@ -149,6 +149,77 @@ def logout():
     return redirect(url_for("home"))
 
 
+@app.route("/profile/<username>")
+def profile(username):
+    user = db.get_user("username", username)
+    if not user:
+        abort(404)
+
+    user_id = str(user['_id'])
+
+    # Fetch activities and filter out sensitive ones
+    all_activities = db.get_activities(user_id)
+    public_activities = [
+        activity for activity in all_activities 
+        if activity.get("action") not in ["attempt_question", "practice_started"]
+    ]
+
+    # Generate heatmap from all activities
+    heatmap_data = generate_heatmap_data(all_activities)
+
+    # Get unlocked achievements
+    unlocked_achievements = db.get_achievements(user_id)
+
+    # Get total unique questions solved
+    unique_question_ids = db.activities[user_id].distinct(
+        "details.question_id", 
+        {"action": "attempt_question"}
+    )
+    total_unique_questions = len(unique_question_ids)
+    
+    # Calculate progress by exam
+    solved_questions = db.get_questions_by_ids(unique_question_ids, full_data=True)
+    progress_by_exam = {}
+    
+    # Pre-calculate total questions per subject for efficiency
+    total_questions_per_subject = {}
+    for q_id, q_data in db.pyqs['questions'].items():
+        subject_id = q_data.get('subject')
+        if subject_id:
+            total_questions_per_subject[subject_id] = total_questions_per_subject.get(subject_id, 0) + 1
+
+    for q in solved_questions:
+        exam_id = q.get('exam')
+        subject_id = q.get('subject')
+        
+        if not exam_id or not subject_id:
+            continue
+
+        if exam_id not in progress_by_exam:
+            progress_by_exam[exam_id] = {
+                'name': db.get_exam(exam_id)['name'],
+                'subjects': {}
+            }
+        
+        if subject_id not in progress_by_exam[exam_id]['subjects']:
+            progress_by_exam[exam_id]['subjects'][subject_id] = {
+                'name': db.get_subject(subject_id)['name'],
+                'solved': 0,
+                'total': total_questions_per_subject.get(subject_id, 0)
+            }
+        
+        progress_by_exam[exam_id]['subjects'][subject_id]['solved'] += 1
+    print(progress_by_exam)
+    return render_template("profile.html",
+                           profile_user=user,
+                           activities=public_activities[:10],
+                           heatmap_data=heatmap_data,
+                           unlocked_achievements=unlocked_achievements,
+                           total_unique_questions=total_unique_questions,
+                           ac=db.achievements,
+                           progress_by_exam=progress_by_exam)
+
+
 @app.route("/dashboard")
 @auth_required
 def dashboard():
@@ -178,7 +249,8 @@ def dashboard():
             'last_revision': chapter['last_revision'],
             'interval': chapter['interval'],
             'delta': chapter['delta'],
-            'next': chapter['interval'] - (ist_now() - chapter['last_revision']).days
+            'next': chapter['interval'] - (ist_now() - chapter['last_revision']).days,
+            'days_since': (ist_now() - chapter['last_revision']).days,
         })
         
     new_sr_chapters.sort(key=lambda x: x['next'])
