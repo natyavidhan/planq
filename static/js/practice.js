@@ -409,15 +409,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Calculate health damage based on difficulty
-    function calculateHealthDamage(difficulty) {
-        const totalQuestions = questionsOrder.length;
-        const difficultyMultiplier = difficulty === 1 ? 1.2 : (difficulty === 2 ? 1 : 0.8);
-        
-        // damage = 100 / sqrt(n) * difficulty_multiplier
-        return (100 / Math.sqrt(totalQuestions)) * difficultyMultiplier;
-    }
-    
     // Update question palette
     function updatePalette() {
         const palette = document.getElementById('question-palette-body');
@@ -520,7 +511,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showRetryScreen(correctQuestions.length, incorrectQuestions.length);
         } else {
             // All correct, show success screen
-            showSuccessScreen();
+            submitCompletion();
         }
     }
     
@@ -600,7 +591,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Show success screen with confetti animation
-    function showSuccessScreen() {
+    function showSuccessScreen(data) {
         // Clear timer intervals
         if (timerInterval) {
             clearInterval(timerInterval);
@@ -625,7 +616,7 @@ document.addEventListener('DOMContentLoaded', function() {
         pointsContainer.innerHTML = '';
 
         // Animate points breakdown
-        if (data.points) {
+        if (data && data.points) {
             Object.entries(data.points).forEach(([reason, value], index) => {
                 if (value > 0) {
                     setTimeout(() => {
@@ -644,7 +635,7 @@ document.addEventListener('DOMContentLoaded', function() {
         successScreen.style.display = 'flex';
         finalHealth.textContent = `${Math.round(health)}%`;
 
-        if (data.streak_extended) {
+        if (data && data.streak_extended) {
             successTitle.textContent = 'Streak Extended!';
             
             // Make sure the streak animation element is visible
@@ -676,9 +667,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Create confetti
         createConfetti();
-        
-        // Submit final results
-        submitCompletion();
     }
     
     // Create confetti animation
@@ -769,39 +757,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             console.log("Practice completion response:", data); // Debug logging
-            
-            // Update success screen based on streak extension
-            if (data.streak_extended) {
-                console.log("Streak extended! Updating UI...");
-                document.getElementById('success-title').textContent = 'Streak Extended!';
-                
-                // Make sure the streak animation element is visible
-                const streakAnimation = document.getElementById('streak-animation');
-                if (streakAnimation) {
-                    streakAnimation.style.display = 'block';
-                    
-                    // Update the streak count if the element exists
-                    const finalStreakCount = document.getElementById('final-streak-count');
-                    if (finalStreakCount) {
-                        finalStreakCount.textContent = data.current_streak;
-                    } else {
-                        console.error("Element 'final-streak-count' not found");
-                    }
-                    
-                    // Create extra confetti for celebration
-                    createConfetti();
-                } else {
-                    console.error("Element 'streak-animation' not found");
-                }
-            } else {
-                console.log("Streak not extended. Regular completion.");
-                document.getElementById('success-title').textContent = 'Practice Complete!';
-                
-                const streakAnimation = document.getElementById('streak-animation');
-                if (streakAnimation) {
-                    streakAnimation.style.display = 'none';
-                }
-            }
+            showSuccessScreen(data);
         })
         .catch(error => {
             console.error('Error submitting completion:', error);

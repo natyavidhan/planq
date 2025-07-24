@@ -61,9 +61,9 @@ class Database:
         }
 
         self.exp_mul = {
-            "easy": 1,
-            "med": 1.5,
-            "hard": 2,
+            1: 1,
+            2: 1.5,
+            3: 2,
         }
 
         print(f"Database initialized in {time.time() - _start:.2f} seconds")
@@ -600,7 +600,7 @@ class Database:
             score += marks
             
             if is_correct:
-                points += 10*self.exp_mul[question.get("level", "easy")] if question.get("type") == "singleCorrect" else 12*self.exp_mul[question.get("level", "easy")]
+                points += 10*self.exp_mul[question.get("level", 2)] if question.get("type") == "singleCorrect" else 12*self.exp_mul[question.get("level", 2)]
 
             # Append feedback
             feedback_item = {

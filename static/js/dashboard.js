@@ -254,13 +254,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isExtended) {
             if (extendedDiv) extendedDiv.style.display = '';
             if (notExtendedDiv) notExtendedDiv.style.display = 'none';
-            if (extendButton) extendButton.style.display = 'none';
-            if (practiceButton) practiceButton.style.display = '';
         } else {
             if (extendedDiv) extendedDiv.style.display = 'none';
             if (notExtendedDiv) notExtendedDiv.style.display = '';
-            if (extendButton) extendButton.style.display = '';
-            if (practiceButton) practiceButton.style.display = 'none';
         }
     }
 

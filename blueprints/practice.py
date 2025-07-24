@@ -207,13 +207,15 @@ def process_question_attempt(data, user_id):
         db.check_lucky_guess(user_id, question.get("level", 1), time_taken)
 
     # Check for numerical precision achievement
+    points = 0
     if is_correct and question.get("type") == "numerical":
         db.check_performance_achievements(user_id, q_type="numerical")
+        print(question.get("level", "easy"))
         points =  12*db.exp_mul[question.get("level", 2)]
         
-    if is_correct and question.get("type") == "mcq":
+    if is_correct and question.get("type") == "singleCorrect":
         points = 10*db.exp_mul[question.get("level", 2)]
-    
+
     if "points" not in session:
         session["points"] = 0
     
@@ -286,6 +288,7 @@ def process_task_completion(data, user_id):
     )
     
     
+    print(f"SR Progress Updated for {user_id} in chapter {test_data['chapter']} with {len(session['solved'])} solved questions")
     
     # Add activity with revision status
     db.add_activity(
@@ -354,7 +357,7 @@ def process_task_completion(data, user_id):
         "points": points,
     }
 
-    for key in ["practice_test", "solved"]:
+    for key in ["practice_test", "solved", "points"]:
         session.pop(key, None)
     session.modified = True
     

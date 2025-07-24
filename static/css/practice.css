@@ -1345,7 +1345,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 1rem;
+}
+
+.success-content .modal-footer {
+    border-top: none;
+    padding: 0;
+    justify-content: center;
 }
 
 .points-breakdown-container {
