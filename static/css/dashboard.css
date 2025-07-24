@@ -36,6 +36,104 @@
     align-items: center;
 }
 
+/* === XP CONTAINER === */
+.xp-container {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: var(--bg-tertiary);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    min-width: 320px;
+}
+
+.xp-level-progress {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.xp-ring {
+    transform: rotate(-90deg);
+}
+
+.xp-ring-bg {
+    stroke: rgba(107, 138, 253, 0.15);
+}
+
+.xp-ring-fg {
+    stroke: var(--accent-primary);
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease-out;
+}
+
+.xp-level-text {
+    position: absolute;
+    text-align: center;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.level-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.level-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.xp-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.xp-total {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.xp-total i {
+    color: #facc15; /* Yellow star */
+}
+
+.xp-bar-container {
+    width: 100%;
+}
+
+.xp-bar {
+    height: 8px;
+    background-color: var(--bg-secondary);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+}
+
+.xp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 4px;
+    transition: width 0.5s ease-out;
+}
+
+.xp-progress-text {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
 .title-bar h2 {
     margin: 0;
     font-weight: 600;

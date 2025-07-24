@@ -157,6 +157,23 @@ def profile(username):
 
     user_id = str(user['_id'])
 
+    # Calculate XP info for the profile user
+    total_xp = user.get('points', 0)
+    level = int((total_xp / 100) ** (1 / 1.5)) + 1
+    xp_for_current_level = int(100 * ((level - 1) ** 1.5))
+    xp_for_next_level = int(100 * (level ** 1.5))
+    xp_in_current_level = total_xp - xp_for_current_level
+    xp_needed_for_next_level = xp_for_next_level - xp_for_current_level
+    progress_percentage = (xp_in_current_level / xp_needed_for_next_level) * 100 if xp_needed_for_next_level > 0 else 0
+
+    user['xp_info'] = {
+        'level': level,
+        'total_xp': total_xp,
+        'progress': progress_percentage,
+        'xp_current': xp_in_current_level,
+        'xp_needed': xp_needed_for_next_level
+    }
+
     # Fetch activities and filter out sensitive ones
     all_activities = db.get_activities(user_id)
     public_activities = [
@@ -287,7 +304,27 @@ def inject_user():
     """Make user available to all templates by default."""
     if 'user' in session:
         user = db.get_user("_id", session['user']['id'])
-        return {'user': user, 'is_authenticated': True}
+        if user:
+            total_xp = user.get('points', 0)
+            
+            # Leveling logic for progress bar
+            level = int((total_xp / 100) ** (1 / 1.5)) + 1
+            xp_for_current_level = int(100 * ((level - 1) ** 1.5))
+            xp_for_next_level = int(100 * (level ** 1.5))
+            
+            xp_in_current_level = total_xp - xp_for_current_level
+            xp_needed_for_next_level = xp_for_next_level - xp_for_current_level
+            
+            progress_percentage = (xp_in_current_level / xp_needed_for_next_level) * 100 if xp_needed_for_next_level > 0 else 0
+
+            user['xp_info'] = {
+                'level': level,
+                'total_xp': total_xp,
+                'progress': progress_percentage,
+                'xp_current': xp_in_current_level,
+                'xp_needed': xp_needed_for_next_level
+            }
+            return {'user': user, 'is_authenticated': True}
     return {'user': None, 'is_authenticated': False}
 
 
