@@ -9,9 +9,9 @@ def compress():
     with open("data/pyqs.questions.json.br", "wb") as f:
         f.write(compressed)
 
-    compressed = brotli.compress(chap.encode('utf-8'))
-    with open("data/pyqs.chapters.json.br", "wb") as f:
-        f.write(compressed)
+    # compressed = brotli.compress(chap.encode('utf-8'))
+    # with open("data/pyqs.chapters.json.br", "wb") as f:
+    #     f.write(compressed)
 
 def decompress():
     with open("data/pyqs.questions.json.br", "rb") as f:
