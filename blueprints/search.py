@@ -44,11 +44,17 @@ def filters_api():
 
         if not subject_ids:
             # Return all papers for given exams
-            papers = [
-                {"_id": pid, "name": paper['name']}
-                for pid, paper in db.pyqs['papers'].items()
+            papers_list = [
+                paper for paper in db.pyqs['papers'].values()
                 if paper.get('exam') in exam_ids
             ]
+            
+            # Sort papers by timestamp (newest first)
+            sorted_papers = sorted(papers_list, key=lambda p: p.get('timestamp', 0), reverse=True)
+            
+            # Format for response
+            papers = [{"_id": p['_id'], "name": p['name']} for p in sorted_papers]
+            
             return jsonify(papers)
 
         else:

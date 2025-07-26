@@ -13,6 +13,11 @@ document.addEventListener('DOMContentLoaded', function() {
     let isRetryMode = false;
     let incorrectQuestions = [];
     
+    // Variables for image preloading
+    let preloadedCorrectImages = [];
+    let preloadedIncorrectImages = [];
+    const PRELOAD_COUNT = 5; // Number of images to keep in cache
+
     // New variables for question timing
     let questionStartTime = Date.now();
     let questionTimings = {};
@@ -91,6 +96,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Start timer
         initializeTimer();
+
+        // Preload initial batch of images
+        for (let i = 0; i < PRELOAD_COUNT; i++) {
+            preloadImage('correct');
+            preloadImage('incorrect');
+        }
     }
     
     // Initialize the main task timer
@@ -392,6 +403,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update the UI to show the result with server-provided values
             updateUI();
             updateFeedbackArea(questionId, data.damage_done || 0);
+            showAnswerPopup(isCorrect);
             
             // Only auto advance if this is the last attempt and answer is INCORRECT
             // Remove auto-advancing on correct answers
@@ -407,6 +419,94 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error submitting answer:', error);
         });
+    }
+    
+    // Preload an image and add it to the cache
+    function preloadImage(type) {
+        const baseUrl = 'https://cdn.planq.in/anime/';
+        let url;
+
+        if (type === 'correct') {
+            const randImgNum = Math.floor(Math.random() * 25) + 1;
+            url = `${baseUrl}correct-${randImgNum}.png`;
+        } else {
+            const randImgNum = Math.floor(Math.random() * 15) + 1;
+            url = `${baseUrl}incorrect-${randImgNum}.png`;
+        }
+
+        const img = new Image();
+        img.src = url;
+        img.onload = () => {
+            if (type === 'correct') {
+                preloadedCorrectImages.push(img);
+            } else {
+                preloadedIncorrectImages.push(img);
+            }
+        };
+    }
+
+    // Show a popup with feedback on the answer
+    function showAnswerPopup(isCorrect) {
+        const popup = document.getElementById('answer-popup');
+        const popupImg = document.getElementById('popup-img');
+        const popupTitle = document.getElementById('popup-title');
+        const popupMessage = document.getElementById('popup-message');
+
+        const correctMessages = [
+            { title: "Great Job!", message: "You're on a roll!" },
+            { title: "That's the spirit!", message: "Keep up the excellent work." },
+            { title: "Yay!", message: "Correct answer!" },
+            { title: "Awesome!", message: "You've nailed it." },
+            { title: "Brilliant!", message: "Your knowledge is shining." }
+        ];
+
+        const incorrectMessages = [
+            { title: "Try Again!", message: "Every mistake is a lesson." },
+            { title: "You Got This!", message: "Don't give up, you're close." },
+            { title: "Don't Get Upset!", message: "Learning is a journey." },
+            { title: "Almost There!", message: "Keep pushing forward." },
+            { title: "Nice Try!", message: "Persistence is key." }
+        ];
+
+        if (isCorrect) {
+            const randMsg = correctMessages[Math.floor(Math.random() * correctMessages.length)];
+            popup.className = 'answer-popup correct';
+            popupTitle.textContent = randMsg.title;
+            popupMessage.textContent = randMsg.message;
+            
+            // Use a preloaded image if available, otherwise generate a new one
+            const imageToUse = preloadedCorrectImages.shift() || new Image();
+            if (!imageToUse.src) { // If we created a new image
+                const randImgNum = Math.floor(Math.random() * 25) + 1;
+                imageToUse.src = `https://cdn.planq.in/anime/correct-${randImgNum}.png`;
+            }
+            popupImg.src = imageToUse.src;
+
+            // Preload another image to replace the one used
+            preloadImage('correct');
+        } else {
+            const randMsg = incorrectMessages[Math.floor(Math.random() * incorrectMessages.length)];
+            popup.className = 'answer-popup incorrect';
+            popupTitle.textContent = randMsg.title;
+            popupMessage.textContent = randMsg.message;
+
+            // Use a preloaded image if available
+            const imageToUse = preloadedIncorrectImages.shift() || new Image();
+            if (!imageToUse.src) { // If we created a new image
+                 const randImgNum = Math.floor(Math.random() * 15) + 1;
+                imageToUse.src = `https://cdn.planq.in/anime/incorrect-${randImgNum}.png`;
+            }
+            popupImg.src = imageToUse.src;
+
+            // Preload another image
+            preloadImage('incorrect');
+        }
+
+        popup.classList.add('show');
+
+        setTimeout(() => {
+            popup.classList.remove('show');
+        }, 3000); // Hide after 3 seconds
     }
     
     // Update question palette
