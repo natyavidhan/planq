@@ -58,6 +58,9 @@
         <div class="container">
             <!-- Left Side: Brand & Links -->
             <div class="navbar-left">
+                <button class="navbar-toggle" id="navbarToggle">
+                    <span class="navbar-toggle-icon"></span>
+                </button>
                 <div class="navbar-brand">
                     <a href="/" class="logo">
                         <span class="logo-text">Planq</span>
@@ -66,7 +69,7 @@
                 </div>
                 
                 {% if is_authenticated %}
-                <div class="navbar-links">
+                <div class="navbar-links desktop-only">
                     <a href="/dashboard" class="nav-link {% if request.path == '/dashboard' %}active{% endif %}">
                         <i class="fas fa-home"></i> Dashboard
                     </a>
@@ -84,7 +87,36 @@
             <!-- Right: User Menu -->
             <div class="navbar-right">
                 {% if is_authenticated %}
-                <div class="user-dropdown" id="userDropdown">
+                {% if user.xp_info %}
+                <div class="xp-container desktop-only">
+                    <div class="xp-level-progress">
+                        <svg class="xp-ring" width="50" height="50">
+                            <circle class="xp-ring-bg" stroke-width="5" fill="transparent" r="22" cx="25" cy="25"/>
+                            <circle class="xp-ring-fg" stroke-width="5" fill="transparent" r="22" cx="25" cy="25"
+                                    style="stroke-dasharray: {{ 2 * 3.14159 * 22 }}; stroke-dashoffset: {{ 2 * 3.14159 * 22 * (1 - user.xp_info.progress / 100) }};"/>
+                        </svg>
+                        <div class="xp-level-text">
+                            <div class="level-label">Lvl</div>
+                            <div class="level-number">{{ user.xp_info.level }}</div>
+                        </div>
+                    </div>
+                    <div class="xp-details">
+                        <div class="xp-total">
+                            <i class="fas fa-star"></i>
+                            <span>{{ user.xp_info.total_xp|int }} XP</span>
+                        </div>
+                        <div class="xp-bar-container">
+                            <div class="xp-bar">
+                                <div class="xp-fill" style="width: {{ user.xp_info.progress }}%;"></div>
+                            </div>
+                            <div class="xp-progress-text">
+                                <span>{{ user.xp_info.xp_current|int }} / {{ user.xp_info.xp_needed|int }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="user-dropdown desktop-only" id="userDropdown">
                     <div class="user-avatar">
                         <i class="fas fa-user-circle"></i>
                     </div>
@@ -110,6 +142,60 @@
                 {% endif %}
             </div>
         </div>
+
+        <!-- Mobile Menu -->
+        {% if is_authenticated %}
+        <div class="navbar-menu" id="navbarMenu">
+            <div class="navbar-menu-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info">
+                    <span class="username">{{ user.username }}</span>
+                    <span class="email">{{ user.email }}</span>
+                </div>
+            </div>
+            <div class="navbar-menu-links">
+                <a href="/dashboard" class="nav-link {% if request.path == '/dashboard' %}active{% endif %}"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="/bookmarks" class="nav-link {% if request.path == '/bookmarks/' %}active{% endif %}"><i class="fas fa-bookmark"></i> Bookmarks</a>
+                <a href="/achievements" class="nav-link {% if request.path == '/achievements/' %}active{% endif %}"><i class="fas fa-trophy"></i> Achievements</a>
+                <a href="/profile" class="nav-link {% if request.path == '/profile' %}active{% endif %}"><i class="fas fa-user"></i> Profile</a>
+                <a href="/settings" class="nav-link {% if request.path == '/settings' %}active{% endif %}"><i class="fas fa-cog"></i> Settings</a>
+            </div>
+            <div class="navbar-menu-footer">
+                {% if user.xp_info %}
+                <div class="xp-container mobile">
+                    <div class="xp-level-progress">
+                        <svg class="xp-ring" width="50" height="50">
+                            <circle class="xp-ring-bg" stroke-width="5" fill="transparent" r="22" cx="25" cy="25"/>
+                            <circle class="xp-ring-fg" stroke-width="5" fill="transparent" r="22" cx="25" cy="25"
+                                    style="stroke-dasharray: {{ 2 * 3.14159 * 22 }}; stroke-dashoffset: {{ 2 * 3.14159 * 22 * (1 - user.xp_info.progress / 100) }};"/>
+                        </svg>
+                        <div class="xp-level-text">
+                            <div class="level-label">Lvl</div>
+                            <div class="level-number">{{ user.xp_info.level }}</div>
+                        </div>
+                    </div>
+                    <div class="xp-details">
+                        <div class="xp-total">
+                            <i class="fas fa-star"></i>
+                            <span>{{ user.xp_info.total_xp|int }} XP</span>
+                        </div>
+                        <div class="xp-bar-container">
+                            <div class="xp-bar">
+                                <div class="xp-fill" style="width: {{ user.xp_info.progress }}%;"></div>
+                            </div>
+                            <div class="xp-progress-text">
+                                <span>{{ user.xp_info.xp_current|int }} / {{ user.xp_info.xp_needed|int }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <a href="/logout" class="dropdown-item text-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+        {% endif %}
     </nav>
     
     <div class="container mt-5">
@@ -131,6 +217,27 @@
             document.addEventListener('click', function(e) {
                 if (!userDropdown.contains(e.target) && dropdownContent.classList.contains('active')) {
                     dropdownContent.classList.remove('active');
+                }
+            });
+        }
+
+        // Navbar toggle for mobile
+        const navbarToggle = document.getElementById('navbarToggle');
+        const navbarMenu = document.getElementById('navbarMenu');
+
+        if (navbarToggle && navbarMenu) {
+            navbarToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navbarToggle.classList.toggle('active');
+                navbarMenu.classList.toggle('active');
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!navbarMenu.contains(e.target) && !navbarToggle.contains(e.target)) {
+                    if (navbarMenu.classList.contains('active')) {
+                        navbarMenu.classList.remove('active');
+                        navbarToggle.classList.remove('active');
+                    }
                 }
             });
         }

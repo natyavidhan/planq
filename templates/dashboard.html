@@ -4,42 +4,6 @@
 <link rel="stylesheet" href="/static/css/dashboard.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="home">
-    <div class="title-bar">
-        <div class="title-bar-content">
-            <h2>Welcome back, {{ user.username }}!</h2>
-            <p>Here's your progress overview. Keep up the great work!</p>
-        </div>
-        {% if user.xp_info %}
-        <div class="xp-container">
-            <div class="xp-level-progress">
-                <svg class="xp-ring" width="80" height="80">
-                    <circle class="xp-ring-bg" stroke-width="8" fill="transparent" r="36" cx="40" cy="40"/>
-                    <circle class="xp-ring-fg" stroke-width="8" fill="transparent" r="36" cx="40" cy="40"
-                            style="stroke-dasharray: {{ 2 * 3.14159 * 36 }}; stroke-dashoffset: {{ 2 * 3.14159 * 36 * (1 - user.xp_info.progress / 100) }};"/>
-                </svg>
-                <div class="xp-level-text">
-                    <div class="level-label">Level</div>
-                    <div class="level-number">{{ user.xp_info.level }}</div>
-                </div>
-            </div>
-            <div class="xp-details">
-                <div class="xp-total">
-                    <i class="fas fa-star"></i>
-                    <span>{{ user.xp_info.total_xp|int }} XP</span>
-                </div>
-                <div class="xp-bar-container">
-                    <div class="xp-bar">
-                        <div class="xp-fill" style="width: {{ user.xp_info.progress }}%;"></div>
-                    </div>
-                    <div class="xp-progress-text">
-                        <span>{{ user.xp_info.xp_current|int }} / {{ user.xp_info.xp_needed|int }} XP to next level</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-    </div>
-
     <!-- Activity Heatmap -->
     <div class="heatmap-container">
         <div class="heatmap-wrapper">

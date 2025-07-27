@@ -4,7 +4,7 @@
 .home {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: auto auto auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto;
     gap: 1.5rem;
     max-width: 1280px;
     margin: 2.5rem auto;
@@ -12,7 +12,7 @@
 }
 
 /* === COMMON CARD STYLES === */
-.title-bar, .heatmap-container, .recent-chapters, .activity, .tests {
+.heatmap-container, .recent-chapters, .activity, .tests {
     padding: 1.5rem;
     margin: 0;
     background-color: var(--bg-secondary);
@@ -20,127 +20,6 @@
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.title-bar {
-    grid-column: 1 / -1;
-    grid-row: 1;
-    text-align: left;
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* === XP CONTAINER === */
-.xp-container {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    background: var(--bg-tertiary);
-    padding: 1rem 1.5rem;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border-color);
-    min-width: 320px;
-}
-
-.xp-level-progress {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.xp-ring {
-    transform: rotate(-90deg);
-}
-
-.xp-ring-bg {
-    stroke: rgba(107, 138, 253, 0.15);
-}
-
-.xp-ring-fg {
-    stroke: var(--accent-primary);
-    stroke-linecap: round;
-    transition: stroke-dashoffset 0.5s ease-out;
-}
-
-.xp-level-text {
-    position: absolute;
-    text-align: center;
-    color: var(--text-primary);
-    line-height: 1;
-}
-
-.level-label {
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.level-number {
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-.xp-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    flex: 1;
-}
-
-.xp-total {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.xp-total i {
-    color: #facc15; /* Yellow star */
-}
-
-.xp-bar-container {
-    width: 100%;
-}
-
-.xp-bar {
-    height: 8px;
-    background-color: var(--bg-secondary);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 0.25rem;
-}
-
-.xp-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-    border-radius: 4px;
-    transition: width 0.5s ease-out;
-}
-
-.xp-progress-text {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-}
-
-.title-bar h2 {
-    margin: 0;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-    font-size: 1.75rem;
-    display: flex;
-    align-items: center;
 }
 
 .title-bar.profile-header {
@@ -227,7 +106,7 @@
 /* === HEATMAP === */
 .heatmap-container {
     grid-column: 1 / -1;
-    grid-row: 2;
+    grid-row: 1;
     display: grid;
     grid-template-columns: 3fr 1fr;
 }
@@ -515,12 +394,12 @@
 /* === GRID POSITIONING === */
 .recent-chapters {
     grid-column: 1 / -1;
-    grid-row: 3;
+    grid-row: 2;
 }
 
 .actions {
     grid-column: 1 / -1;
-    grid-row: 4;
+    grid-row: 3;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
@@ -532,12 +411,12 @@
 
 .activity {
     grid-column: 1 / 9;
-    grid-row: 5;
+    grid-row: 4;
 }
 
 .tests {
     grid-column: 9 / 13;
-    grid-row: 5;
+    grid-row: 4;
 }
 
 /* === SECTION TITLES === */
@@ -1734,34 +1613,33 @@
     
     .activity {
         grid-column: 1 / 8;
-        grid-row: 5;
+        grid-row: 4;
     }
     
     .tests {
         grid-column: 8 / 13;
-        grid-row: 5;
+        grid-row: 4;
     }
 }
 
 @media (max-width: 992px) {
     .home {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto auto auto auto auto;
+        grid-template-rows: auto auto auto auto auto;
         gap: 1.25rem;
         margin: 2rem auto;
         padding: 0 1rem;
     }
     
-    .title-bar, .heatmap-container, .recent-chapters, .actions, .activity, .tests {
+    .heatmap-container, .recent-chapters, .actions, .activity, .tests {
         grid-column: 1 / -1;
     }
     
-    .title-bar { grid-row: 1; }
-    .heatmap-container { grid-row: 2; }
-    .recent-chapters { grid-row: 3; }
-    .actions { grid-row: 4; }
-    .activity { grid-row: 5; }
-    .tests { grid-row: 6; }
+    .heatmap-container { grid-row: 1; }
+    .recent-chapters { grid-row: 2; }
+    .actions { grid-row: 3; }
+    .activity { grid-row: 4; }
+    .tests { grid-row: 5; }
     
     .actions {
         grid-template-columns: 1fr;
