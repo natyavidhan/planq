@@ -16,4 +16,4 @@ def init_blueprint(database):
 @ai_bp.route('/')
 @auth_required
 def ai_home():
-    return render_template('ai.html')
+    return render_template('ai.html', exams=db.get_exams())

@@ -37,6 +37,7 @@ class Database:
         self.activities = self.client["activities"]
         self.sr = self.client["sr_data"]
         self.tests = self.client["tests"]
+        self.ai = self.client["ai"]
 
         self.pyqs = {
             "questions": load_json_file(
@@ -932,3 +933,18 @@ class Database:
     def get_experience(self, user_id):
         user = self.users["users"].find_one({"_id": user_id})
         return user.get('points', 0)
+    
+    """
+    AI-related methods
+    """
+    
+    def create_chat(self, user_id, first_message):
+        chat_id = str(uuid.uuid4())
+        chat_data = {
+            "_id": chat_id,
+            "user_id": user_id,
+            "messages": [],
+            "created_at": ist_now(),
+        }
+        self.ai["chats"].insert_one(chat_data)
+        return chat_id

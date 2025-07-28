@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}PlanqAI{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/ai.css">
+
+<div class="ai-chat-container">
+    <!-- Sidebar -->
+    <aside class="chat-sidebar">
+        <div class="sidebar-header">
+            <button href="/ai" class="new-chat-btn">
+                <i class="fas fa-plus"></i> New Chat
+            </button>
+        </div>
+        <div class="chat-history">
+            <div class="history-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search your threads...">
+            </div>
+            <ul class="history-list">
+                <!-- Example, will be dynamic later -->
+                <li class="history-item active">
+                    <i class="far fa-comment-dots"></i>
+                    <span>Current Conversation</span>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="chat-main">
+        <div class="chat-messages" id="chat-messages">
+            <div class="welcome-message">
+                <h2>How can I help you, {{ user.username }}?</h2>
+                <div class="prompt-suggestions">
+                    <div class="suggestion-item" data-prompt="Explain the difference between molecularity and order of a reaction with examples.">Explain the difference between molecularity and order of a reaction with examples.</div>
+                    <div class="suggestion-item" data-prompt="List the differences between DNA and RNA in terms of structure, sugar, bases, and functions.">List the differences between DNA and RNA in terms of structure, sugar, bases, and functions.</div>
+                    <div class="suggestion-item" data-prompt="Explain how friction affects the motion of a block on a horizontal surface.">Explain how friction affects the motion of a block on a horizontal surface.</div>
+                    <div class="suggestion-item" data-prompt="Explain how to find the equation of a plane in 3D geometry. Derive the general form.">Explain how to find the equation of a plane in 3D geometry. Derive the general form.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-input-form">
+            <form id="ai-form">
+                <div class="input-wrapper">
+                    <textarea id="chat-input" name="query" placeholder="Type your message here..." rows="1" required></textarea>
+                    <button type="submit" id="send-btn"><i class="fas fa-arrow-up"></i></button>
+                    <div class="input-options">
+                        <select id="exam-select" name="exam_id" class="form-select">
+                            <option value="">Select Exam (Optional)</option>
+                            {% for exam in exams %}
+                            <option value="{{ exam._id }}">{{ exam.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <select id="subject-select" name="subject_id" class="form-select" disabled>
+                            <option value="">Select Subject</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+<script src="/static/js/ai.js"></script>
+{% endblock %}
