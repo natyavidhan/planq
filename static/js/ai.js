@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const chatSidebar = document.querySelector('.chat-sidebar');
     const chatOverlay = document.getElementById('chat-overlay');
     const chatIdInput = document.getElementById('chat-id');
+    const historyList = document.querySelector('.history-list');
 
     let chatHistory = [];
 
@@ -40,12 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
             MathJax.typesetPromise && MathJax.typesetPromise().catch(err => console.error('MathJax error:', err));
         }
     }
-    
-    loadExistingMessages();
 
-    // Handle exam selection to populate subjects
-    examSelect.addEventListener('change', function () {
-        const examId = this.value;
+    function fetchAndPopulateSubjects(examId, subjectToSelect = null) {
         subjectSelect.innerHTML = '<option value="">Select Subject</option>';
         subjectSelect.disabled = true;
 
@@ -60,12 +57,76 @@ document.addEventListener('DOMContentLoaded', function () {
                             option.textContent = subject.name;
                             subjectSelect.appendChild(option);
                         });
-                        subjectSelect.disabled = false;
+                        subjectSelect.disabled = false; // Enable for user selection
+                        
+                        if (subjectToSelect) {
+                            subjectSelect.value = subjectToSelect;
+                            subjectSelect.disabled = true; // Disable if pre-selected
+                        }
                     }
                 })
                 .catch(error => console.error('Error fetching subjects:', error));
         }
+    }
+
+    function initializeChatContext() {
+        const examId = examSelect.dataset.examId;
+        const subjectId = examSelect.dataset.subjectId;
+
+        if (examId) {
+            examSelect.value = examId;
+            fetchAndPopulateSubjects(examId, subjectId);
+        }
+    }
+    
+    loadExistingMessages();
+    initializeChatContext();
+
+    // Handle exam selection to populate subjects
+    examSelect.addEventListener('change', function () {
+        const examId = this.value;
+        fetchAndPopulateSubjects(examId);
     });
+
+    // Handle chat deletion
+    if (historyList) {
+        historyList.addEventListener('click', function(event) {
+            const deleteButton = event.target.closest('.delete-chat-btn');
+            if (!deleteButton) return;
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            const chatIdToDelete = deleteButton.dataset.chatId;
+            const chatItem = deleteButton.closest('.history-item');
+
+            if (confirm('Are you sure you want to delete this chat?')) {
+                fetch(`/ai/delete/${chatIdToDelete}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        chatItem.remove();
+                        // If the deleted chat is the current one, redirect to new chat
+                        const currentChatId = chatIdInput.value;
+                        if (chatIdToDelete === currentChatId) {
+                            window.location.href = '/ai';
+                        }
+                    } else {
+                        alert('Failed to delete chat.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting chat:', error);
+                    alert('An error occurred while deleting the chat.');
+                });
+            }
+        });
+    }
 
     // Handle prompt suggestion clicks
     promptSuggestions.forEach(item => {
@@ -97,6 +158,18 @@ document.addEventListener('DOMContentLoaded', function () {
         const query = chatInput.value.trim();
         if (!query) return;
 
+        const examId = examSelect.value;
+        const subjectId = subjectSelect.value;
+        if (!examId || !subjectId) {
+            const errorDiv = document.getElementById('chat-validation-error');
+            errorDiv.textContent = 'Please select an exam and a subject before asking a question.';
+            errorDiv.classList.add('active');
+            setTimeout(() => {
+                errorDiv.classList.remove('active');
+            }, 3000);
+            return;
+        }
+
         // Hide welcome message if it's visible
         if (welcomeMessage) {
             welcomeMessage.style.display = 'none';
@@ -108,8 +181,6 @@ document.addEventListener('DOMContentLoaded', function () {
         chatHistory.push({ role: 'user', content: query });
 
         // Get selected exam and subject
-        const examId = examSelect.value;
-        const subjectId = subjectSelect.value;
         const chatId = chatIdInput.value;
 
         // Show loading/thinking indicator for AI
@@ -154,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <i class="fas fa-${sender === 'user' ? 'user' : 'robot'}"></i>
             </div>
             <div class="message-content ${thinkingClass}">
-                <p>${messageText}</p>
+                <p>${messageText.replace("\n", "<br>")}</p>
             </div>
         `;
         chatMessages.appendChild(messageDiv);

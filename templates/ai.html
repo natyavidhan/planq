@@ -19,15 +19,18 @@
             <ul class="history-list">
                 {% for c in chats %}
                     {% if c.messages %}
-                        <a href="/ai/{{ c._id }}" class="history-item-link">
-                            <li class="history-item {% if c._id == chat._id %}active{% endif %}">
+                        <li class="history-item {% if c._id == chat._id %}active{% endif %}">
+                            <a href="/ai/{{ c._id }}" class="history-item-link">
                                 <i class="far fa-comment-dots"></i>
                                 <div class="history-item-details">
                                     <span class="history-item-title">{{ c.messages[0].content | truncate(30) }}</span>
                                     <span class="history-item-time">{{ c.created_at | formatdatetime }}</span>
                                 </div>
-                            </li>
-                        </a>
+                            </a>
+                            <button class="delete-chat-btn" data-chat-id="{{ c._id }}" title="Delete chat">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </li>
                     {% endif %}
                 {% endfor %}
             </ul>
@@ -43,8 +46,27 @@
                     <div class="message-avatar">
                         <i class="fas fa-{{ 'user' if message.role == 'user' else 'robot' }}"></i>
                     </div>
-                    <div class="message-content">
-                        <p>{{ message.content|replace("{{", "&lcub;&lcub;")|replace("}}", "&rcub;&rcub;")|replace("\n", "<br>")|safe }}</p>
+                    <div class="message-container">
+                        <div class="message-content">
+                            <p>{{ message.content|replace("{{", "&lcub;&lcub;")|replace("}}", "&rcub;&rcub;")|replace("\n", "<br>")|safe }}</p>
+                        </div>
+                        {% if message.context %}
+                        <div class="context-container">
+                            <h4 class="context-title">
+                                <i class="fas fa-book-open"></i> Context Used
+                            </h4>
+                            <div class="context-grid">
+                                {% for item in message.context %}
+                                <a href="/question/{{ item._id }}" target="_blank" class="context-item">
+                                    <p class="context-question">{{ item.question | truncate(100) }}</p>
+                                    <div class="context-score">
+                                        <i class="fas fa-bolt"></i> {{ (item.score * 100) | int }}% match
+                                    </div>
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -68,8 +90,11 @@
                     <textarea id="chat-input" name="query" placeholder="Type your message here..." rows="1" required></textarea>
                     <button type="submit" id="send-btn"><i class="fas fa-arrow-up"></i></button>
                     <div class="input-options">
-                        <select id="exam-select" name="exam_id" class="form-select">
-                            <option value="">Select Exam (Optional)</option>
+                        <select id="exam-select" name="exam_id" class="form-select" 
+                                data-exam-id="{{ chat.exam_id or '' }}" 
+                                data-subject-id="{{ chat.subject_id or '' }}"
+                                {% if chat.exam_id %}disabled{% endif %}>
+                            <option value="">Select Exam</option>
                             <!-- 
                                 "b3b5a8d8-f409-4e01-8fd4-043d3055db5e", # JEE Main
                                 "f3e78517-c050-4fea-822b-e43c4d2d3523", # WBJEE
@@ -85,6 +110,7 @@
                             <option value="">Select Subject</option>
                         </select>
                     </div>
+                    <div id="chat-validation-error" class="chat-validation-error"></div>
                 </div>
             </form>
         </div>

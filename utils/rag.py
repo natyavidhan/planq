@@ -97,6 +97,7 @@ class RAG:
 
         return [
             {
+                "_id": r[0]["_id"],
                 "raw_q": r[0]["question"],
                 "question": self.preprocess_text(r[0]["question"]),
                 "score": round(s, 4),

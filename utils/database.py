@@ -948,13 +948,16 @@ class Database:
         self.ai[user_id].insert_one(chat_data)
         return chat_data
     
-    def add_chat_message(self, user_id, chat_id, role, content):
+    def add_chat_message(self, user_id, chat_id, role, content, context=None):
         message = {
             "_id": str(uuid.uuid4()),
             "role": role,
             "content": content,
             "timestamp": ist_now(),
         }
+        if context:
+            message["context"] = context
+
         self.ai[user_id].update_one(
             {"_id": chat_id},
             {"$push": {"messages": message}},

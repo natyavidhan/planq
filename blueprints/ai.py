@@ -45,7 +45,7 @@ def ai_retrieve():
     messages = data.get("messages", [])
     top_k = data.get("top_k", 5)
 
-    if not query or not exam_id or not chat_id:
+    if not query or (not exam_id or not subject_id) or not chat_id:
         return jsonify({"error": "Invalid input"}), 400
 
     if not messages:
@@ -56,8 +56,8 @@ def ai_retrieve():
     
     prompt, results = rag.planq_ai(query, exam_id, subject_id, top_k=top_k, messages=messages)
     
-    db.add_chat_message(user_id, chat_id, "user", prompt)
-    db.add_chat_message(user_id, chat_id, "model", results['answer'])
+    db.add_chat_message(user_id, chat_id, "user", query)
+    db.add_chat_message(user_id, chat_id, "model", results['answer'], context=results.get('context_used'))
     
     return jsonify(results)
 
