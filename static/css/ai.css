@@ -89,6 +89,11 @@
     gap: 0.25rem;
 }
 
+.history-item-link {
+    text-decoration: none;
+    color: inherit;
+}
+
 .history-item {
     display: flex;
     align-items: center;
@@ -99,11 +104,32 @@
     transition: var(--transition-fast);
     color: var(--text-secondary);
     font-size: 0.9rem;
+    width: 100%;
 }
 
 .history-item:hover, .history-item.active {
     background-color: var(--bg-tertiary);
     color: var(--text-primary);
+}
+
+.history-item-details {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.history-item-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+}
+
+.history-item-time {
+    font-size: 0.7rem;
+    color: var(--text-tertiary);
 }
 
 .sidebar-footer {

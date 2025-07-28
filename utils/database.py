@@ -961,8 +961,14 @@ class Database:
         )
         return message
     
+    def update_chat_metadata(self, user_id, chat_id, metadata):
+        self.ai[user_id].update_one(
+            {"_id": chat_id},
+            {"$set": metadata}
+        )
+
     def get_user_chats(self, user_id):
-        return list(self.ai[user_id].find({}))
+        return list(self.ai[user_id].find({}).sort("created_at", -1))
     
     def delete_chat(self, user_id, chat_id):
         self.ai[user_id].delete_one({"_id": chat_id})

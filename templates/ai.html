@@ -17,11 +17,19 @@
                 <input type="text" placeholder="Search your threads...">
             </div>
             <ul class="history-list">
-                <!-- Example, will be dynamic later -->
-                <li class="history-item active">
-                    <i class="far fa-comment-dots"></i>
-                    <span>Current Conversation</span>
-                </li>
+                {% for c in chats %}
+                    {% if c.messages %}
+                        <a href="/ai/{{ c._id }}" class="history-item-link">
+                            <li class="history-item {% if c._id == chat._id %}active{% endif %}">
+                                <i class="far fa-comment-dots"></i>
+                                <div class="history-item-details">
+                                    <span class="history-item-title">{{ c.messages[0].content | truncate(30) }}</span>
+                                    <span class="history-item-time">{{ c.created_at | formatdatetime }}</span>
+                                </div>
+                            </li>
+                        </a>
+                    {% endif %}
+                {% endfor %}
             </ul>
         </div>
     </aside>
@@ -36,7 +44,7 @@
                         <i class="fas fa-{{ 'user' if message.role == 'user' else 'robot' }}"></i>
                     </div>
                     <div class="message-content">
-                        <p>{{ message.content|safe }}</p>
+                        <p>{{ message.content|replace("{{", "&lcub;&lcub;")|replace("}}", "&rcub;&rcub;")|replace("\n", "<br>")|safe }}</p>
                     </div>
                 </div>
                 {% endfor %}
@@ -87,4 +95,5 @@
 </button>
 <div class="chat-overlay" id="chat-overlay"></div>
 <script src="/static/js/ai.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
 {% endblock %}

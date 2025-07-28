@@ -48,6 +48,11 @@ def ai_retrieve():
     if not query or not exam_id or not chat_id:
         return jsonify({"error": "Invalid input"}), 400
 
+    if not messages:
+        db.update_chat_metadata(user_id, chat_id, {
+            "exam_id": exam_id,
+            "subject_id": subject_id
+        })
     
     prompt, results = rag.planq_ai(query, exam_id, subject_id, top_k=top_k, messages=messages)
     

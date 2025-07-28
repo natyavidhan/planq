@@ -18,11 +18,27 @@ document.addEventListener('DOMContentLoaded', function () {
         const existingMessages = document.querySelectorAll('.message');
         existingMessages.forEach(msg => {
             const role = msg.classList.contains('user') ? 'user' : 'model';
-            const content = msg.querySelector('.message-content p').innerText;
-            if (role && content) {
+            const contentEl = msg.querySelector('.message-content p');
+            if (role && contentEl) {
+                const content = contentEl.innerText;
                 chatHistory.push({ role, content });
             }
         });
+        //  render markdown for existing messages
+        existingMessages.forEach(msg => {
+            const messageContent = msg.querySelector('.message-content');
+            if (messageContent) {
+                const p = messageContent.querySelector('p');
+                if (p) {
+                    const text = p.innerHTML
+                    const html = marked.parse(text);
+                    messageContent.innerHTML = html;
+                }
+            }
+        });
+        if (window.MathJax) {
+            MathJax.typesetPromise && MathJax.typesetPromise().catch(err => console.error('MathJax error:', err));
+        }
     }
     
     loadExistingMessages();
@@ -149,14 +165,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const lastMessage = chatMessages.querySelector('.message:last-child .message-content');
         if (lastMessage && lastMessage.classList.contains('thinking')) {
             lastMessage.classList.remove('thinking');
-            // Replace newline characters with <br> tags for proper rendering
-            lastMessage.querySelector('p').innerHTML = text.replace(/\n/g, '<br>');
+            // Use marked to parse the whole text, it will handle newlines.
+            lastMessage.innerHTML = marked.parse(text);
         } else {
             appendMessage(sender, text);
         }
         chatMessages.scrollTop = chatMessages.scrollHeight;
         if (window.MathJax) {
-            MathJax.typesetPromise && MathJax.typesetPromise().catch(err => console.error('MathJax error:', err));
+            MathJax.typesetPromise && MathJax.typesetPromise([lastMessage]).catch(err => console.error('MathJax error:', err));
         }
     }
 });
