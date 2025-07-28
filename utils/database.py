@@ -938,13 +938,31 @@ class Database:
     AI-related methods
     """
     
-    def create_chat(self, user_id, first_message):
+    def create_chat(self, user_id):
         chat_id = str(uuid.uuid4())
         chat_data = {
             "_id": chat_id,
-            "user_id": user_id,
             "messages": [],
             "created_at": ist_now(),
         }
-        self.ai["chats"].insert_one(chat_data)
-        return chat_id
+        self.ai[user_id].insert_one(chat_data)
+        return chat_data
+    
+    def add_chat_message(self, user_id, chat_id, role, content):
+        message = {
+            "_id": str(uuid.uuid4()),
+            "role": role,
+            "content": content,
+            "timestamp": ist_now(),
+        }
+        self.ai[user_id].update_one(
+            {"_id": chat_id},
+            {"$push": {"messages": message}},
+        )
+        return message
+    
+    def get_user_chats(self, user_id):
+        return list(self.ai[user_id].find({}))
+    
+    def delete_chat(self, user_id, chat_id):
+        self.ai[user_id].delete_one({"_id": chat_id})

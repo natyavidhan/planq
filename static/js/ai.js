@@ -9,6 +9,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const chatSidebar = document.querySelector('.chat-sidebar');
     const chatOverlay = document.getElementById('chat-overlay');
+    const chatIdInput = document.getElementById('chat-id');
+
+    let chatHistory = [];
+
+    // Function to load existing messages if any
+    function loadExistingMessages() {
+        const existingMessages = document.querySelectorAll('.message');
+        existingMessages.forEach(msg => {
+            const role = msg.classList.contains('user') ? 'user' : 'model';
+            const content = msg.querySelector('.message-content p').innerText;
+            if (role && content) {
+                chatHistory.push({ role, content });
+            }
+        });
+    }
+    
+    loadExistingMessages();
 
     // Handle exam selection to populate subjects
     examSelect.addEventListener('change', function () {
@@ -72,10 +89,12 @@ document.addEventListener('DOMContentLoaded', function () {
         // Display user message
         appendMessage('user', query);
         chatInput.value = '';
+        chatHistory.push({ role: 'user', content: query });
 
         // Get selected exam and subject
         const examId = examSelect.value;
         const subjectId = subjectSelect.value;
+        const chatId = chatIdInput.value;
 
         // Show loading/thinking indicator for AI
         appendMessage('ai', 'Thinking...', true);
@@ -86,15 +105,24 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ query, exam_id: examId, subject_id: subjectId })
+            body: JSON.stringify({ 
+                query, 
+                exam_id: examId, 
+                subject_id: subjectId,
+                chat_id: chatId,
+                messages: chatHistory.slice(0, -1) // Send history without the current query
+            })
         })
         .then(response => response.json())
         .then(data => {
             updateLastMessage('ai', data.answer);
+            chatHistory.push({ role: 'model', content: data.answer });
         })
         .catch(error => {
             console.error('Error:', error);
-            updateLastMessage('ai', 'Sorry, something went wrong. Please try again.');
+            const errorMsg = 'Sorry, something went wrong. Please try again.';
+            updateLastMessage('ai', errorMsg);
+            chatHistory.push({ role: 'model', content: errorMsg });
         });
     });
 
@@ -121,10 +149,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const lastMessage = chatMessages.querySelector('.message:last-child .message-content');
         if (lastMessage && lastMessage.classList.contains('thinking')) {
             lastMessage.classList.remove('thinking');
-            lastMessage.querySelector('p').innerHTML = text; // Use innerHTML to render markdown
+            // Replace newline characters with <br> tags for proper rendering
+            lastMessage.querySelector('p').innerHTML = text.replace(/\n/g, '<br>');
         } else {
             appendMessage(sender, text);
         }
         chatMessages.scrollTop = chatMessages.scrollHeight;
+        if (window.MathJax) {
+            MathJax.typesetPromise && MathJax.typesetPromise().catch(err => console.error('MathJax error:', err));
+        }
     }
 });

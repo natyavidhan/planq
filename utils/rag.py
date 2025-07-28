@@ -149,30 +149,65 @@ class RAG:
             chapter_id = None
 
         query = self.preprocess_text(query)
-        results = self.retrieve_hybrid(query, exam_id, subject_id, chapter_id, top_k)
+        
+        history_for_model = []
+        for msg in messages:
+            # Gemini API expects 'model' for assistant role.
+            role = 'model' if msg['role'] == 'ai' or msg['role'] == 'model' else 'user'
+            history_for_model.append({'role': role, 'parts': [msg['content']]})
 
-        context = "\n".join(
-            [
-                f"Q{i+1}: {r['question']}\nA{i+1}: {r.get('explanation', '')}"
-                for i, r in enumerate(results)
-            ]
-        )
+        # If it's the first message in the chat, use RAG
+        if not messages:
+            results = self.retrieve_hybrid(query, exam_id, subject_id, chapter_id, top_k)
+            context = "\n".join(
+                [
+                    f"Q{i+1}: {r['question']}\nA{i+1}: {r.get('explanation', '')}"
+                    for i, r in enumerate(results)
+                ]
+            )
 
-        prompt = f"""
-        You are PlanqAI, an AI tutor for entrance exam students in India.
-        Use the following context from previous exam questions to answer the query.
+            prompt = f"""
+You are **PlanqAI**, an advanced AI tutor built for Indian students preparing for **entrance exams like JEE, NEET, and other competitive exams**.
 
-        Context:
-        {context}
+🎯 **Your Goals:**
+- Provide **accurate, step-by-step explanations** to help students truly understand the concept.
+- Use **retrieved context questions (if relevant)** as examples or references.
+- If the context is irrelevant or insufficient, rely on your **own knowledge** to answer.
+- Keep answers **concise yet complete** – focus on **concept clarity** rather than just giving the final answer.
 
-        Question:
-        {query}
+📌 **Important Instructions:**
+1. If the question is **theoretical**, give a **clear explanation with examples**.
+2. If the question is **numerical/problem-solving**, provide:
+   - **Formulae involved**
+   - **Step-by-step solution approach**
+   - **Final answer (only if calculable with given data)**
+3. If there are **multiple possible approaches**, briefly mention the alternative methods.
+4. Use **math formatting (LaTeX style)** for equations when needed.
+5. Avoid **unnecessary extra details** – only include what helps the student understand and solve similar questions.
 
-        Provide a helpful, concise explanation with examples if needed.
-        """
+📖 **Context from previous exam questions (can be used as reference):**
+{context}
 
-        response = self.gemini.generate_content(prompt)
-        return {"answer": response.text, "context_used": results}
+💡 **Student's Question:**
+{query}
+
+📝 **Your Response:**
+- Begin with a **short direct answer or key concept**.
+- Then, give a **step-by-step explanation or derivation** if needed.
+- If the context is relevant, mention: _"A similar question appeared in previous exams where..."_ and relate it.
+
+Make sure the tone is **friendly, encouraging, and exam-focused**.
+            """
+            
+            chat_session = self.gemini.start_chat(history=[])
+            response = chat_session.send_message(prompt)
+            return prompt, {"answer": response.text, "context_used": results}
+
+        # For subsequent messages, continue the conversation without RAG
+        else:
+            chat_session = self.gemini.start_chat(history=history_for_model)
+            response = chat_session.send_message(query)
+            return query, {"answer": response.text, "context_used": []}
 
 
 # Example usage:
