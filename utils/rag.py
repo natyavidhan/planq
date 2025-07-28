@@ -10,8 +10,9 @@ import re
 import json
 from utils.database import Database
 
+
 class RAG:
-    def __init__(self, db:Database):
+    def __init__(self, db: Database):
         _start = time.time()
         genai.configure(api_key=os.getenv("GEMINI_KEY"))
         self.gemini = genai.GenerativeModel("gemini-2.0-flash")
@@ -20,41 +21,49 @@ class RAG:
 
         self.INDEX_DIR = "faiss_indexes"
         os.makedirs(self.INDEX_DIR, exist_ok=True)
-        
+
         self.exams = [
-            "b3b5a8d8-f409-4e01-8fd4-043d3055db5e", # JEE Main
-            "f3e78517-c050-4fea-822b-e43c4d2d3523", # WBJEE
-            "4625ad6f-33db-4c22-96e0-6c23830482de", # NEET
-            "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a", # BITSAT
+            "b3b5a8d8-f409-4e01-8fd4-043d3055db5e",  # JEE Main
+            "f3e78517-c050-4fea-822b-e43c4d2d3523",  # WBJEE
+            "4625ad6f-33db-4c22-96e0-6c23830482de",  # NEET
+            "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a",  # BITSAT
         ]
 
         self.indexes = {
-            exam_id: self.load_exam_index(exam_id)
-            for exam_id in self.exams
+            exam_id: self.load_exam_index(exam_id) for exam_id in self.exams
         }
         print(f"RAG initialized in {time.time() - _start:.2f} seconds")
 
-    def clean_html(self, text): return BeautifulSoup(text, "html.parser").get_text()
-    def clean_latex(self, text): return re.sub(r"\$[^\$]*\$", "", text)
-    def preprocess_text(self, text): return self.clean_latex(self.clean_html(text)).strip()
+    def clean_html(self, text):
+        return BeautifulSoup(text, "html.parser").get_text()
+
+    def clean_latex(self, text):
+        return re.sub(r"\$[^\$]*\$", "", text)
+
+    def preprocess_text(self, text):
+        return self.clean_latex(self.clean_html(text)).strip()
 
     def load_exam_index(self, exam_id):
         faiss_file = f"{self.INDEX_DIR}/{exam_id}_index.faiss"
         ids_file = f"{self.INDEX_DIR}/{exam_id}_ids.npy"
 
         if not (os.path.exists(faiss_file) and os.path.exists(ids_file)):
-            print(f"Index files for {exam_id} not found. Please generate embeddings first.")
+            print(
+                f"Index files for {exam_id} not found. Please generate embeddings first."
+            )
             return None, None
         index = faiss.read_index(faiss_file)
         ids = np.load(ids_file, allow_pickle=True)
 
         return index, ids
 
-    def retrieve_hybrid(self, query, exam_id, subject_id=None, chapter_id=None, top_k=5, alpha=0.6):
+    def retrieve_hybrid(
+        self, query, exam_id, subject_id=None, chapter_id=None, top_k=5, alpha=0.6
+    ):
         index, ids = self.indexes[exam_id]
         if index is None:
             return []
-        
+
         query_emb = self.model.encode(query).astype("float32").reshape(1, -1)
 
         D, I = index.search(query_emb, top_k * 20)  # search more, filter later
@@ -62,7 +71,7 @@ class RAG:
 
         for idx, dist in zip(I[0], D[0]):
             q_id = ids[idx]
-            meta = self.db.pyqs['questions'].get(q_id, None)
+            meta = self.db.pyqs["questions"].get(q_id, None)
             if not meta:
                 continue
 
@@ -87,20 +96,22 @@ class RAG:
         ranked = sorted(zip(results, hybrid_scores), key=lambda x: x[1], reverse=True)
 
         return [
-            {"question": r[0]["question"], "score": round(s, 4), "explanation": r[0].get("explanation")}
+            {
+                "raw_q": r[0]["question"],
+                "question": self.preprocess_text(r[0]["question"]),
+                "score": round(s, 4),
+                "explanation": self.preprocess_text(r[0].get("explanation")),
+            }
             for r, s in ranked[:top_k]
         ]
 
     def generate_embeddings(self):
-        exams = [
-            "b3b5a8d8-f409-4e01-8fd4-043d3055db5e", # JEE Main
-            "f3e78517-c050-4fea-822b-e43c4d2d3523", # WBJEE
-            "4625ad6f-33db-4c22-96e0-6c23830482de", # NEET
-            "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a", # BITSAT
-        ]
-
-        for exam_id in exams:
-            cursor = [{"_id": i['_id'], "question": i['question']} for i in self.db.pyqs['questions'].values() if i.get("exam") == exam_id]
+        for exam_id in self.exams:
+            cursor = [
+                {"_id": i["_id"], "question": i["question"]}
+                for i in self.db.pyqs["questions"].values()
+                if i.get("exam") == exam_id
+            ]
             all_embeddings, all_ids = [], []
 
             for doc in cursor:
@@ -123,17 +134,28 @@ class RAG:
             index.add(all_embeddings)
 
             faiss.write_index(index, f"{self.INDEX_DIR}/{exam_id}_index.faiss")
-            np.save(f"{self.INDEX_DIR}/{exam_id}_ids.npy", np.array(all_ids, dtype=object))
+            np.save(
+                f"{self.INDEX_DIR}/{exam_id}_ids.npy", np.array(all_ids, dtype=object)
+            )
 
             print(f"✅ Saved FAISS index for {exam_id} with {len(all_ids)} questions.")
 
-    def planq_ai(self, query, exam_id, subject_id=None, chapter_id=None, top_k=5):
+    def planq_ai(
+        self, query, exam_id, subject_id=None, chapter_id=None, top_k=5, messages=[]
+    ):
+        if subject_id == "":
+            subject_id = None
+        if chapter_id == "":
+            chapter_id = None
+
         query = self.preprocess_text(query)
         results = self.retrieve_hybrid(query, exam_id, subject_id, chapter_id, top_k)
-        print(json.dumps(results, indent=2, ensure_ascii=False))
 
         context = "\n".join(
-            [f"Q{i+1}: {r['question']}\nA{i+1}: {r.get('explanation', '')}" for i, r in enumerate(results)]
+            [
+                f"Q{i+1}: {r['question']}\nA{i+1}: {r.get('explanation', '')}"
+                for i, r in enumerate(results)
+            ]
         )
 
         prompt = f"""
@@ -151,6 +173,7 @@ class RAG:
 
         response = self.gemini.generate_content(prompt)
         return {"answer": response.text, "context_used": results}
+
 
 # Example usage:
 # generate_embeddings()

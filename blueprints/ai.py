@@ -33,5 +33,5 @@ def ai_retrieve():
     if not query or not exam_id:
         return jsonify({"error": "Invalid input"}), 400
 
-    results = rag.planq_ai(query, exam_id, subject_id, top_k)
+    results = rag.planq_ai(query, exam_id, subject_id, top_k=top_k)
     return jsonify(results)
