@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, session
-from database import Database
+from utils.database import Database
 
 question_bp = Blueprint('question', __name__, url_prefix='/question')
 

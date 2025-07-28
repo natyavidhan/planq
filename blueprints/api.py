@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, session
-from database import Database
-from sr import SR
+from utils.database import Database
+from utils.sr import SR
 from utils import auth_required, ist_now
 from datetime import datetime, timezone
 

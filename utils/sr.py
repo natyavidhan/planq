@@ -1,5 +1,5 @@
 from utils import generate_ch_difficulty, ist_now
-from database import Database
+from utils.database import Database
 import math
 import time
 from datetime import datetime, timedelta

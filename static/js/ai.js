@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const examSelect = document.getElementById('exam-select');
     const subjectSelect = document.getElementById('subject-select');
     const promptSuggestions = document.querySelectorAll('.suggestion-item');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const chatSidebar = document.querySelector('.chat-sidebar');
+    const chatOverlay = document.getElementById('chat-overlay');
 
     // Handle exam selection to populate subjects
     examSelect.addEventListener('change', function () {
@@ -42,6 +45,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // Sidebar toggle for mobile
+    if (sidebarToggle && chatSidebar) {
+        sidebarToggle.addEventListener('click', function() {
+            chatSidebar.classList.toggle('active');
+            chatOverlay.classList.toggle('active');
+        });
+
+        chatOverlay.addEventListener('click', function() {
+            chatSidebar.classList.remove('active');
+            chatOverlay.classList.remove('active');
+        });
+    }
+
     // Handle form submission
     chatForm.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -65,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
         appendMessage('ai', 'Thinking...', true);
 
         // Send data to backend
-        fetch('/api/ask_ai', {
+        fetch('/ai/retrieve', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

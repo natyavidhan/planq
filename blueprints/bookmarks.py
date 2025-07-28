@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, session
-from database import Database
+from utils.database import Database
 from utils import auth_required
 
 bookmarks_bp = Blueprint('bookmarks', __name__, url_prefix='/bookmarks')

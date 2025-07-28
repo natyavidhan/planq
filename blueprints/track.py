@@ -8,8 +8,8 @@ from flask import (
     url_for,
     flash,
 )
-from sr import SR
-from database import Database
+from utils.sr import SR
+from utils.database import Database
 from utils import auth_required, ist_now
 import math
 from datetime import timedelta

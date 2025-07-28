@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session, jsonify, abort
-from database import Database
+from utils.database import Database
 from utils import auth_required
 
 test_bp = Blueprint('test', __name__, url_prefix='/test')

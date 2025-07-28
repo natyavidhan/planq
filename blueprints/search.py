@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from database import Database
+from utils.database import Database
 
 search_bp = Blueprint('search', __name__, url_prefix='/search')
 

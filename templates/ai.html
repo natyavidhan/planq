@@ -30,7 +30,7 @@
     <main class="chat-main">
         <div class="chat-messages" id="chat-messages">
             <div class="welcome-message">
-                <h2>How can I help you, {{ user.username }}?</h2>
+                <h2>Hello! How can I help you?</h2>
                 <div class="prompt-suggestions">
                     <div class="suggestion-item" data-prompt="Explain the difference between molecularity and order of a reaction with examples.">Explain the difference between molecularity and order of a reaction with examples.</div>
                     <div class="suggestion-item" data-prompt="List the differences between DNA and RNA in terms of structure, sugar, bases, and functions.">List the differences between DNA and RNA in terms of structure, sugar, bases, and functions.</div>
@@ -48,9 +48,16 @@
                     <div class="input-options">
                         <select id="exam-select" name="exam_id" class="form-select">
                             <option value="">Select Exam (Optional)</option>
-                            {% for exam in exams %}
-                            <option value="{{ exam._id }}">{{ exam.name }}</option>
-                            {% endfor %}
+                            <!-- 
+                                "b3b5a8d8-f409-4e01-8fd4-043d3055db5e", # JEE Main
+                                "f3e78517-c050-4fea-822b-e43c4d2d3523", # WBJEE
+                                "4625ad6f-33db-4c22-96e0-6c23830482de", # NEET
+                                "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a", # BITSAT
+                            -->
+                            <option value="b3b5a8d8-f409-4e01-8fd4-043d3055db5e">JEE Main</option>
+                            <option value="4625ad6f-33db-4c22-96e0-6c23830482de">NEET</option>
+                            <option value="f3e78517-c050-4fea-822b-e43c4d2d3523">WBJEE</option>
+                            <option value="c8da26c7-cf1b-421f-829b-c95dbdd3cc6a">BITSAT</option>
                         </select>
                         <select id="subject-select" name="subject_id" class="form-select" disabled>
                             <option value="">Select Subject</option>
@@ -61,5 +68,9 @@
         </div>
     </main>
 </div>
+<button id="sidebar-toggle" class="chats-btn">
+    <i class="fas fa-comments"></i> Chats
+</button>
+<div class="chat-overlay" id="chat-overlay"></div>
 <script src="/static/js/ai.js"></script>
 {% endblock %}
