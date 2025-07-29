@@ -19,6 +19,13 @@ def generate_test():
         exam_id = request.form.get('exam')
         mode = request.form.get('mode')
         
+        if exam_id not in [
+                        "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a",
+                        "4625ad6f-33db-4c22-96e0-6c23830482de",
+                        "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+                    ]:
+            return redirect("/")
+        
         if mode == 'generate':
             # Custom test generation
             subjects = {}
@@ -71,8 +78,14 @@ def generate_test():
             test_id = db.add_pyq_test(session['user']['id'], metadata, paper_id)
             
             return redirect(url_for('test.attempt_test', test_id=test_id))
-    
-    exams = db.get_exams()
+    exams = []
+    for exam in db.get_exams():
+        if exam['_id'] in [
+                        "c8da26c7-cf1b-421f-829b-c95dbdd3cc6a",
+                        "4625ad6f-33db-4c22-96e0-6c23830482de",
+                        "b3b5a8d8-f409-4e01-8fd4-043d3055db5e"
+                    ]:
+            exams.append(exam)
     return render_template('generate_test.html', exams=exams)
 
 @auth_required
