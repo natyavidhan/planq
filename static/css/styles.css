@@ -960,3 +960,8 @@ progress, meter,
   outline: 2px solid var(--accent-primary);
   outline-offset: 2px;
 }
+
+.muted {
+  color: #a8acb3;
+  font-weight: 400;
+}

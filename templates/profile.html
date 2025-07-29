@@ -2,15 +2,18 @@
 {% block title %}{{ profile_user.username }}'s Profile{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="/static/css/dashboard.css">
+<link rel="stylesheet" href="/static/css/profile.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="home">
     <div class="title-bar profile-header">
         <div class="profile-info">
-            <h2 class="profile-username">{{ profile_user.username }}'s Profile</h2>
-            <div class="profile-stats">
-                 <div class="stat-badge">
-                    <i class="fas fa-question-circle"></i>
-                    <span>{{ total_unique_questions }} Questions Solved</span>
+            <div class="profile-details-main">
+                <h2 class="profile-username">{{ profile_user.username }}'s Profile</h2>
+                <div class="profile-stats">
+                     <div class="stat-badge">
+                        <i class="fas fa-question-circle"></i>
+                        <span>{{ total_unique_questions }} Questions Solved</span>
+                    </div>
                 </div>
             </div>
             {% if profile_user.xp_info %}

@@ -1,0 +1,74 @@
+
+.title-bar.profile-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+    padding: 2rem;
+    grid-column: 1 / -1;
+    grid-row: 1;
+}
+
+
+.profile-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.profile-details-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.profile-username {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+}
+
+/* === HEATMAP === */
+.heatmap-container {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}
+
+/* === GRID POSITIONING === */
+.recent-chapters {
+    grid-column: 1 / -1;
+    grid-row: 3;
+}
+
+.actions {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.activity {
+    grid-column: 1 / -1;
+    grid-row: 5;
+}
+
+.achievements-section {
+    grid-column: 1 / -1;
+    grid-row: 6;
+}
+

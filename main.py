@@ -150,6 +150,11 @@ def logout():
     session.pop("user")
     return redirect(url_for("home"))
 
+@app.route("/profile")
+@auth_required
+def profile_self():
+    return redirect(url_for("profile", username=session['user']['username']))
+
 
 @app.route("/profile/<username>")
 def profile(username):

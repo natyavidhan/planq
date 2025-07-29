@@ -22,6 +22,17 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.title-bar {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    padding: 1.5rem;
+    margin: 0;
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+}
+
 .title-bar.profile-header {
     flex-direction: column;
     align-items: stretch;
@@ -35,6 +46,12 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
+}
+
+.profile-details-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .profile-username {
@@ -79,6 +96,22 @@
     font-weight: 500;
 }
 
+.stat-badge {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+}
+
+.stat-badge i {
+    color: var(--accent-primary);
+    margin-right: 0.5rem;
+}
+
 .profile-header .stat-badge i {
     color: var(--accent-primary);
     margin-right: 0.5rem;
@@ -103,10 +136,110 @@
     gap: 1rem;
 }
 
+.xp-container {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: var(--bg-tertiary);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.xp-level-progress {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.xp-ring {
+    transform: rotate(-90deg);
+}
+
+.xp-ring-bg, .xp-ring-fg {
+    stroke-linecap: round;
+}
+
+.xp-ring-bg {
+    stroke: rgba(107, 138, 253, 0.15);
+}
+
+.xp-ring-fg {
+    stroke: var(--accent-primary);
+    transition: stroke-dashoffset 0.5s ease-out;
+}
+
+.xp-level-text {
+    position: absolute;
+    text-align: center;
+}
+
+.level-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.level-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+}
+
+.xp-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 200px;
+}
+
+.xp-total {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.xp-total i {
+    color: #facc15;
+}
+
+.xp-bar-container {
+    width: 100%;
+}
+
+.xp-bar {
+    width: 100%;
+    height: 6px;
+    background-color: rgba(107, 138, 253, 0.15);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.xp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 3px;
+    transition: width 0.5s ease-out;
+}
+
+.xp-progress-text {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+    text-align: right;
+}
+
 /* === HEATMAP === */
 .heatmap-container {
     grid-column: 1 / -1;
-    grid-row: 1;
+    grid-row: 2;
     display: grid;
     grid-template-columns: 3fr 1fr;
 }
@@ -394,12 +527,12 @@
 /* === GRID POSITIONING === */
 .recent-chapters {
     grid-column: 1 / -1;
-    grid-row: 2;
+    grid-row: 3;
 }
 
 .actions {
     grid-column: 1 / -1;
-    grid-row: 3;
+    grid-row: 4;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
@@ -411,12 +544,12 @@
 
 .activity {
     grid-column: 1 / 9;
-    grid-row: 4;
+    grid-row: 5;
 }
 
 .tests {
     grid-column: 9 / 13;
-    grid-row: 4;
+    grid-row: 5;
 }
 
 /* === SECTION TITLES === */
@@ -1613,12 +1746,12 @@
     
     .activity {
         grid-column: 1 / 8;
-        grid-row: 4;
+        grid-row: 5;
     }
     
     .tests {
         grid-column: 8 / 13;
-        grid-row: 4;
+        grid-row: 5;
     }
 }
 
@@ -1631,15 +1764,16 @@
         padding: 0 1rem;
     }
     
-    .heatmap-container, .recent-chapters, .actions, .activity, .tests {
+    .title-bar, .heatmap-container, .recent-chapters, .actions, .activity, .tests {
         grid-column: 1 / -1;
     }
     
-    .heatmap-container { grid-row: 1; }
-    .recent-chapters { grid-row: 2; }
-    .actions { grid-row: 3; }
-    .activity { grid-row: 4; }
-    .tests { grid-row: 5; }
+    .title-bar { grid-row: 1; }
+    .heatmap-container { grid-row: 2; }
+    .recent-chapters { grid-row: 3; }
+    .actions { grid-row: 4; }
+    .activity { grid-row: 5; }
+    .tests { grid-row: 6; }
     
     .actions {
         grid-template-columns: 1fr;
