@@ -107,16 +107,6 @@
   ]
 },
 {
-  "_id": "2871e14c-fbcf-4047-9955-e210b0fb742b",
-  "name": "NDA",
-  "subjects": [
-    [
-      "fb0ed4bb-f01a-41a7-8400-dc89ff53e59f",
-      "Mathematics"
-    ]
-  ]
-},
-{
   "_id": "4fe0bca2-d3eb-43e8-b705-f4eb7301a74c",
   "name": "VITEEE",
   "subjects": [
