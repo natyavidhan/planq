@@ -37,9 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
-        if (window.MathJax) {
-            MathJax.typesetPromise && MathJax.typesetPromise().catch(err => console.error('MathJax error:', err));
-        }
     }
 
     function fetchAndPopulateSubjects(examId, subjectToSelect = null) {
@@ -202,8 +199,8 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(response => response.json())
         .then(data => {
-            updateLastMessage('ai', data.answer);
-            chatHistory.push({ role: 'model', content: data.answer });
+            updateLastMessage('ai', data.answer, data.context_used);
+            chatHistory.push({ role: 'model', content: data.answer, context: data.context_used });
         })
         .catch(error => {
             console.error('Error:', error);
@@ -224,26 +221,68 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="message-avatar">
                 <i class="fas fa-${sender === 'user' ? 'user' : 'robot'}"></i>
             </div>
-            <div class="message-content ${thinkingClass}">
-                <p>${messageText.replace("\n", "<br>")}</p>
+            <div class="message-container">
+                <div class="message-content ${thinkingClass}">
+                    <p>${messageText.replace(/\n/g, "<br>")}</p>
+                </div>
             </div>
         `;
         chatMessages.appendChild(messageDiv);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    function updateLastMessage(sender, text) {
-        const lastMessage = chatMessages.querySelector('.message:last-child .message-content');
-        if (lastMessage && lastMessage.classList.contains('thinking')) {
-            lastMessage.classList.remove('thinking');
-            // Use marked to parse the whole text, it will handle newlines.
-            lastMessage.innerHTML = marked.parse(text);
+    function updateLastMessage(sender, text, context = null) {
+        const lastMessage = chatMessages.querySelector('.message:last-child');
+        if (!lastMessage) return;
+        
+        const messageContainer = lastMessage.querySelector('.message-container');
+        const messageContent = messageContainer ? messageContainer.querySelector('.message-content') : null;
+
+        if (messageContent && messageContent.classList.contains('thinking')) {
+            messageContent.classList.remove('thinking');
+            messageContent.innerHTML = `<p>${text}</p>`;
+            if (window.MathJax) {
+                MathJax.typesetPromise && MathJax.typesetPromise().catch(err => console.error('MathJax error:', err));
+            }
+            let content = messageContent.querySelector('p');
+            if (content) {
+                const text = content.innerHTML;
+                const html = marked.parse(text);
+                messageContent.innerHTML = html;
+            }
+
+            if (context && context.length > 0) {
+                const contextContainer = document.createElement('div');
+                contextContainer.className = 'context-container';
+
+                let contextGridHTML = '';
+                context.forEach(item => {
+                    const score = Math.round(item.score * 100);
+                    const truncatedQuestion = item.question.length > 100 ? item.question.substring(0, 100) + '...' : item.question;
+
+                    contextGridHTML += `
+                        <a href="/question/${item._id}" target="_blank" class="context-item">
+                            <p class="context-question">${truncatedQuestion}</p>
+                            <div class="context-score">
+                                <i class="fas fa-bolt"></i> ${score}% match
+                            </div>
+                        </a>
+                    `;
+                });
+
+                contextContainer.innerHTML = `
+                    <h4 class="context-title">
+                        <i class="fas fa-book-open"></i> Context Used
+                    </h4>
+                    <div class="context-grid">
+                        ${contextGridHTML}
+                    </div>
+                `;
+                messageContainer.appendChild(contextContainer);
+            }
         } else {
             appendMessage(sender, text);
         }
         chatMessages.scrollTop = chatMessages.scrollHeight;
-        if (window.MathJax) {
-            MathJax.typesetPromise && MathJax.typesetPromise([lastMessage]).catch(err => console.error('MathJax error:', err));
-        }
     }
 });

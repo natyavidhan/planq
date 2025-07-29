@@ -8,7 +8,6 @@ from urllib.parse import urlencode
 from datetime import datetime
 
 from utils.sr import SR
-from utils.rag import RAG
 from config import CONFIG
 from utils.database import Database
 from utils import auth_required, generate_heatmap_data, ist_now
@@ -31,7 +30,6 @@ app.config['OAUTH2_PROVIDERS'] = CONFIG
 
 db = Database()
 sr = SR(db)
-rag = RAG(db)
 
 # Register blueprints
 app.register_blueprint(init_search_blueprint(db))
@@ -42,7 +40,7 @@ app.register_blueprint(init_bookmarks_blueprint(db))
 app.register_blueprint(init_practice_blueprint(db, sr))
 app.register_blueprint(init_achievements_blueprint(db))
 app.register_blueprint(init_track_blueprint(db, sr))
-app.register_blueprint(init_ai_blueprint(db, rag))
+app.register_blueprint(init_ai_blueprint(db))
 
 # Custom filters for templates
 @app.template_filter('formatdate')

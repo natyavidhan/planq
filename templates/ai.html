@@ -2,6 +2,9 @@
 {% block title %}PlanqAI{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="/static/css/ai.css">
+<script>
+    MathJax = {};
+</script>
 
 <div class="ai-chat-container">
     <!-- Sidebar -->
@@ -48,7 +51,7 @@
                     </div>
                     <div class="message-container">
                         <div class="message-content">
-                            <p>{{ message.content|replace("{{", "&lcub;&lcub;")|replace("}}", "&rcub;&rcub;")|replace("\n", "<br>")|safe }}</p>
+                            <p>{{ message.content|replace("{{", "&lcub;&lcub;")|replace("}}", "&rcub;&rcub;")|safe }}</p>
                         </div>
                         {% if message.context %}
                         <div class="context-container">

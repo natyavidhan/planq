@@ -939,6 +939,7 @@ class Database:
     """
     
     def create_chat(self, user_id):
+        self.ai[user_id].delete_many({"messages": {"$size": 0}})
         chat_id = str(uuid.uuid4())
         chat_data = {
             "_id": chat_id,

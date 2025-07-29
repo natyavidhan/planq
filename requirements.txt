@@ -5,7 +5,3 @@ python-dotenv
 Brotli
 requests
 pytz
-google-generativeai
-sentence-transformers
-rank-bm25
-beautifulsoup4

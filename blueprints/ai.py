@@ -1,19 +1,43 @@
 from flask import Blueprint, render_template, jsonify, session, request, redirect, url_for, abort
-from utils.rag import RAG
 from utils.database import Database
 from utils import auth_required
+import requests
+import jwt
+import os
 
 ai_bp = Blueprint('ai', __name__, url_prefix='/ai')
 
 db:Database = None
-rag:RAG = None
 
-def init_blueprint(database, rag_instance):
+def init_blueprint(database):
     """Initialize the blueprint with the database instance"""
-    global db, rag
+    global db
     db = database
-    rag = rag_instance
     return ai_bp
+
+def call_rag(query, exam_id, subject_id, top_k=5, messages=[]):
+    token = jwt.encode(
+        {"user_id": session['user']['id']},
+        os.getenv('SECRET_KEY'),
+        algorithm='HS256'
+    )
+    
+    response = requests.post(
+        f"{os.getenv('RAG_ENDPOINT')}/retrieve",
+        json={
+            "token": token,
+            "query": query,
+            "exam_id": exam_id,
+            "subject_id": subject_id,
+            "top_k": top_k,
+            "messages": messages
+        }
+    )
+    
+    if response.status_code != 200:
+        return {"error": "Failed to retrieve data from RAG service"}, 500
+    results = response.json()
+    return results['prompt'], results['results']
 
 @ai_bp.route('/')
 @auth_required
@@ -54,7 +78,9 @@ def ai_retrieve():
             "subject_id": subject_id
         })
     
-    prompt, results = rag.planq_ai(query, exam_id, subject_id, top_k=top_k, messages=messages)
+    prompt, results = call_rag(query, exam_id, subject_id, top_k=top_k, messages=messages)
+    
+    print(results)
     
     db.add_chat_message(user_id, chat_id, "user", query)
     db.add_chat_message(user_id, chat_id, "model", results['answer'], context=results.get('context_used'))
