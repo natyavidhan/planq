@@ -54,7 +54,8 @@
         };
     </script>
 </head>
-<body>    <nav class="navbar">
+<body>    
+    <nav class="navbar">
         <div class="container">
             <!-- Left Side: Brand & Links -->
             <div class="navbar-left">
@@ -140,6 +141,30 @@
         {% endif %}
     </nav>
     
+    <!-- Discord Invitation Modal -->
+    <div id="discord-modal" class="discord-modal">
+        <div class="discord-modal-content">
+            <span class="discord-close">&times;</span>
+            <div class="discord-modal-header">
+                <i class="fab fa-discord"></i>
+                <h3>Join Our Discord Community</h3>
+            </div>
+            <div class="discord-modal-body">
+                <p>Stay updated with the latest features, get help, and connect with other Planq users!</p>
+                <ul class="discord-benefits">
+                    <li><i class="fas fa-check-circle"></i> Get real-time updates and announcements</li>
+                    <li><i class="fas fa-check-circle"></i> Ask questions and receive help from the community</li>
+                    <li><i class="fas fa-check-circle"></i> Connect with other students and share resources</li>
+                </ul>
+            </div>
+            <div class="discord-modal-footer">
+                <a href="https://discord.gg/jNWErDcR6r" target="_blank" id="discord-join-btn" class="btn btn-primary">
+                    <i class="fab fa-discord"></i> Join Discord Server
+                </a>
+            </div>
+        </div>
+    </div>
+    
     <div class="container mt-5">
         {% block content %}
             
@@ -183,6 +208,47 @@
                 }
             });
         }
+
+        // Discord Modal Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const discordModal = document.getElementById('discord-modal');
+            const discordClose = document.querySelector('.discord-close');
+            const discordJoinBtn = document.getElementById('discord-join-btn');
+            
+            function checkDiscordModal() {
+                const modalDismissed = localStorage.getItem('discordModalDismissed');
+                if (modalDismissed !== 'true') {
+                    setTimeout(() => {
+                        discordModal.style.display = 'flex';
+                    }, 2000); // Show after 2 seconds
+                }
+            }
+            
+            function closeDiscordModal() {
+                discordModal.style.display = 'none';
+                localStorage.setItem('discordModalDismissed', 'true');
+            }
+            
+            // Close when clicking X button
+            if (discordClose) {
+                discordClose.addEventListener('click', closeDiscordModal);
+            }
+            
+            // Close when clicking Join button
+            if (discordJoinBtn) {
+                discordJoinBtn.addEventListener('click', closeDiscordModal);
+            }
+            
+            // Close when clicking outside modal
+            window.addEventListener('click', (event) => {
+                if (event.target === discordModal) {
+                    closeDiscordModal();
+                }
+            });
+            
+            // Check if we should show the modal
+            checkDiscordModal();
+        });
     </script>
 </body>
 </html>
